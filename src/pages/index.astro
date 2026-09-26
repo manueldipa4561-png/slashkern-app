@@ -1,0 +1,195 @@
+---
+import '@fontsource-variable/inter-tight';
+import '@fontsource-variable/bricolage-grotesque';
+import '../styles/app.css';
+const MARK = 'M23.13 76.87A38 38 0 0 1 76.87 23.13Z';
+const LINE = 'M23.13 76.87A38 38 0 0 0 76.87 23.13Z';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>KERN · Find your direction by doing real work</title>
+    <meta name="description" content="Try real missions, think with an AI co-pilot that only asks questions, and find out what you want to do by doing it." />
+    <meta name="theme-color" content="#0F140E" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="KERN" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="KERN" />
+    <meta property="og:description" content="Find your direction by doing real creative work." />
+    <meta property="og:image" content="/icons/icon-512.png" />
+  </head>
+  <body>
+    <main class="k-scr" id="kScr">
+      <div class="k-load" id="kLoad" aria-hidden="true">
+        <svg viewBox="0 0 100 100"><path d={MARK} class="ks" fill="currentColor"/><path d={LINE} fill="none" stroke-width="7" stroke-linejoin="round" class="kl" stroke="currentColor"/><circle cx="66.4" cy="66.4" r="9" class="kc"/></svg>
+        <div class="k-word">kern<i>.</i></div>
+        <div class="k-tag"><span>Follow the trail.</span><strong>Find your<b>KERN</b>.</strong></div>
+      </div>
+
+      <div class="k-sheet" id="kSheet" role="dialog" aria-modal="true" aria-labelledby="kShT" hidden>
+        <div class="k-sh-in">
+          <div class="k-grab" aria-hidden="true"></div>
+          <div class="k-l" id="kShL">Mission 002 · startup partner</div>
+          <h5 id="kShT">Fix what already exists</h5>
+          <div class="k-step" id="kShA">
+            <p class="k-msg k-ai" id="kShQ">What would make the first step easier for someone brand new?</p>
+            <label class="k-l" for="kTa">Your answer</label>
+            <textarea id="kTa" rows="5" maxlength="2000"></textarea>
+            <div class="k-sh-btns"><button type="button" class="k-go" id="kSub">Submit answer</button><button type="button" class="k-sk" id="kCancel">Not now</button></div>
+          </div>
+          <div class="k-step" id="kShR" hidden>
+            <div class="k-l">Quick reflection · 20 seconds</div>
+            <p class="k-q">How did it feel?</p>
+            <div class="k-chips" id="kRfE" role="group"><span role="button" tabindex="0" data-v="flow">Time flew</span><span role="button" tabindex="0" data-v="ok">It was fine</span><span role="button" tabindex="0" data-v="drag">It dragged</span></div>
+            <p class="k-q">Would you do this kind of task again?</p>
+            <div class="k-chips" id="kRfA" role="group"><span role="button" tabindex="0" data-v="yes">Yes</span><span role="button" tabindex="0" data-v="maybe">Maybe</span><span role="button" tabindex="0" data-v="no">No</span></div>
+            <label class="k-l" for="kRfH">Hardest part (optional)</label><input id="kRfH" type="text" maxlength="140" autocomplete="off" />
+            <label class="k-l" for="kRfT">Leave a sign for the next person (optional)</label><input id="kRfT" type="text" maxlength="140" autocomplete="off" />
+            <div class="k-sh-btns"><button type="button" class="k-go" id="kRfOk">Save</button><button type="button" class="k-sk" id="kRfSkip">Skip</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="k-sheet" id="kSet" role="dialog" aria-modal="true" aria-labelledby="kSetT" hidden>
+        <div class="k-sh-in">
+          <div class="k-grab" aria-hidden="true"></div>
+          <h5 id="kSetT">Settings</h5>
+          <div class="k-row"><span class="k-l">Language</span><div class="k-seg" role="group"><button type="button" data-k-lang="en">EN</button><button type="button" data-k-lang="it">IT</button></div></div>
+          <div class="k-row"><span class="k-l">Theme</span><div class="k-seg" role="group"><button type="button" data-k-theme="system">System</button><button type="button" data-k-theme="dark">Dark</button><button type="button" data-k-theme="light">Light</button></div></div>
+          <div class="k-set-list">
+            <button type="button" class="k-ask-btn" data-k-send>Share my trail with the KERN team</button>
+            <button type="button" class="k-ask-btn" data-k-copy="app">Copy app link</button>
+            <button type="button" class="k-ask-btn" id="kChField">Change field</button>
+            <button type="button" class="k-ask-btn" id="kInst" hidden>Install KERN</button>
+            <p class="k-l" id="kIos" hidden>On iPhone: tap Share, then Add to Home Screen.</p>
+            <button type="button" class="k-ask-btn" id="kExp">Export my data</button>
+            <button type="button" class="k-ask-btn k-danger" id="kDel">Delete my data</button>
+          </div>
+          <p class="k-l">Missions and answer counts are samples while partners join.</p>
+          <p class="k-l"><a href="/privacy/">Privacy</a> · KERN 0.2</p>
+          <button type="button" class="k-go" id="kSetX">Close</button>
+        </div>
+      </div>
+
+      <div class="k-reward" id="kReward" role="dialog" aria-modal="true" aria-labelledby="kRwT" hidden>
+        <div class="k-conf" id="kConf" aria-hidden="true"></div>
+        <div class="k-rw-in">
+          <div class="k-medal" aria-hidden="true">#1</div>
+          <div class="k-l">Voted first</div>
+          <h4 id="kRwT">Your answer<br>won <b>#1.</b></h4>
+          <p>Anonymous reviewers ranked it first out of 128.</p>
+          <div class="k-gain"><b id="kGain">+0</b> <span class="k-l">stones</span></div>
+          <div class="k-rankup" id="kRU" hidden><div class="k-l">New rank</div><div class="k-rank" id="kRU2"></div></div>
+          <button type="button" class="k-go" id="kRwOk">Keep going</button>
+        </div>
+      </div>
+
+      <div class="k-start" id="kLogin">
+        <form class="k-sp" id="kProf" novalidate>
+          <div class="k-l">Welcome</div>
+          <h4>Start your<br><b>trail.</b></h4>
+          <div class="k-field"><label class="k-l" for="kNmI">Your name</label><input id="kNmI" type="text" maxlength="40" autocomplete="given-name" required /></div>
+          <label class="k-check"><input type="checkbox" id="kAge" required /><span>I am 18 or older</span></label>
+          <p class="k-err" id="kErr" role="alert" hidden></p>
+          <button type="submit" class="k-go" id="kLog">Start</button>
+          <p class="k-l">No account needed yet. Your trail stays on this device. <a href="/privacy/">Privacy</a></p>
+        </form>
+      </div>
+
+      <div class="k-start" id="kStart">
+        <div id="kS1" class="k-sp">
+          <svg class="k-cairn" viewBox="0 0 120 96" aria-hidden="true"><ellipse class="c3" cx="60" cy="82" rx="46" ry="12"/><ellipse class="c2" cx="60" cy="58" rx="34" ry="11"/><ellipse class="c1" cx="60" cy="36" rx="22" ry="9"/><circle class="cd" cx="60" cy="16" r="7"/></svg>
+          <div class="k-l">Start here</div>
+          <h4>What do you want<br>to <b>do?</b></h4>
+          <button type="button" class="k-go" id="kIdk">I don't know what I want to do</button>
+          <button type="button" class="k-sk" id="kSkip">Explore missions</button>
+        </div>
+        <div id="kS2" class="k-sp" hidden>
+          <div class="k-l">Good. Let's find out.</div>
+          <h4>What are you<br>curious about <b>right now?</b></h4>
+          <div class="k-chips" id="kPick"><span role="button" tabindex="0">Design</span><span role="button" tabindex="0">Writing</span><span role="button" tabindex="0">Code</span><span role="button" tabindex="0">Video</span><span role="button" tabindex="0">Selling</span><span role="button" tabindex="0">Music</span></div>
+          <button type="button" class="k-go" id="kGo">Start my first mission</button>
+        </div>
+      </div>
+
+      <div class="k-app">
+        <header class="k-top">
+          <div class="k-logo"><svg viewBox="0 0 100 100" aria-hidden="true"><path d={MARK} fill="currentColor" transform="translate(-5 -5)"/><path d={LINE} fill="none" stroke-width="7" stroke-linejoin="round" stroke="currentColor" transform="translate(5 5)"/><circle cx="66.4" cy="66.4" r="9"/></svg>kern<i>.</i></div>
+          <div class="k-tp"><span class="k-pill" id="kPill">0 of 3 done</span><button type="button" class="k-av" id="kAv" aria-label="Settings" aria-haspopup="dialog">K</button></div>
+        </header>
+        <div class="k-body">
+          <section class="k-pane on" id="k-missions">
+            <div><div class="k-l" id="kHi">Hi</div><h4>Pick your<br>next <b>move.</b></h4></div>
+            <div class="k-card k-dare" id="kDare" hidden><div class="k-l">A friend dared you</div><h5 id="kDareT"></h5><button type="button" class="k-go" id="kDareGo">Answer the dare</button></div>
+            <div class="k-card k-main" id="kNext"><div class="k-l" id="kNxL">Your next step</div><h5 id="kNxT">Fix what already exists</h5><p id="kNxP">Make a real startup's onboarding screen clearer. The opposite of starting from a blank page.</p><div class="k-l" id="kNxC">128 answers · judged on quality</div><button type="button" class="k-btn" id="kAdd">Add your answer</button></div>
+            <div class="k-card"><div class="k-l">Your 3 missions</div>
+              <div class="k-mlist">
+                <button type="button" class="k-mrow" id="kMR0"><i class="k-mdot" aria-hidden="true"></i><span><b>Fix what already exists</b><small></small></span><em aria-hidden="true">›</em></button>
+                <button type="button" class="k-mrow" id="kMR1"><i class="k-mdot" aria-hidden="true"></i><span><b>Rewrite a confusing email</b><small></small></span><em aria-hidden="true">›</em></button>
+                <button type="button" class="k-mrow" id="kMR2"><i class="k-mdot" aria-hidden="true"></i><span><b>Work with a partner</b><small></small></span><em aria-hidden="true">›</em></button>
+              </div>
+            </div>
+            <div class="k-card k-best"><div class="k-l k-live">Mission of the week · best answers</div><div class="k-done"><span>Answer #7</span><small>4.6 / 5</small></div><div class="k-done"><span>Answer #31</span><small>4.4 / 5</small></div><div class="k-done"><span>Answer #12</span><small>4.3 / 5</small></div><p>Ranked by anonymous review, not likes.</p><button type="button" class="k-win" id="kWin">See what a win feels like</button></div>
+            <div class="k-card k-aic"><div class="k-l">Stuck?</div><p>KERN.AI asks the questions that get you moving. It never gives you the answer.</p><button type="button" class="k-ask-btn" id="kToAi">Open KERN.AI</button></div>
+          </section>
+
+          <section class="k-pane" id="k-yourkern">
+            <div><div class="k-l">yourKERN · first signs</div><h4>Your <b>KERN</b><br>so far.</h4></div>
+            <div class="k-card k-lvl"><div class="k-lvl-top"><div><div class="k-l">Your rank</div><div class="k-rank" id="kRank">Pebble</div></div><div class="k-stones"><b id="kSt">0</b> <span class="k-l">stones</span></div></div><div class="k-bar k-bar-g"><i id="kBar"></i></div><small class="k-nx" id="kNx"></small><div class="k-ladder" id="kLad"></div></div>
+            <div class="k-l k-note" id="kSample">Signals below are examples until you answer and reflect.</div>
+            <div class="k-card"><div class="k-l">A first guess</div><div class="k-sig" id="kGuess">You seemed to light up on the open brief and drag on the polish.</div><div class="k-l" id="kWhy">Why we think so: you tried 3 versions of the open brief, and you wrote "time flew".</div>
+              <div class="k-ask"><button type="button" class="k-yes" data-k-msg="Saved. This sharpens your KERN.">That feels right</button><button type="button" data-k-msg="Noted. We'll give this guess less weight.">Not really</button></div><div class="k-l k-fb" id="kFb" aria-live="polite"></div></div>
+            <div class="k-card"><div class="k-l">What you seem drawn to</div><div class="k-chips" id="kDrawn"><span>Shaping ideas</span><span>Writing</span><span>Solo work</span></div></div>
+            <div class="k-card"><div class="k-l">How you work with AI</div><div class="k-sig" id="kAiSig">You rewrote your question 4 times, and every version got clearer.</div></div>
+            <div class="k-card"><div class="k-l">Your answers</div><div id="kAns"></div></div>
+            <div class="k-duo"><div class="k-card"><div class="k-l">Answers made</div><div class="k-stat"><b id="kCnt">0</b></div><span class="k-l">on this device · only you see this</span></div><div class="k-card"><div class="k-l">Your rhythm · no pressure</div><div class="k-dots" id="kDots"><i></i><i></i><i></i><i></i></div><p id="kRhy"></p></div></div>
+            <div class="k-card"><div class="k-l">This week's circle</div><div id="kCircle"></div><div class="k-l">Example circle · friends join soon</div></div>
+          </section>
+
+          <section class="k-pane" id="k-trail">
+            <div><div class="k-l">Your Trail</div><h4>Follow the<br><b>trail.</b></h4></div>
+            <div class="k-tr" id="kTr">
+              <div class="k-st"><h5 id="kTr0">Fix what already exists</h5><p>Not started</p></div>
+              <div class="k-st"><h5 id="kTr1">Rewrite a confusing email</h5><p>Not started</p></div>
+              <div class="k-st"><h5 id="kTr2">Work with a partner</h5><p>Not started</p></div>
+              <div class="k-st" id="kTrK"><h5>Your Kern card</h5><p>Ready when your 3 missions are done</p></div>
+            </div>
+            <div class="k-card"><div class="k-l">Your Kern card</div><div class="k-kc"><div class="k-kt">kern<i>.</i></div><h5 id="kCardH">You light up when you start from zero.</h5><div class="k-chips" id="kCardC"><span>Shaping ideas</span><span>Writing</span></div><div class="k-l" id="kCardL">Example · answer and reflect to make it yours</div></div><div class="k-btnrow"><button type="button" class="k-ask-btn" data-k-share="card">Share my card</button><button type="button" class="k-ask-btn" data-k-copy="app">Copy link</button></div></div>
+            <div class="k-card"><div class="k-l">Leave a sign</div><div id="kSigns"></div></div>
+            <div class="k-card"><div class="k-l">Dare a friend</div><p>Send a mission. You both answer, then see the two answers side by side.</p><div class="k-btnrow"><button type="button" class="k-ask-btn" data-k-share="dare">Send a dare</button><button type="button" class="k-ask-btn" data-k-copy="dare">Copy link</button></div></div>
+            <div class="k-card k-pilot"><div class="k-l">Testing KERN?</div><p>Send your answers and reflections to the team. It helps us build the next version.</p><button type="button" class="k-ask-btn" data-k-send>Share my trail with the KERN team</button></div>
+          </section>
+
+          <section class="k-pane" id="k-copilot">
+            <div><div class="k-l">KERN.AI · your co-pilot</div><h4>Your idea.<br>My <b>questions.</b></h4></div>
+            <div class="k-ait"><span class="k-dot" aria-hidden="true"></span><div class="k-l">You are talking to an AI · replies are a scripted preview</div></div>
+            <div class="k-card k-chat">
+              <div class="k-log" id="kChat" aria-live="polite"></div>
+              <div class="k-cmp" id="kCmp" hidden><div class="k-l">Version 1</div><p id="kV1"></p><div class="k-l">Version 3</div><p id="kV3"></p><button type="button" class="k-ask-btn" id="kSaveV">Save to yourKERN</button></div>
+              <div class="k-comp"><input id="kIn" type="text" maxlength="140" autocomplete="off" aria-label="Your idea" /><button type="button" class="k-send" id="kSend" aria-label="Send">↑</button></div>
+              <div class="k-chips" id="kEx"><span role="button" tabindex="0">Use an example</span><span role="button" tabindex="0">Start over</span></div>
+            </div>
+            <div class="k-card"><div class="k-l">Do it twice</div><p>Make it alone first. Then with the co-pilot. Compare the two.</p></div>
+            <div class="k-card"><div class="k-l">The rules</div><p>It asks. It never answers.</p><p>Your idea always comes first.</p><p>If it gets heavy, it stops and points you to a person.</p></div>
+          </section>
+        </div>
+        <div class="k-toast" id="kToast" role="status" aria-live="polite"></div>
+        <nav class="k-tabs" aria-label="KERN">
+          <button type="button" class="on" data-k-tab="missions">Missions</button>
+          <button type="button" data-k-tab="yourkern"><b class="tl">your<span>KERN</span></b></button>
+          <button type="button" data-k-tab="trail">Trail</button>
+          <button type="button" data-k-tab="copilot">KERN.AI</button>
+        </nav>
+      </div>
+    </main>
+    <noscript><p class="k-nojs">KERN needs JavaScript to run.</p></noscript>
+    <script>import '../scripts/app';</script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+---
+import '@fontsource-variable/inter-tight';
+import '@fontsource-variable/bricolage-grotesque';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Privacy · KERN</title>
+    <meta name="theme-color" content="#0F140E" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      :root { color-scheme: dark; --bg: #0F140E; --fg: #E8E6DA; --acc: #C9F24A; --dim: #b4b7a9; }
+      @media (prefers-color-scheme: light) { :root { color-scheme: light; --bg: #E8E6DA; --fg: #141A12; --acc: #2C5A3A; --dim: #454b40; } }
+      body { margin: 0; background: var(--bg); color: var(--fg); font: 400 16px/1.6 'Inter Tight Variable', system-ui, sans-serif; }
+      main { max-width: 640px; margin: 0 auto; padding: 48px 20px 80px; }
+      h1 { font: 800 40px/1 'Bricolage Grotesque Variable', sans-serif; letter-spacing: -.04em; margin: 0 0 8px; }
+      h2 { font: 800 20px/1.2 'Bricolage Grotesque Variable', sans-serif; letter-spacing: -.02em; margin: 32px 0 6px; }
+      small { color: var(--dim); } a { color: var(--acc); }
+      hr { border: 0; border-top: 1px solid color-mix(in srgb, var(--fg) 20%, transparent); margin: 40px 0; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p><a href="/">← KERN</a></p>
+      <h1>Privacy</h1>
+      <small>Last updated 27 September 2026</small>
+      <h2>What KERN keeps</h2>
+      <p>In this version there are no accounts and no servers. Your first name, your chosen field, your answers and drafts, your reflections, your co-pilot chat and your settings are saved only in this browser on this device (local storage). We cannot see them.</p>
+      <h2>What is sent</h2>
+      <p>Nothing you write is sent anywhere unless you choose to share it (for example with "Share my trail with the KERN team", which opens your own share sheet or copies the text). There are no cookies, no analytics and no advertising. The co-pilot replies are written in advance and run on your device. The hosting provider (Netlify) processes technical data such as your IP address to deliver the page, as every website host does.</p>
+      <h2>Your control</h2>
+      <ul>
+        <li>Export: Settings, then Export my data, downloads everything KERN saved as a file.</li>
+        <li>Delete: Settings, then Delete my data, removes it from this device. Clearing your browser data does the same.</li>
+      </ul>
+      <h2>Age</h2>
+      <p>KERN is for people aged 18 and over.</p>
+      <h2>Not therapy</h2>
+      <p>KERN is not therapy or medical advice. If you are struggling, please talk to someone you trust or a local helpline. If you are in danger, call your local emergency number.</p>
+      <h2>Who runs KERN</h2>
+      <p>KERN is a project by Punto Due Studio (Italy). Contact details and VAT number will be added here.</p>
+      <hr />
+      <h1 lang="it">Privacy</h1>
+      <p lang="it">In questa versione non ci sono account né server. Nome, campo scelto, risposte e bozze, riflessioni, chat con il co-pilota e impostazioni restano solo in questo browser, su questo dispositivo: non li vediamo. Nulla di ciò che scrivi viene inviato, a meno che tu non scelga di condividerlo. Niente cookie, analytics o pubblicità. Il fornitore di hosting (Netlify) tratta dati tecnici come l'indirizzo IP per consegnare la pagina. Da Impostazioni puoi esportare o cancellare i tuoi dati. KERN è per persone dai 18 anni in su e non è terapia né consulenza medica. KERN è un progetto di Punto Due Studio (Italia); contatti e partita IVA saranno aggiunti qui.</p>
+    </main>
+  </body>
+</html>
