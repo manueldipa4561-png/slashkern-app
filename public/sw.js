@@ -1,5 +1,5 @@
 // Offline support: pages network-first, assets cache-first. Bump CACHE to drop old caches on deploy.
-const CACHE = 'kern-v1';
+const CACHE = 'kern-v2';
 const SHELL = ['/', '/privacy/', '/manifest.webmanifest', '/favicon.svg', '/icons/icon-192.png'];
 
 self.addEventListener('install', (e) => {
@@ -26,10 +26,12 @@ self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
   if (req.mode === 'navigate') {
+    // Keyed by path only: sign-in codes and dare links in the query never land in the cache.
+    const key = new URL(req.url).pathname;
     e.respondWith(
       fetch(req)
-        .then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); return res; })
-        .catch(() => caches.match(req).then((m) => m || caches.match('/'))),
+        .then((res) => { if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(key, copy)); } return res; })
+        .catch(() => caches.match(key).then((m) => m || caches.match('/'))),
     );
     return;
   }

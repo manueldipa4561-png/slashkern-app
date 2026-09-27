@@ -1,24 +1,26 @@
-// KERN app logic. State lives only in this browser (localStorage key kern:v1); nothing is sent anywhere.
+// KERN app logic. State lives in this browser (localStorage key kern:v1); with an account it also syncs (cloud.ts).
 //
 //  profile ──> field ──> mission ──> answer ──> reflection ──> signals ──> Kern card ──> share
 //                           ^            │ (draft autosaved)      │
 //                           └────────────┴── yourKERN / Trail ◄───┘
 import { IT } from './i18n';
 import { FIELDS } from './fields';
+import * as cloud from './cloud';
+import { akey, ver, stamp, mergeAnswers, type Tomb } from './sync';
 
 type Feel = 'flow' | 'ok' | 'drag';
 type Again = 'yes' | 'maybe' | 'no';
 type Refl = { e?: Feel; again?: Again; hard?: string; tip?: string };
-type Answer = { f: string; i: number; t: string; at: number; r?: Refl };
+type Answer = { f: string; i: number; t: string; at: number; ed?: number; r?: Refl };
 type Msg = { who: 'ai' | 'me'; t: string; typing?: boolean };
 type Theme = 'system' | 'dark' | 'light';
 type Lang = 'en' | 'it';
-type State = { v: 1; name: string; field: string; onboarded: boolean; stones: number; answers: Answer[]; drafts: Record<string, string>; msgs: Msg[]; mine: string[]; lang: Lang; theme: Theme; guess: string; saves: number };
+type State = { v: 1; name: string; field: string; onboarded: boolean; stones: number; answers: Answer[]; drafts: Record<string, string>; msgs: Msg[]; mine: string[]; lang: Lang; theme: Theme; guess: string; saves: number; badges: string[]; dared: boolean; gone: Tomb[] };
 
 const KEY = 'kern:v1';
 const FEELS: Feel[] = ['flow', 'ok', 'drag'];
 const AGAINS: Again[] = ['yes', 'maybe', 'no'];
-const fresh = (): State => ({ v: 1, name: '', field: 'Design', onboarded: false, stones: 0, answers: [], drafts: {}, msgs: [], mine: [], lang: navigator.language.toLowerCase().startsWith('it') ? 'it' : 'en', theme: 'system', guess: '', saves: 0 });
+const fresh = (): State => ({ v: 1, name: '', field: 'Design', onboarded: false, stones: 0, answers: [], drafts: {}, msgs: [], mine: [], lang: navigator.language.toLowerCase().startsWith('it') ? 'it' : 'en', theme: 'system', guess: '', saves: 0, badges: [], dared: false, gone: [] });
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.slice(0, max) : '');
 const cleanR = (r: unknown): Refl | undefined => {
   if (!r || typeof r !== 'object') return undefined;
@@ -29,12 +31,11 @@ const cleanR = (r: unknown): Refl | undefined => {
   if (str(o.tip, 140).trim()) out.tip = str(o.tip, 140).trim();
   return Object.keys(out).length ? out : undefined;
 };
-// Stored data is untrusted input: keep only well-formed values.
-const load = (): State => {
+// Stored or synced data is untrusted input: keep only well-formed values.
+const sanitize = (s: any): State | null => { // eslint-disable-line @typescript-eslint/no-explicit-any
   const d = fresh();
   try {
-    const s = JSON.parse(localStorage.getItem(KEY) || 'null');
-    if (!s || s.v !== 1) return d;
+    if (!s || typeof s !== 'object' || s.v !== 1) return null;
     const drafts: Record<string, string> = {};
     if (s.drafts && typeof s.drafts === 'object') for (const [k, v] of Object.entries(s.drafts)) if (/^\w+\.[0-2]$/.test(k) && typeof v === 'string' && v) drafts[k] = v.slice(0, 2000);
     return {
@@ -45,7 +46,7 @@ const load = (): State => {
       stones: Number.isFinite(s.stones) ? Math.max(0, s.stones) : 0,
       answers: Array.isArray(s.answers)
         ? s.answers.filter((a: Answer) => a && FIELDS[a.f] && Number.isInteger(a.i) && a.i >= 0 && a.i < 3 && typeof a.t === 'string' && Number.isFinite(a.at))
-          .map((a: Answer) => ({ f: a.f, i: a.i, t: a.t.slice(0, 2000), at: a.at, r: cleanR(a.r) }))
+          .map((a: Answer) => ({ f: a.f, i: a.i, t: a.t.slice(0, 2000), at: a.at, ed: Number.isFinite(a.ed) ? a.ed : undefined, r: cleanR(a.r) }))
         : [],
       drafts,
       msgs: Array.isArray(s.msgs) ? s.msgs.filter((m: Msg) => m && (m.who === 'ai' || m.who === 'me') && typeof m.t === 'string').map((m: Msg) => ({ who: m.who, t: m.t.slice(0, 400) })) : [],
@@ -54,14 +55,51 @@ const load = (): State => {
       theme: s.theme === 'dark' || s.theme === 'light' ? s.theme : 'system',
       guess: str(s.guess, 200),
       saves: Number.isFinite(s.saves) ? s.saves : 0,
+      badges: Array.isArray(s.badges) ? s.badges.filter((b: unknown) => typeof b === 'string' && b.length < 20).slice(0, 50) : [],
+      dared: !!s.dared,
+      gone: Array.isArray(s.gone) ? s.gone.filter((g: unknown) => Array.isArray(g) && typeof g[0] === 'string' && g[0].length < 40 && Number.isFinite(g[1])).map((g: Tomb): Tomb => [g[0], g[1]]).slice(-200) : [],
     };
-  } catch { return d; }
+  } catch { return null; }
+};
+const load = (): State => {
+  try { return sanitize(JSON.parse(localStorage.getItem(KEY) || 'null')) || fresh(); } catch { return fresh(); }
 };
 const S = load();
+const snapshot = () => ({ ...S, msgs: S.msgs.filter((m) => !m.typing).slice(-60) });
 let saveFailed = false;
-const save = () => {
-  try { localStorage.setItem(KEY, JSON.stringify({ ...S, msgs: S.msgs.filter((m) => !m.typing).slice(-60) })); saveFailed = false; }
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(snapshot())); saveFailed = false; }
   catch { if (!saveFailed) { saveFailed = true; say("Couldn't save on this device. Check your browser storage settings."); } }
+  schedulePush();
+}
+
+// Cloud sync (only when signed in): debounced upload of the whole state; retried on the next save or when back online.
+let user: cloud.User | null = null, pushT = 0, syncOk = true;
+function schedulePush() {
+  if (!user) return;
+  clearTimeout(pushT);
+  pushT = window.setTimeout(async () => {
+    if (!user) return;
+    try { await cloud.push(user.id, snapshot()); if (!syncOk) say('Synced again.'); syncOk = true; }
+    catch { if (syncOk) say("Couldn't sync. Your trail is safe on this device and will sync later."); syncOk = false; }
+    renderAcct();
+  }, 1200);
+}
+addEventListener('online', () => { if (user && !syncOk) schedulePush(); });
+// Merge a synced copy into this device (sync.ts rules: newest answer wins, deletes stick), keep local settings.
+const mergeIn = (raw: unknown) => {
+  const r = sanitize(raw); if (!r) return;
+  const m = mergeAnswers(S.answers, r.answers, S.gone, r.gone);
+  S.answers = m.answers; S.gone = m.gone;
+  S.stones = S.answers.reduce((s, a) => s + worth(a), 0); // stones are exactly what the merged answers earned
+  if (!S.name) S.name = r.name;
+  if (!S.onboarded && r.onboarded) { S.onboarded = true; S.field = r.field; }
+  S.drafts = { ...r.drafts, ...S.drafts };
+  if (!S.mine.length && r.mine.length) { S.mine = r.mine; S.msgs = r.msgs; }
+  S.saves = Math.max(S.saves, r.saves);
+  if (!S.guess) S.guess = r.guess;
+  S.badges = [...new Set([...S.badges, ...r.badges])];
+  S.dared = S.dared || r.dared;
 };
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -77,9 +115,16 @@ const F = () => FIELDS[S.field] || FIELDS.Design;
 const day = (t: number) => new Date(t).toLocaleDateString(isIt() ? 'it-IT' : 'en-GB', { day: 'numeric', month: 'short' });
 const doneSet = () => new Set(S.answers.filter((a) => a.f === S.field).map((a) => a.i));
 
-const toast = $('kToast');
-let tT = 0;
-function say(en: string) { toast.textContent = tr(en); toast.classList.add('on'); clearTimeout(tT); tT = window.setTimeout(() => toast.classList.remove('on'), 2800); }
+const toast = $('kToast'), toastT = $('kToastT'), toastB = $('kToastB');
+let tT = 0, toastAct: (() => void) | null = null;
+// Short message at the bottom; with `undo`, shows an Undo button for a few seconds (Gmail-style).
+function say(en: string, undo?: () => void) {
+  toastT.textContent = tr(en);
+  toastAct = undo || null; toastB.hidden = !undo; toastB.textContent = tr('Undo');
+  toast.classList.toggle('act', !!undo); toast.classList.add('on');
+  clearTimeout(tT); tT = window.setTimeout(() => { toast.classList.remove('on', 'act'); toastAct = null; }, undo ? 5000 : 2800);
+}
+toastB.addEventListener('click', () => { const f = toastAct; toastAct = null; toast.classList.remove('on', 'act'); if (f) f(); });
 
 // Static text: remember the English source so language switches are lossless.
 const kTxt = kScr.querySelectorAll<HTMLElement>('.k-l, h4, h5, p, .k-sig, .k-chips span, .k-done span, .k-tag span, .k-tag strong, .k-ask button, .k-btn, .k-ask-btn, .k-go, .k-sk, .k-win, .k-check span, .k-seg button, .k-tabs button:not(:nth-child(2))');
@@ -141,9 +186,18 @@ new ResizeObserver(() => moveInd(onTab(), false)).observe(nav);
 
 // Sheets (answer + settings): backdrop tap and Escape close them, focus returns where it was.
 const kSheet = $('kSheet'), kSet = $('kSet');
+// Whatever layer is on top (sheet, reward, login, onboarding) makes everything behind it inert:
+// no Tab, clicks or screen reader reaching the page under a dialog.
+const LAYERS = ['kReward', 'kPwS', 'kSet', 'kSheet', 'kStart', 'kLogin'].map((id) => $(id)); // top first
+const syncInert = () => {
+  const top = LAYERS.find((l) => !l.hidden && (!l.classList.contains('k-start') || l.classList.contains('on')));
+  for (const c of kScr.children) (c as HTMLElement).inert = !!top && c !== top;
+};
+const layerWatch = new MutationObserver(syncInert);
+LAYERS.forEach((l) => layerWatch.observe(l, { attributes: true, attributeFilter: ['hidden', 'class'] }));
 let lastFocus: HTMLElement | null = null;
-const openSheetEl = (sh: HTMLElement, focus: HTMLElement) => { lastFocus = document.activeElement as HTMLElement; sh.hidden = false; focus.focus(); };
-const closeSheet = (sh: HTMLElement) => { sh.hidden = true; if (sh === kSheet) flushDraft(); lastFocus?.focus(); };
+const openSheetEl = (sh: HTMLElement, focus: HTMLElement) => { lastFocus = document.activeElement as HTMLElement; sh.hidden = false; syncInert(); focus.focus(); };
+const closeSheet = (sh: HTMLElement) => { sh.hidden = true; syncInert(); if (sh === kSheet) flushDraft(); lastFocus?.focus(); };
 [kSheet, kSet].forEach((sh) => {
   sh.addEventListener('click', (e) => { if (e.target === sh) closeSheet(sh); });
   sh.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(sh); });
@@ -153,7 +207,6 @@ const closeSheet = (sh: HTMLElement) => { sh.hidden = true; if (sh === kSheet) f
 const RANKS: [string, number][] = [['Pebble', 0], ['Stone', 100], ['Cairn', 300], ['Ridge', 700], ['Summit', 1500]];
 const RIT: Record<string, string> = { Pebble: 'Ciottolo', Stone: 'Pietra', Cairn: 'Cairn', Ridge: 'Cresta', Summit: 'Vetta' };
 const rn = (n: string) => (isIt() && RIT[n]) || n;
-const CIRCLE: [string, number][] = [['Maya', 288], ['Leo', 262], ['Ana', 205], ['Sam', 180]];
 const rankIdx = (s: number) => RANKS.reduce((a, r, i) => (s >= r[1] ? i : a), 0);
 const setLvl = () => {
   const i = rankIdx(S.stones), nx = RANKS[i + 1], it = isIt();
@@ -165,15 +218,6 @@ const setLvl = () => {
   const lad = $('kLad');
   lad.innerHTML = '';
   RANKS.forEach((r, k) => { const s = document.createElement('span'); s.textContent = rn(r[0]); if (k < i) s.className = 'done'; if (k === i) s.className = 'on'; lad.appendChild(s); });
-  const circ = $('kCircle');
-  circ.innerHTML = '';
-  ([...CIRCLE, [it ? 'Tu' : 'You', S.stones, 1]] as [string, number, number?][]).sort((a, b) => b[1] - a[1]).forEach((r, k) => {
-    const row = document.createElement('div'); row.className = 'k-rw' + (r[2] ? ' me' : '');
-    const n = document.createElement('i'); n.textContent = String(k + 1);
-    const nm = document.createElement('span'); nm.textContent = r[0];
-    const sc = document.createElement('em'); sc.textContent = String(r[1]);
-    row.append(n, nm, sc); circ.appendChild(row);
-  });
 };
 
 // Signals: which kind of mission you light up on, from your own reflections.
@@ -227,12 +271,12 @@ const renderHome = () => {
   setD($('kHi'), S.name ? `${it ? 'Ciao' : 'Hi'} ${S.name}` : (it ? 'Ciao' : 'Hi'));
   if (next === undefined) {
     setT($('kNxL'), 'Your 3 missions are done'); setT($('kNxT'), 'Your Kern card is ready.');
-    setT($('kNxP'), 'See what your answers say about how you work, and share it.'); setD($('kNxC'), '');
+    setT($('kNxP'), 'See what your answers say about how you work, and share it.');
     setT(kAdd, 'See your Kern card'); kAdd.dataset.kAns = 'card';
   } else {
     const m = f.m[next];
     setD($('kNxL'), it ? `Il tuo prossimo passo · missione ${next + 1} di 3` : `Your next step · mission ${next + 1} of 3`);
-    setT($('kNxT'), m[1]); setT($('kNxP'), m[2]); setT($('kNxC'), m[3]);
+    setT($('kNxT'), m[1]); setT($('kNxP'), m[2]);
     setT(kAdd, S.drafts[`${S.field}.${next}`] ? 'Continue your draft' : 'Add your answer'); kAdd.dataset.kAns = String(next);
   }
   [0, 1, 2].forEach((i) => {
@@ -258,12 +302,17 @@ const renderProgress = () => {
   const box = $('kAns');
   box.innerHTML = '';
   if (!S.answers.length) { const p = document.createElement('p'); p.textContent = tr('No answers yet. Pick a mission and add yours.'); box.appendChild(p); }
-  S.answers.slice(-5).reverse().forEach((a) => {
+  S.answers.slice(-5).reverse().forEach((a, k) => {
+    const idx = S.answers.length - 1 - k;
     const row = document.createElement('div'); row.className = 'k-an';
     const l = document.createElement('span'); l.className = 'k-l';
     l.textContent = `${tr(FIELDS[a.f].m[a.i][1])} · ${day(a.at)}${a.r?.e ? ' · ' + tr(FEEL_EN[a.r.e]) : ''}`;
     const p = document.createElement('p'); p.textContent = a.t;
-    row.append(l, p); box.appendChild(row);
+    const acts = document.createElement('div'); acts.className = 'k-an-act';
+    const ed = document.createElement('button'); ed.type = 'button'; ed.textContent = tr('Edit'); ed.addEventListener('click', () => openEdit(idx));
+    const del = document.createElement('button'); del.type = 'button'; del.textContent = tr('Delete'); del.addEventListener('click', () => deleteAnswer(idx));
+    acts.append(ed, del);
+    row.append(l, p, acts); box.appendChild(row);
   });
   const signs = $('kSigns'), tips = S.answers.filter((a) => a.r?.tip);
   signs.innerHTML = '';
@@ -280,8 +329,64 @@ const renderProgress = () => {
   $('kDots').querySelectorAll('i').forEach((d, i) => d.classList.toggle('f', weeks[3 - i]));
   const w = weeks.filter(Boolean).length;
   $('kRhy').textContent = it ? `In ${w} delle ultime 4 settimane hai creato qualcosa.` : `${w} of the last 4 weeks you made something.`;
-  renderHome(); renderSignals();
+  renderHome(); renderSignals(); renderBadges();
 };
+
+// Badges (Duolingo/Strava style): earned once, kept even if an answer is later deleted.
+const WEEKNUM = (t: number) => Math.floor(t / 6048e5);
+const BADGES: { id: string; t: string; d: string; ok: () => boolean }[] = [
+  { id: 'first', t: 'First step', d: 'Your first answer', ok: () => S.answers.length > 0 },
+  { id: 'reflect', t: 'Honest look', d: 'Your first reflection', ok: () => S.answers.some((a) => a.r) },
+  { id: 'sign', t: 'Trail marker', d: 'Left a sign for the next person', ok: () => S.answers.some((a) => a.r?.tip) },
+  { id: 'full', t: 'Full trail', d: 'All 3 missions in one field', ok: () => Object.keys(FIELDS).some((f) => new Set(S.answers.filter((a) => a.f === f).map((a) => a.i)).size === 3) },
+  { id: 'twice', t: 'Do it twice', d: '3 versions of an idea in KERN.AI', ok: () => S.mine.length >= 3 },
+  { id: 'dare', t: 'Challenger', d: 'Dared a friend', ok: () => S.dared },
+  { id: 'steady', t: 'Steady', d: 'Made something in 3 different weeks', ok: () => new Set(S.answers.map((a) => WEEKNUM(a.at))).size >= 3 },
+  { id: 'explorer', t: 'Explorer', d: 'Answered in 2 different fields', ok: () => new Set(S.answers.map((a) => a.f)).size >= 2 },
+];
+let booted = false;
+function renderBadges() {
+  const box = $('kBadges'), fresh: string[] = [];
+  box.innerHTML = '';
+  BADGES.forEach((b) => {
+    if (!S.badges.includes(b.id) && b.ok()) { S.badges.push(b.id); fresh.push(b.t); }
+    const got = S.badges.includes(b.id);
+    const el = document.createElement('div'); el.className = 'k-badge' + (got ? ' got' : '');
+    el.setAttribute('aria-label', `${tr(b.t)}: ${tr(b.d)}${got ? '' : ' (' + tr('locked') + ')'}`);
+    const m = document.createElement('i'); m.textContent = tr(b.t)[0]; m.setAttribute('aria-hidden', 'true');
+    const t = document.createElement('b'); t.textContent = tr(b.t);
+    const d = document.createElement('small'); d.textContent = tr(b.d);
+    el.append(m, t, d); box.appendChild(el);
+  });
+  if (!fresh.length) return;
+  save();
+  if (booted) window.setTimeout(() => { say(tr('New badge: {b}').replace('{b}', tr(fresh[0]))); if ('vibrate' in navigator) navigator.vibrate([20, 40, 20]); }, 3000);
+}
+
+// Delete with Undo; stones earned by that answer are taken back so nothing can be farmed.
+// Deletes made while the Undo toast is up join one batch, and Undo brings them all back.
+// Each delete leaves a tombstone so it also sticks on the user's other synced devices.
+const worth = (a: Answer) => 50 + (a.r ? 20 : 0);
+let binned: Answer[] = [];
+function deleteAnswer(idx: number) {
+  const a = S.answers[idx]; if (!a) return;
+  if (!toastAct) binned = [];
+  binned.push(a);
+  S.answers.splice(idx, 1);
+  S.gone = [...S.gone, [akey(a), stamp(ver(a))] as Tomb].slice(-200);
+  S.stones = Math.max(0, S.stones - worth(a)); save(); setLvl(); renderProgress();
+  const n = binned.length;
+  say(n > 1 ? tr('{n} answers deleted.').replace('{n}', String(n)) : 'Answer deleted.', () => {
+    binned.forEach((b) => {
+      const t = S.gone.find(([k]) => k === akey(b))?.[1] || 0;
+      S.gone = S.gone.filter(([k]) => k !== akey(b));
+      b.ed = stamp(Math.max(t, ver(b))); // newer than its tombstone, so the restore wins on every device
+      const i = S.answers.findIndex((x) => x.at > b.at);
+      S.answers.splice(i < 0 ? S.answers.length : i, 0, b); S.stones += worth(b);
+    });
+    binned = []; save(); setLvl(); renderProgress();
+  });
+}
 
 // Co-pilot chat (scripted: it only asks, never proposes the idea)
 const chatEl = $('kChat'), inEl = $<HTMLInputElement>('kIn'), cmp = $('kCmp');
@@ -305,7 +410,7 @@ const renderChat = () => {
 };
 const aiSay = (t: string) => {
   S.msgs.push({ who: 'ai', t: '', typing: true }); renderChat();
-  window.setTimeout(() => { S.msgs.pop(); S.msgs.push({ who: 'ai', t }); busy = false; save(); renderChat(); renderSignals(); }, still ? 0 : 750);
+  window.setTimeout(() => { S.msgs.pop(); S.msgs.push({ who: 'ai', t }); busy = false; save(); renderChat(); renderSignals(); renderBadges(); }, still ? 0 : 750);
 };
 const startChat = () => { S.msgs = [{ who: 'ai', t: OPEN }]; S.mine = []; busy = false; inEl.value = ''; save(); renderChat(); };
 const sendChat = () => {
@@ -337,22 +442,36 @@ const applyField = (resetChat: boolean) => {
 
 // Answer sheet: step 1 answer (draft autosaved), step 2 quick reflection.
 const kTa = $<HTMLTextAreaElement>('kTa'), kShA = $('kShA'), kShR = $('kShR');
-let cur: { f: string; i: number; dare: boolean } = { f: 'Design', i: 0, dare: false };
+let cur: { f: string; i: number; dare: boolean; edit: number } = { f: 'Design', i: 0, dare: false, edit: -1 };
 let lastIdx = -1, dT = 0;
 const dKey = () => `${cur.f}.${cur.i}`;
 function flushDraft() {
   clearTimeout(dT);
-  if (!kShA.hidden) { const v = kTa.value.trim() ? kTa.value.slice(0, 2000) : ''; if (v) S.drafts[dKey()] = v; else delete S.drafts[dKey()]; save(); renderHome(); }
+  if (kShA.hidden || cur.edit >= 0) return; // edits are not drafts
+  const v = kTa.value.trim() ? kTa.value.slice(0, 2000) : '';
+  if (v) S.drafts[dKey()] = v; else delete S.drafts[dKey()];
+  save(); renderHome();
 }
 kTa.addEventListener('input', () => { clearTimeout(dT); dT = window.setTimeout(flushDraft, 500); });
-const openAnswer = (f: string, i: number, dare = false) => {
-  const m = FIELDS[f].m[i]; cur = { f, i, dare };
+const fillSheet = (f: string, i: number) => {
+  const m = FIELDS[f].m[i];
   setT($('kShL'), m[0]); setT($('kShT'), m[1]);
   setT($('kShQ'), FIELDS[f].qs[i % FIELDS[f].qs.length]);
   kShA.hidden = false; kShR.hidden = true;
+};
+const openAnswer = (f: string, i: number, dare = false) => {
+  cur = { f, i, dare, edit: -1 };
+  fillSheet(f, i); setT($('kSub'), 'Submit answer');
   kTa.value = S.drafts[dKey()] || '';
   openSheetEl(kSheet, kTa);
 };
+function openEdit(idx: number) {
+  const a = S.answers[idx]; if (!a) return;
+  cur = { f: a.f, i: a.i, dare: false, edit: idx };
+  fillSheet(a.f, a.i); setT($('kSub'), 'Save changes');
+  kTa.value = a.t;
+  openSheetEl(kSheet, kTa);
+}
 const groups = ['kRfE', 'kRfA'].map((id) => $(id));
 groups.forEach((g) => g.querySelectorAll<HTMLElement>('[data-v]').forEach((c) => {
   const pick = () => { g.querySelectorAll<HTMLElement>('[data-v]').forEach((o) => { o.classList.toggle('sel', o === c); o.setAttribute('aria-pressed', String(o === c)); }); g.dataset.val = c.dataset.v!; };
@@ -366,6 +485,12 @@ $('kSub').addEventListener('click', () => {
   const t = kTa.value.trim();
   if (!t) { say('Write something first.'); kTa.focus(); return; }
   clearTimeout(dT);
+  if (cur.edit >= 0) {
+    const a = S.answers[cur.edit];
+    if (a) { a.t = t.slice(0, 2000); a.ed = stamp(ver(a)); }
+    save(); closeSheet(kSheet); renderProgress(); say('Answer updated.');
+    return;
+  }
   S.answers.push({ f: cur.f, i: cur.i, t: t.slice(0, 2000), at: Date.now() });
   lastIdx = S.answers.length - 1;
   delete S.drafts[dKey()];
@@ -379,7 +504,8 @@ $('kSub').addEventListener('click', () => {
 });
 $('kRfOk').addEventListener('click', () => {
   const r = cleanR({ e: groups[0].dataset.val, again: groups[1].dataset.val, hard: $<HTMLInputElement>('kRfH').value, tip: $<HTMLInputElement>('kRfT').value });
-  if (r && S.answers[lastIdx]) { S.answers[lastIdx].r = r; S.stones += 20; save(); }
+  const a = S.answers[lastIdx];
+  if (r && a) { a.r = r; a.ed = stamp(ver(a)); S.stones += 20; save(); }
   closeSheet(kSheet); setLvl(); renderProgress();
   say(r ? 'Reflection saved. +20 stones.' : '+50 stones. Your answer is saved on this device.');
 });
@@ -387,7 +513,7 @@ $('kRfSkip').addEventListener('click', () => { closeSheet(kSheet); say('+50 ston
 
 // Reward preview: shows what winning feels like without changing your stones.
 const kRw = $('kReward'), kWin = $('kWin'), kConf = $('kConf'), kGain = $('kGain'), kRU = $('kRU');
-const closeWin = () => { kRw.hidden = true; kWin.focus(); };
+const closeWin = () => { kRw.hidden = true; syncInert(); kWin.focus(); };
 kWin.addEventListener('click', () => {
   const gain = 200, before = rankIdx(S.stones), after = rankIdx(S.stones + gain);
   kRU.hidden = after === before;
@@ -426,12 +552,116 @@ let pick = S.field;
 const markPick = () => kStart.querySelectorAll<HTMLElement>('#kPick span').forEach((o) => o.classList.toggle('sel', o.dataset.en === pick));
 const openStart = (step2 = false) => { kS1.hidden = step2; kS2.hidden = !step2; markPick(); kStart.classList.add('on'); };
 const renderMe = () => { $('kAv').textContent = (S.name.trim()[0] || 'K').toUpperCase(); };
-$('kProf').addEventListener('submit', (e) => {
+// Login screen modes: 'up' create account, 'in' log in, 'guest' local-only profile.
+// Without Supabase keys only 'guest' exists and the screen looks like before.
+type Mode = 'guest' | 'up' | 'in';
+let mode: Mode = cloud.enabled ? 'up' : 'guest';
+const kEm = $<HTMLInputElement>('kEm'), kPw = $<HTMLInputElement>('kPw'), kOk = $('kOk');
+const emailOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) && v.length <= 254;
+const fail = (en: string) => { setT(kErr, en); kErr.hidden = false; kOk.hidden = true; };
+const note = (en: string) => { setT(kOk, en); kOk.hidden = false; kErr.hidden = true; };
+function setMode(m: Mode) {
+  mode = m;
+  pressed('mode', m);
+  $('kAuthSeg').hidden = !cloud.enabled;
+  $('kFName').hidden = m === 'in';
+  $('kFEmail').hidden = m === 'guest'; $('kFPw').hidden = m === 'guest';
+  $('kFAge').hidden = m === 'in';
+  kPw.autocomplete = m === 'in' ? 'current-password' : 'new-password';
+  $('kForgot').hidden = m !== 'in';
+  $('kGuest').hidden = !cloud.enabled || m === 'guest';
+  setT($('kGuest'), S.name ? 'Not now' : 'Continue without an account');
+  $('kNoteLocal').hidden = m !== 'guest'; $('kNoteCloud').hidden = m === 'guest';
+  setT(kLog, m === 'up' ? 'Create account' : m === 'in' ? 'Log in' : 'Start');
+  kErr.hidden = true; kOk.hidden = true;
+}
+document.querySelectorAll<HTMLElement>('[data-k-mode]').forEach((b) => b.addEventListener('click', () => setMode(b.dataset.kMode === 'in' ? 'in' : 'up')));
+$('kGuest').addEventListener('click', () => { if (S.name) { kLogin.classList.remove('on'); return; } setMode('guest'); });
+let authBusy = false;
+$('kProf').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const n = kNmI.value.trim();
-  if (!n || !kAge.checked) { setT(kErr, 'Add your name and confirm your age to continue.'); kErr.hidden = false; (n ? kAge : kNmI).focus(); return; }
-  kErr.hidden = true; kLog.classList.add('busy');
-  window.setTimeout(() => { S.name = n.slice(0, 40); save(); renderMe(); renderHome(); kLog.classList.remove('busy'); kLogin.classList.remove('on'); openStart(); }, still ? 0 : 600);
+  if (authBusy) return;
+  const n = kNmI.value.trim(), em = kEm.value.trim().toLowerCase(), pw = kPw.value;
+  if (mode === 'guest') {
+    if (!n || !kAge.checked) { fail('Add your name and confirm your age to continue.'); (n ? kAge : kNmI).focus(); return; }
+    kErr.hidden = true; kLog.classList.add('busy');
+    window.setTimeout(() => { S.name = n.slice(0, 40); save(); renderMe(); renderHome(); kLog.classList.remove('busy'); kLogin.classList.remove('on'); openStart(); }, still ? 0 : 600);
+    return;
+  }
+  if (mode === 'up' && !n) { fail('Add your name.'); kNmI.focus(); return; }
+  if (!emailOk(em)) { fail('Enter a valid email.'); kEm.focus(); return; }
+  if (pw.length < 8) { fail('Use a longer password: at least 8 characters.'); kPw.focus(); return; }
+  if (mode === 'up' && !kAge.checked) { fail('Confirm you are 18 or older.'); kAge.focus(); return; }
+  authBusy = true; kLog.classList.add('busy');
+  try {
+    if (mode === 'up') {
+      const r = await cloud.signUp(em, pw, n.slice(0, 40));
+      if (!S.name) { S.name = n.slice(0, 40); save(); renderMe(); }
+      if (r.needsConfirm) { setMode('in'); kEm.value = em; note('Check your email to confirm your account, then log in. Already have one? Just log in.'); }
+    } else await cloud.signIn(em, pw);
+    kPw.value = '';
+  } catch (err) { fail(cloud.why(err)); }
+  finally { authBusy = false; kLog.classList.remove('busy'); }
+});
+$('kForgot').addEventListener('click', async () => {
+  const em = kEm.value.trim().toLowerCase();
+  if (!emailOk(em)) { fail('Enter your email first.'); kEm.focus(); return; }
+  try { await cloud.resetPassword(em); note('If an account exists for this email, we sent a reset link.'); } catch (err) { fail(cloud.why(err)); }
+});
+
+// Account state from Supabase: first sign-in on a device merges the synced trail with the local one.
+function renderAcct() {
+  $('kAcct').hidden = !cloud.enabled;
+  if (!cloud.enabled) return;
+  setD($('kAcctE'), user ? `${user.email} · ${tr(syncOk ? 'synced' : 'sync paused')}` : tr('Not signed in · your trail is only on this device'));
+  $('kAcctUp').hidden = !!user; $('kLogout').hidden = !user;
+  $('kDelAcc').hidden = !user; $('kDel').hidden = !!user;
+}
+// An email link that could not sign in here (opened on another device, expired or already used): say so, tidy the URL.
+function linkNote() {
+  const p = new URLSearchParams(location.search.slice(1) + '&' + location.hash.slice(1));
+  if (!p.has('code') && !p.has('error_description')) return;
+  history.replaceState(null, '', location.pathname);
+  setMode('in'); kLogin.classList.add('on');
+  note(p.has('code') ? 'Open the link on the device where you asked for it, or log in here.' : 'That link has expired or was already used. Log in, or ask for a new one.');
+}
+const onUser = async (u: cloud.User | null, ev: string) => {
+  if (ev === 'PASSWORD_RECOVERY' && $('kPwS').hidden) openSheetEl($('kPwS'), $('kPwN'));
+  if (!u) { user = null; renderAcct(); if (ev === 'INITIAL_SESSION') linkNote(); return; }
+  if (user && user.id === u.id) { user = u; renderAcct(); return; }
+  user = u;
+  try { const remote = await cloud.pull(u.id); if (remote) mergeIn(remote); syncOk = true; }
+  catch { syncOk = false; say("Couldn't load your synced trail. We'll try again."); }
+  if (!S.name) S.name = u.name;
+  save(); renderMe(); applyField(false); setLang(S.lang); renderAcct();
+  if (kLogin.classList.contains('on')) { kLogin.classList.remove('on'); if (!S.onboarded) openStart(); }
+};
+if (cloud.enabled) void cloud.onAuth(onUser).catch(() => { /* SDK failed to load: stay local-only */ });
+$('kAcctUp').addEventListener('click', () => { closeSheet(kSet); setMode('up'); kNmI.value = S.name; kLogin.classList.add('on'); kEm.focus(); });
+$('kLogout').addEventListener('click', async () => {
+  if (!confirm(tr('Log out? Your trail stays in your account and is removed from this device.'))) return;
+  clearTimeout(pushT);
+  if (user) { try { await cloud.push(user.id, snapshot()); } catch { /* best effort before leaving */ } }
+  try { await cloud.signOut(); } catch { /* still clear the device */ }
+  try { localStorage.removeItem(KEY); } catch { /* nothing stored */ }
+  location.replace('/');
+});
+$('kDelAcc').addEventListener('click', async () => {
+  if (!confirm(tr('Delete your account and your whole trail? This cannot be undone.'))) return;
+  clearTimeout(pushT); // a pending sync must not race the deletion
+  try { await cloud.deleteAccount(); } catch (err) { say(cloud.why(err)); return; }
+  try { localStorage.removeItem(KEY); } catch { /* nothing stored */ }
+  location.replace('/');
+});
+const kPwS = $('kPwS');
+kPwS.addEventListener('click', (e) => { if (e.target === kPwS) closeSheet(kPwS); });
+kPwS.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(kPwS); });
+$('kPwF').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const p = $<HTMLInputElement>('kPwN').value, er = $('kPwErr');
+  if (p.length < 8) { setT(er, 'Use a longer password: at least 8 characters.'); er.hidden = false; return; }
+  try { await cloud.setPassword(p); $<HTMLInputElement>('kPwN').value = ''; closeSheet(kPwS); say('Password updated.'); }
+  catch (err) { setT(er, cloud.why(err)); er.hidden = false; }
 });
 $('kIdk').addEventListener('click', () => { kS1.hidden = true; kS2.hidden = false; });
 const closeStart = () => {
@@ -464,12 +694,21 @@ const LINKS: Record<string, () => string> = {
 };
 kScr.querySelectorAll<HTMLElement>('[data-k-copy]').forEach((b) => b.addEventListener('click', async () => {
   const url = (LINKS[b.dataset.kCopy!] || LINKS.app)();
+  if (b.dataset.kCopy === 'dare') markDared();
   if (!(await copy(url))) { say(url); return; }
   say('Link copied.');
   const en = b.dataset.en!;
   setT(b, 'Copied'); b.classList.add('ok');
   window.setTimeout(() => { setT(b, en); b.classList.remove('ok'); }, 1600);
 }));
+
+function markDared() { if (!S.dared) { S.dared = true; save(); renderBadges(); } }
+// Save a generated file (export, calendar reminder) through a temporary link.
+const download = (content: BlobPart, name: string, type: string) => {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type })); a.download = name; a.click();
+  window.setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
 
 // Share: native share sheet on phones, clipboard or download elsewhere.
 const shareText = async (title: string, text: string, url: string | undefined, copied: string) => {
@@ -524,6 +763,7 @@ const shareCard = async () => {
 };
 kScr.querySelectorAll<HTMLElement>('[data-k-share]').forEach((b) => b.addEventListener('click', () => {
   if (b.dataset.kShare === 'card') { void shareCard(); return; }
+  markDared();
   void shareText('KERN', tr('I dare you: {m}. Answer it on KERN, then we compare.').replace('{m}', tr(F().m[0][1])), `${location.origin}/?dare=${encodeURIComponent(S.field)}.0`, 'Link copied.');
 }));
 
@@ -570,17 +810,27 @@ const setLang = (l: Lang) => {
   kTxt.forEach((e) => { const en = e.dataset.en; if (en) e.innerHTML = tr(en); });
   if (fb.dataset.src) fb.textContent = tr(fb.dataset.src);
   pressed('lang', l);
-  setLvl(); renderProgress(); renderChat();
+  setLvl(); renderProgress(); renderChat(); renderAcct();
 };
 document.querySelectorAll<HTMLElement>('[data-k-lang]').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.kLang === 'it' ? 'it' : 'en')));
 $('kAv').addEventListener('click', () => openSheetEl(kSet, $('kSetX')));
 $('kSetX').addEventListener('click', () => closeSheet(kSet));
 $('kChField').addEventListener('click', () => { kSet.hidden = true; pick = S.field; openStart(true); });
-$('kExp').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify({ ...S, exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'kern-data.json'; a.click();
-  window.setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+$('kExp').addEventListener('click', () => download(JSON.stringify({ ...snapshot(), exportedAt: new Date().toISOString() }, null, 2), 'kern-data.json', 'application/json'));
+// Weekly calendar reminder (.ics): works in every calendar app, no notifications permission, no streaks.
+$('kRemind').addEventListener('click', () => {
+  const esc = (s: string) => s.replace(/[\\;,]/g, (m) => '\\' + m).replace(/\n/g, '\\n');
+  const p = (n: number) => String(n).padStart(2, '0');
+  const d = new Date(); d.setDate(d.getDate() + 1);
+  const start = `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}T180000`;
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const title = esc(tr('KERN: make one small thing'));
+  const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Punto Due Studio//KERN//EN', 'BEGIN:VEVENT',
+    `UID:kern-${Date.now()}@${location.host}`, `DTSTAMP:${stamp}`, `DTSTART:${start}`, 'DURATION:PT20M', 'RRULE:FREQ=WEEKLY',
+    `SUMMARY:${title}`, `DESCRIPTION:${esc(tr('No streaks, no pressure. Open KERN when you feel like it.'))} ${location.origin}/`, `URL:${location.origin}/`,
+    'BEGIN:VALARM', 'ACTION:DISPLAY', 'TRIGGER:PT0M', `DESCRIPTION:${title}`, 'END:VALARM', 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  download(ics, 'kern-reminder.ics', 'text/calendar');
+  say('Open the file to add the reminder to your calendar.');
 });
 $('kDel').addEventListener('click', () => {
   if (!confirm(tr('This deletes your trail on this device. Continue?'))) return;
@@ -618,5 +868,8 @@ applyField(false);
 setLang(S.lang);
 renderDare();
 moveInd(onTab(), false);
+setMode(mode);
+renderAcct();
+booted = true;
 if (!S.name) kLogin.classList.add('on');
 else if (!S.onboarded) openStart();

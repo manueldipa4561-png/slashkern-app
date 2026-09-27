@@ -9,6 +9,7 @@ import '@fontsource-variable/bricolage-grotesque';
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Privacy · KERN</title>
     <meta name="theme-color" content="#0F140E" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <style>
       :root { color-scheme: dark; --bg: #0F140E; --fg: #E8E6DA; --acc: #C9F24A; --dim: #b4b7a9; }
@@ -27,23 +28,37 @@ import '@fontsource-variable/bricolage-grotesque';
       <h1>Privacy</h1>
       <small>Last updated 27 September 2026</small>
       <h2>What KERN keeps</h2>
-      <p>In this version there are no accounts and no servers. Your first name, your chosen field, your answers and drafts, your reflections, your co-pilot chat and your settings are saved only in this browser on this device (local storage). We cannot see them.</p>
+      <p>Without an account, your first name, your chosen field, your answers and drafts, your reflections, your co-pilot chat and your settings are saved only in this browser on this device (local storage). We cannot see them.</p>
+      <h2>If you create an account</h2>
+      <p>An account is optional. If you create one, we keep your email address, your first name and a copy of the same trail, so it syncs across your devices. Our account and database provider, Supabase, stores them. Access rules make sure no other user can read them, and we look at them only when needed to run the service. Your password is never stored in readable form, only as a secure hash. Supabase also sends the emails that confirm your address and reset your password. You stay signed in through a token saved in this browser, not a cookie.</p>
       <h2>What is sent</h2>
-      <p>Nothing you write is sent anywhere unless you choose to share it (for example with "Share my trail with the KERN team", which opens your own share sheet or copies the text). There are no cookies, no analytics and no advertising. The co-pilot replies are written in advance and run on your device. The hosting provider (Netlify) processes technical data such as your IP address to deliver the page, as every website host does.</p>
+      <p>Nothing you write is sent anywhere unless you choose to share it (for example with "Share my trail with the KERN team", which opens your own share sheet or copies the text), or you have an account, in which case your trail goes only to your account. There are no cookies, no analytics and no advertising. The co-pilot replies are written in advance and run on your device. The hosting provider (Netlify) processes technical data such as your IP address to deliver the page, as every website host does.</p>
+      <h2>Talent insights: sharing your profile with partner companies</h2>
+      <p><b>Status:</b> not active yet. It starts with the first partner missions, and nothing is shared until you say yes.</p>
+      <ul>
+        <li><b>What is shared:</b> your first name, your answers to partner missions, your reflections on them and your Kern (the working-style signals built from what you did). Never your email, your password, your co-pilot chat or your drafts.</li>
+        <li><b>With whom:</b> only the partner companies whose missions you completed. Each company receives your profile for its own hiring and talent purposes and is responsible for it from then on (it becomes an independent controller under the GDPR).</li>
+        <li><b>Legal basis:</b> your consent (GDPR Art. 6(1)(a)). It is off by default, asked separately and never a condition for using KERN. Saying no changes nothing about your missions or your Kern.</li>
+        <li><b>Withdrawal:</b> you can turn it off at any time in Settings. We stop sharing from that moment. Profiles a company already received are its responsibility; you can ask it to delete them, and we tell it you withdrew.</li>
+        <li><b>Profiling:</b> your Kern is a profile of how you work. It is a hypothesis you can confirm or reject, and no decision with legal or similarly significant effect is made about you automatically (Art. 22). Any hiring decision is taken by people at the company.</li>
+        <li><b>Anonymous trends:</b> partners may also receive aggregate statistics, for example which kinds of missions people of a given age finish most. These are anonymised and cannot be linked back to you.</li>
+        <li><b>Retention:</b> shared profiles are offered to partners for at most 12 months from your last mission, then removed from KERN's partner view.</li>
+      </ul>
       <h2>Your control</h2>
       <ul>
         <li>Export: Settings, then Export my data, downloads everything KERN saved as a file.</li>
         <li>Delete: Settings, then Delete my data, removes it from this device. Clearing your browser data does the same.</li>
+        <li>Account: Log out removes your trail from this device and keeps it in your account. Delete my account removes the account and the synced trail for good.</li>
       </ul>
       <h2>Age</h2>
       <p>KERN is for people aged 18 and over.</p>
       <h2>Not therapy</h2>
       <p>KERN is not therapy or medical advice. If you are struggling, please talk to someone you trust or a local helpline. If you are in danger, call your local emergency number.</p>
       <h2>Who runs KERN</h2>
-      <p>KERN is a project by Punto Due Studio (Italy). Contact details and VAT number will be added here.</p>
+      <p>KERN is built and run by Manuel Di Paolo (Italy), the data controller. Contact details and VAT number will be added here.</p>
       <hr />
       <h1 lang="it">Privacy</h1>
-      <p lang="it">In questa versione non ci sono account né server. Nome, campo scelto, risposte e bozze, riflessioni, chat con il co-pilota e impostazioni restano solo in questo browser, su questo dispositivo: non li vediamo. Nulla di ciò che scrivi viene inviato, a meno che tu non scelga di condividerlo. Niente cookie, analytics o pubblicità. Il fornitore di hosting (Netlify) tratta dati tecnici come l'indirizzo IP per consegnare la pagina. Da Impostazioni puoi esportare o cancellare i tuoi dati. KERN è per persone dai 18 anni in su e non è terapia né consulenza medica. KERN è un progetto di Punto Due Studio (Italia); contatti e partita IVA saranno aggiunti qui.</p>
+      <p lang="it">Senza account, nome, campo scelto, risposte e bozze, riflessioni, chat con il co-pilota e impostazioni restano solo in questo browser, su questo dispositivo: non li vediamo. L'account è facoltativo: se lo crei, conserviamo la tua email, il tuo nome e una copia della tua traccia per sincronizzarla tra i tuoi dispositivi. Li custodisce il nostro fornitore di account e database, Supabase: nessun altro utente può leggerli e noi li consultiamo solo quando serve per far funzionare il servizio. La password non è mai salvata in chiaro, solo come hash sicuro. Supabase invia anche le email per confermare l'indirizzo e reimpostare la password. Resti connesso tramite un token salvato in questo browser, non un cookie. Talent insights (non ancora attivo, parte con le prime missioni dei partner): solo se dai il consenso (GDPR art. 6.1.a), separato, disattivato di default e revocabile in ogni momento dalle Impostazioni, le aziende partner di cui hai completato le missioni ricevono nome, risposte, riflessioni e il tuo Kern, mai email, password, chat o bozze; da quel momento ne sono titolari autonomi. Nessuna decisione automatica con effetti giuridici viene presa su di te (art. 22). I partner possono ricevere anche statistiche aggregate e anonime. I profili condivisi restano visibili ai partner per al massimo 12 mesi dall'ultima missione. Per il resto, nulla di ciò che scrivi viene inviato altrove, a meno che tu non scelga di condividerlo. Niente cookie, analytics o pubblicità. Il fornitore di hosting (Netlify) tratta dati tecnici come l'indirizzo IP per consegnare la pagina. Da Impostazioni puoi esportare o cancellare i tuoi dati, uscire dall'account (la traccia resta nell'account e viene rimossa dal dispositivo) o eliminare per sempre l'account e la traccia sincronizzata. KERN è per persone dai 18 anni in su e non è terapia né consulenza medica. KERN è sviluppato e gestito da Manuel Di Paolo (Italia), titolare del trattamento; contatti e partita IVA saranno aggiunti qui.</p>
     </main>
   </body>
 </html>
