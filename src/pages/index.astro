@@ -1,12 +1,13 @@
 ---
-import '@fontsource-variable/inter-tight';
-import '@fontsource-variable/bricolage-grotesque';
-import '@fontsource/instrument-serif/latin-400-italic.css';
+import '@fontsource-variable/geist';
+import '@fontsource/eb-garamond/latin-500.css';
 import '../styles/app.css';
 import { icon } from '../scripts/icons';
 import { readFileSync } from 'node:fs';
-import interFont from '@fontsource-variable/inter-tight/files/inter-tight-latin-wght-normal.woff2?url';
-import bricolageFont from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2?url';
+import geistFont from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import garamondFont from '@fontsource/eb-garamond/files/eb-garamond-latin-500-normal.woff2?url';
+// The in-app mark: a rounded black square with a lime bead on a white k (styled in app.css, .k-lg). One drawing for the header, the launch screen and the first screens.
+const MARK = '<svg class="k-lg" viewBox="0 0 28 28" aria-hidden="true" focusable="false"><rect class="k-lg-bg" width="28" height="28" rx="8"/><path class="k-lg-k" d="M9.5 7v14M18.5 9.5l-8.2 5.6 8.2 5.9"/><circle class="k-lg-b" cx="19.4" cy="8.4" r="3"/></svg>';
 // Inlined so iOS can read it without a login cookie (it fetches the icon itself, which a password-protected site answers with 401).
 const touchIcon = 'data:image/png;base64,' + readFileSync('public/icons/apple-touch-icon.png').toString('base64');
 // Link previews (chat apps, social) need a full address for the image: Netlify gives the site's main address as URL while it builds (a local build has none, so the path stays relative).
@@ -21,9 +22,10 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>KERN · Don't guess your passion. Test it.</title>
     <meta name="description" content="Try short missions in design, writing, code, video, selling online, music and prompting with AI, with an AI co-pilot that only asks questions. Find your passion by testing different paths. Free, no account." />
-    <meta name="theme-color" content="#0F140E" />
-    <link rel="preload" as="font" type="font/woff2" href={interFont} crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href={bricolageFont} crossorigin />
+    <meta name="theme-color" content="#FFFFFF" />
+    <script is:inline src="/theme-init.js"></script>
+    <link rel="preload" as="font" type="font/woff2" href={geistFont} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={garamondFont} crossorigin />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -45,7 +47,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
     <main class="k-scr" id="kScr">
       <h1 class="k-sr">KERN</h1>
       <div class="k-load" id="kLoad" aria-hidden="true">
-        <div class="k-ic"><img src="/img/mark.webp" alt="" width="108" height="108" fetchpriority="high" /></div>
+        <div class="k-ic" set:html={MARK} />
         <div class="k-tag"><span>Don’t guess your passion.</span><strong>Test it.</strong></div>
       </div>
 
@@ -217,7 +219,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
 
       <div class="k-start" id="kLogin">
         <form class="k-sp" id="kProf" novalidate>
-          <img class="k-mark" src="/img/mark.webp" alt="" width="84" height="84" />
+          <span class="k-mark" set:html={MARK} />
           <div class="k-l">Welcome</div>
           <h4>Save your<br><b>progress.</b></h4>
           <div class="k-seg k-authseg" id="kAuthSeg" role="group" aria-label="Account" hidden><button type="button" data-k-mode="up">Create account</button><button type="button" data-k-mode="in">Log in</button></div>
@@ -238,7 +240,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
       <div class="k-start" id="kStart" role="dialog" aria-modal="true" aria-labelledby="kS1H">
         <button type="button" class="k-aa" id="kAa" aria-label="Text size">Aa</button>
         <div id="kS1" class="k-sp">
-          <img class="k-mark" src="/img/mark.webp" alt="" width="84" height="84" />
+          <span class="k-mark" set:html={MARK} />
           <div class="k-l">Start here</div>
           <h4 id="kS1H">What do you want<br>to <b>try?</b></h4>
           <p class="k-promise">Try short missions in seven different fields and see which path clicks. Free, no account.</p>
@@ -272,7 +274,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
 
       <div class="k-app">
         <header class="k-top">
-          <div class="k-logo"><img src="/img/mark.webp" alt="" width="28" height="28" />kern<i>.</i></div>
+          <div class="k-logo"><span class="k-lgw" set:html={MARK} />kern<i>.</i></div>
           <div class="k-tp"><button type="button" class="k-demo" id="kDemo" aria-label="Demo profile with sample data. Tap to leave the demo." hidden>Demo</button><span class="k-pill"><i class="k-ring" id="kRing" aria-hidden="true"></i><span id="kPill">0 of 3 done</span></span><button type="button" class="k-av" id="kAv" aria-label="Settings" aria-haspopup="dialog">K</button></div>
         </header>
         <div class="k-body">

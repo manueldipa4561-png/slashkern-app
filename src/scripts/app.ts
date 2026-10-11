@@ -69,7 +69,7 @@ const LANGS: Lang[] = ['en', 'it', 'de', 'fr'];
 const isLang = (v: unknown): v is Lang => LANGS.includes(v as Lang);
 // First run: the first language the browser asks for that KERN speaks (de-AT, fr-CH... count), else English.
 const firstLang = (): Lang => (navigator.languages?.length ? navigator.languages : [navigator.language]).map((l) => l.slice(0, 2).toLowerCase()).find(isLang) ?? 'en';
-const fresh = (): State => ({ v: 1, name: '', adult: false, field: 'Design', fields: [], onboarded: false, stones: 0, answers: [], drafts: {}, msgs: [], mine: [], lang: firstLang(), theme: 'dark', text: 1, guess: '', saves: 0, badges: [], dared: false, gone: [], habit: { t: '', c: '', l: [] }, easy: false, coops: [] });
+const fresh = (): State => ({ v: 1, name: '', adult: false, field: 'Design', fields: [], onboarded: false, stones: 0, answers: [], drafts: {}, msgs: [], mine: [], lang: firstLang(), theme: 'light', text: 1, guess: '', saves: 0, badges: [], dared: false, gone: [], habit: { t: '', c: '', l: [] }, easy: false, coops: [] });
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.slice(0, max) : '');
 // A name is cut by whole characters (never half an emoji) and holds no text-direction controls (U+202A-202E, U+2066-2069): they flip the text around them and leave the avatar empty.
 const cleanName = (v: unknown) => (typeof v === 'string' ? [...v.replace(/[\u202A-\u202E\u2066-\u2069]/g, '')].slice(0, 40).join('') : '');
@@ -120,7 +120,7 @@ const sanitize = (s: any): State | null => { // eslint-disable-line @typescript-
       msgs: Array.isArray(s.msgs) ? s.msgs.filter((m: Msg) => m && (m.who === 'ai' || m.who === 'me') && typeof m.t === 'string').map((m: Msg): Msg => ({ who: m.who, t: m.t.slice(0, 500), ...(m.who === 'ai' && typeof m.p === 'string' && m.p ? { p: m.p.slice(0, 200) } : {}) })) : [],
       mine: Array.isArray(s.mine) ? s.mine.filter((m: unknown) => typeof m === 'string').map((m: string) => m.slice(0, 140)) : [],
       lang: isLang(s.lang) ? s.lang : d.lang,
-      theme: s.theme === 'light' ? 'light' : 'dark', // two themes, dark first (a profile saved with the old "system" choice becomes dark)
+      theme: s.theme === 'dark' ? 'dark' : 'light', // two themes, light first (a profile saved with the old "system" choice becomes light; a saved "dark" stays dark)
       text: s.text === 0 || s.text === 2 || s.text === 3 ? s.text : 1,
       guess: str(s.guess, 200),
       saves: clampCount(s.saves),
@@ -137,7 +137,7 @@ const sanitize = (s: any): State | null => { // eslint-disable-line @typescript-
 const demoState = (): State => {
   let real: { lang?: string; theme?: string; text?: number } = {};
   try { real = JSON.parse(localStorage.getItem('kern:v1') || '{}') || {}; } catch { /* no real profile to read */ }
-  const lang: Lang = isLang(real.lang) ? real.lang : fresh().lang, theme: Theme = real.theme === 'light' ? 'light' : 'dark', text = real.text;
+  const lang: Lang = isLang(real.lang) ? real.lang : fresh().lang, theme: Theme = real.theme === 'dark' ? 'dark' : 'light', text = real.text;
   const it = lang === 'it', answers = sampleAnswers(it, Date.now());
   return sanitize({ v: 1, name: 'Giulia', field: 'Design', fields: ['Design', 'Writing', 'Video'], onboarded: true, stones: answers.reduce((s, a) => s + 50 + (a.r ? 20 : 0) + (a.x || 0), 0), answers, msgs: [{ who: 'ai', t: OPEN }, ...sampleChat(it)], mine: sampleMine(it), dared: true, lang, theme, text, guess: 'Saved. This sharpens your KERN.' }) || fresh(); // guess: the reply to "A first guess" (That feels right), not a sentence of its own
 };
@@ -303,7 +303,7 @@ const applyTheme = () => {
   const light = S.theme === 'light';
   kScr.classList.toggle('light', light);
   document.documentElement.classList.toggle('light', light);
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#E8E6DA' : '#0F140E');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', light ? '#FFFFFF' : '#0F140E');
   pressed('theme', S.theme);
 };
 document.querySelectorAll<HTMLElement>('[data-k-theme]').forEach((b) => b.addEventListener('click', () => { S.theme = b.dataset.kTheme as Theme; save(); applyTheme(); }));
@@ -1829,8 +1829,8 @@ const cardImage = async (): Promise<Blob | null> => {
   const c = cardData();
   if (!c.a) return null;
   const X = STORY_X, TW = STORY_W - 2 * X;
-  const D = "'Bricolage Grotesque Variable', sans-serif", B = "'Inter Tight Variable', sans-serif", SR = "'Instrument Serif', Georgia, serif";
-  try { await Promise.all([`800 96px ${D}`, `600 36px ${B}`, `italic 400 80px ${SR}`].map((f) => document.fonts.load(f))); } catch { /* the fallback fonts will do */ }
+  const D = "'Geist Variable', sans-serif", B = "'Geist Variable', sans-serif", SR = "'EB Garamond', Georgia, serif";
+  try { await Promise.all([`800 96px ${D}`, `600 36px ${B}`, `500 80px ${SR}`].map((f) => document.fonts.load(f))); } catch { /* the fallback fonts will do */ }
   const cv = document.createElement('canvas'); cv.width = STORY_W; cv.height = STORY_H;
   const x = cv.getContext('2d'); if (!x) return null;
   x.fillStyle = '#0F140E'; x.fillRect(0, 0, STORY_W, STORY_H);
@@ -1851,7 +1851,14 @@ const cardImage = async (): Promise<Blob | null> => {
   };
   // Header: the app icon and "kern.", below the strip a story covers with its progress bar and name.
   let wx = X;
-  try { const ic = new Image(); ic.src = '/img/mark.webp'; await ic.decode(); x.drawImage(ic, X, 222, 96, 96); wx += 96 + 24; } catch { /* the word alone is fine */ }
+  { // the mark (the same drawing as MARK in index.astro): a black square with an edge, a white k, a lime bead
+    x.save(); x.translate(X, 222); x.scale(96 / 28, 96 / 28);
+    x.beginPath(); if (x.roundRect) x.roundRect(0.5, 0.5, 27, 27, 7.5); else x.rect(0.5, 0.5, 27, 27);
+    x.fillStyle = '#0B0F0A'; x.fill(); x.strokeStyle = 'rgba(236,234,223,.3)'; x.lineWidth = 1; x.stroke();
+    x.strokeStyle = '#FFFFFF'; x.lineWidth = 2.6; x.lineCap = 'round'; x.lineJoin = 'round'; x.stroke(new Path2D('M9.5 7v14M18.5 9.5l-8.2 5.6 8.2 5.9'));
+    x.beginPath(); x.arc(19.4, 8.4, 3, 0, Math.PI * 2); x.fillStyle = LIME; x.fill(); x.restore();
+    wx += 96 + 24;
+  }
   put('kern', `800 96px ${D}`, BONE, wx, 302); put('.', `800 96px ${D}`, LIME, wx + x.measureText('kern').width, 302);
   // The field and its path: one segment per mission, lit when done.
   put(tr(S.field).toUpperCase(), `700 36px ${B}`, LIME, X, 440);
@@ -1884,9 +1891,9 @@ const cardImage = async (): Promise<Blob | null> => {
   // The slogan and the address, above the strip a story covers with its reply bar.
   const slogan = tr('Don’t guess your passion.');
   let ss = 80; // one line in every language: a longer line steps down until it fits
-  for (x.font = `italic 400 ${ss}px ${SR}`; x.measureText(slogan).width > TW && ss > 48; x.font = `italic 400 ${ss}px ${SR}`) ss -= 4;
-  put(slogan, `italic 400 ${ss}px ${SR}`, BONE, X, 1490);
-  put(tr('Test it.'), `italic 400 ${ss}px ${SR}`, LIME, X, 1490 + ss * 1.08);
+  for (x.font = `500 ${ss}px ${SR}`; x.measureText(slogan).width > TW && ss > 48; x.font = `500 ${ss}px ${SR}`) ss -= 4;
+  put(slogan, `500 ${ss}px ${SR}`, BONE, X, 1490);
+  put(tr('Test it.'), `500 ${ss}px ${SR}`, LIME, X, 1490 + ss * 1.08);
   put(location.host, `700 36px ${B}`, DIMB, X, 1652);
   return new Promise((res) => cv.toBlob(res, 'image/png'));
 };

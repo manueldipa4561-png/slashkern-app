@@ -57,8 +57,8 @@
       .k-scr .k-card:not(.k-main) { box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 10%, transparent); }
       .k-scr.light .k-card:not(.k-main) { box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 8px 20px -12px rgba(20,26,18,.4); }
 
-      /* v3: display font (self-hosted Bricolage Grotesque), tab icons, tiles, cairn */
-      .k-scr, .k-h { --kd: 'Bricolage Grotesque Variable', 'Inter Tight Variable', system-ui, sans-serif; }
+      /* v3: display font (self-hosted Geist), tab icons, tiles, cairn */
+      .k-scr, .k-h { --kd: 'Geist Variable', system-ui, sans-serif; }
       .k-scr h4, .k-scr h5, .k-logo, .k-tag span, .k-stat b, .k-rank, .k-stones b, .k-gain b, .k-medal, .k-kt, .k-h { font-family: var(--kd); }
       .k-scr h4 { font-size: 1.8438rem; letter-spacing: -.04em; line-height: 1.02; }
       .k-scr h5, .k-card h5 { letter-spacing: -.03em; }
@@ -77,7 +77,7 @@
       .k-log .k-msg { max-width: 90%; } .k-log .k-me { align-self: flex-end; } .k-log .k-ai { align-self: flex-start; }
       .k-typing { display: inline-flex; gap: 4px; } .k-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--ai); animation: kPulse 1s infinite; } .k-typing i:nth-child(2) { animation-delay: .15s; } .k-typing i:nth-child(3) { animation-delay: .3s; }
       .k-comp { display: flex; gap: 8px; align-items: center; }
-      .k-comp input { flex: 1; min-width: 0; box-sizing: border-box; font: 500 1rem/1.4 'Inter Tight Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 999px; padding: 11px 14px; }
+      .k-comp input { flex: 1; min-width: 0; box-sizing: border-box; font: 500 1rem/1.4 'Geist Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 999px; padding: 11px 14px; }
       .k-comp input:focus-visible { outline: 2px solid var(--ai); outline-offset: 1px; }
       .k-send { flex: none; width: 42px; height: 42px; border: 0; border-radius: 50%; background: var(--ai); color: var(--bg); font-weight: 800; font-size: 1.1875rem; cursor: pointer; transition: transform .15s; } .k-send:active { transform: scale(.92); }
       .k-cmp { display: grid; gap: 6px; border: 1px dashed var(--edge); border-radius: 14px; padding: 12px; } .k-cmp[hidden] { display: none; }
@@ -91,7 +91,7 @@
       .k-sh-in h5 { font-size: 1.5rem; line-height: 1.1; }
       .k-av { width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer; font-family: var(--kd); font-weight: 800; font-size: 0.9375rem; color: var(--bg); background: linear-gradient(135deg, var(--acc), var(--gold)); }
       .k-field { display: flex; flex-direction: column; gap: 6px; width: 100%; } .k-field[hidden] { display: none; }
-      .k-field input, .k-sheet textarea { width: 100%; box-sizing: border-box; font: 500 1rem/1.4 'Inter Tight Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; }
+      .k-field input, .k-sheet textarea { width: 100%; box-sizing: border-box; font: 500 1rem/1.4 'Geist Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; }
       .k-field input:focus-visible, .k-sheet textarea:focus-visible { outline: 2px solid var(--acc); outline-offset: 1px; }
       .k-go.busy { opacity: .85; pointer-events: none; }
       .k-go.busy::after { content: ''; display: inline-block; width: 12px; height: 12px; margin-left: 10px; border-radius: 50%; border: 2px solid currentColor; border-top-color: transparent; animation: kSpin .7s linear infinite; vertical-align: -2px; }
@@ -176,7 +176,7 @@
 /* Text size: every font size is in rem, so one number scales all the text. Settings sets --kts (0.92, 1, 1.14, 1.3). */
 html { font-size: calc(16px * var(--kts, 1)); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 html, body { margin: 0; height: 100%; }
-body { min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: #070a06; font-family: 'Inter Tight Variable', system-ui, sans-serif; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+body { min-height: 100dvh; display: flex; align-items: center; justify-content: center; background: #070a06; font-family: 'Geist Variable', system-ui, sans-serif; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
 :root.light body { background: #cfcdbf; }
 .k-scr { width: 100%; height: 100dvh; border-radius: 0; }
 @media (min-width: 600px) {
@@ -197,7 +197,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-scr a { color: var(--acc); }
 .k-scr :focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
 .k-seg { display: inline-flex; flex: none; border: 1px solid var(--edge); border-radius: 999px; overflow: hidden; }
-.k-seg button { background: none; border: 0; color: var(--fg); padding: 8px 14px; min-height: 36px; font: 600 0.8438rem 'Inter Tight Variable', system-ui, sans-serif; cursor: pointer; }
+.k-seg button { background: none; border: 0; color: var(--fg); padding: 8px 14px; min-height: 36px; font: 600 0.8438rem 'Geist Variable', system-ui, sans-serif; cursor: pointer; }
 .k-seg button[aria-pressed="true"] { background: var(--acc); color: var(--on); }
 /* Text size buttons: an A per step, drawn in px so the row itself does not grow with the setting */
 .k-txt button { padding-inline: 12px; line-height: 1; }
@@ -233,7 +233,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-mrow.done b { opacity: .7; }
 .k-step { display: flex; flex-direction: column; gap: 12px; } .k-step[hidden] { display: none; }
 .k-q { font-weight: 700; font-size: 1.0625rem; margin: 4px 0 -4px !important; }
-.k-sh-in input { width: 100%; box-sizing: border-box; font: 500 1rem/1.4 'Inter Tight Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; }
+.k-sh-in input { width: 100%; box-sizing: border-box; font: 500 1rem/1.4 'Geist Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; }
 .k-sh-in input:focus-visible { outline: 2px solid var(--acc); outline-offset: 1px; }
 .k-chips span[data-v] { cursor: pointer; min-height: 34px; display: inline-flex; align-items: center; padding: 6px 14px; }
 .k-sign { display: flex; flex-direction: column; gap: 3px; border-left: 3px solid var(--gold); padding: 2px 0 2px 12px; }
@@ -265,12 +265,12 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-acct[hidden], .k-acct [hidden] { display: none; }
 .k-acct p { font-size: 0.9375rem; overflow-wrap: anywhere; }
 .k-an-act { display: flex; gap: 28px; } /* Edit and Delete sit apart, so a thumb that misses one does not land on the other */
-.k-an-act button { position: relative; background: none; border: 0; padding: 4px 0; min-height: 32px; color: var(--dim); font: 600 0.8438rem 'Inter Tight Variable', system-ui, sans-serif; text-decoration: underline; cursor: pointer; }
+.k-an-act button { position: relative; background: none; border: 0; padding: 4px 0; min-height: 32px; color: var(--dim); font: 600 0.8438rem 'Geist Variable', system-ui, sans-serif; text-decoration: underline; cursor: pointer; }
 .k-an-act button::after { content: ''; position: absolute; inset: -6px -12px; } /* a 44px target around the small word, without moving it */
 .k-an-act button:hover { color: var(--fg); }
 .k-toast { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .k-toast.act { pointer-events: auto; }
-.k-toast button { position: relative; flex: none; background: none; border: 0; color: var(--acc); font: 800 0.9375rem 'Inter Tight Variable', system-ui, sans-serif; padding: 6px 4px; cursor: pointer; }
+.k-toast button { position: relative; flex: none; background: none; border: 0; color: var(--acc); font: 800 0.9375rem 'Geist Variable', system-ui, sans-serif; padding: 6px 4px; cursor: pointer; }
 .k-toast button::after { content: ''; position: absolute; inset: -8px; } /* Undo is a 44px target, the label stays as it was */
 .k-toast button { color: var(--bg); text-decoration: underline; }
 .k-toast button[hidden] { display: none; }
@@ -291,7 +291,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
    Motion: 100-300 ms feedback, spring overshoot on press and selection, View Transitions
    for tab changes and the field object's flight into the mission card. */
 @property --p { syntax: '<number>'; inherits: false; initial-value: 0; }
-:root { --ks: 'Instrument Serif', Georgia, serif; --spring: cubic-bezier(.34, 1.56, .64, 1); --out: cubic-bezier(.22, 1, .36, 1); --vd: 1; }
+:root { --ks: 'Geist Variable', system-ui, sans-serif; --spring: cubic-bezier(.34, 1.56, .64, 1); --out: cubic-bezier(.22, 1, .36, 1); --vd: 1; }
 :root[data-dir="back"] { --vd: -1; }
 .k-scr { --bone: #ECEADF; }
 
@@ -413,7 +413,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-how b { min-width: 26px; font: italic 400 1.5rem/1 var(--ks); color: var(--acc); }
 .k-how p { font-size: 1rem; font-weight: 600; }
 .k-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
-.k-tile { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 6px 10px; border-radius: 20px; border: 1px solid var(--edge); background: var(--surf); color: var(--fg); cursor: pointer; font: 700 0.9375rem 'Inter Tight Variable', system-ui, sans-serif; }
+.k-tile { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 6px 10px; border-radius: 20px; border: 1px solid var(--edge); background: var(--surf); color: var(--fg); cursor: pointer; font: 700 0.9375rem 'Geist Variable', system-ui, sans-serif; }
 .k-tile img { width: 66px; height: 66px; filter: drop-shadow(0 10px 12px rgba(0,0,0,.35)); transition: transform .5s var(--spring); }
 .k-tile.sel { border-color: var(--acc); background: color-mix(in srgb, var(--acc) 14%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 22%, transparent); }
 .k-tile.sel img { transform: translateY(-4px) scale(1.14) rotate(-5deg); }
@@ -476,7 +476,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 /* Your interests: switch path on Missions, progress per field */
 .k-fields { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: -2px -20px 0; padding: 4px 20px; } /* 4px above and below: room for the 2px focus ring plus its 2px offset, which an overflow container would clip */
 .k-fields::-webkit-scrollbar { display: none; }
-.k-fchip { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 5px 5px; border-radius: 999px; border: 1px solid var(--edge); background: var(--surf); color: var(--fg); font: 700 0.8438rem 'Inter Tight Variable', system-ui, sans-serif; cursor: pointer; transition: transform .45s var(--spring), background-color .2s, border-color .2s; }
+.k-fchip { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 5px 5px; border-radius: 999px; border: 1px solid var(--edge); background: var(--surf); color: var(--fg); font: 700 0.8438rem 'Geist Variable', system-ui, sans-serif; cursor: pointer; transition: transform .45s var(--spring), background-color .2s, border-color .2s; }
 .k-fchip img { width: 26px; height: 26px; filter: drop-shadow(0 3px 4px rgba(0,0,0,.3)); }
 .k-fchip small { font: 500 0.75rem var(--mono); color: var(--dim); }
 .k-fchip.on { background: var(--acc); border-color: var(--acc); color: var(--on); }
@@ -491,7 +491,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-xm, .k-xh { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
 .k-xb { font-size: 1rem; line-height: 1.45; margin: 0; }
 .k-xa { border: 1px solid var(--edge); background: var(--surf); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
-.k-xa pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 500 0.9375rem/1.5 'Inter Tight Variable', system-ui, sans-serif; color: var(--fg); }
+.k-xa pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 500 0.9375rem/1.5 'Geist Variable', system-ui, sans-serif; color: var(--fg); }
 .k-xa pre.mono { font: 400 0.8438rem/1.55 ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; }
 .k-xp { height: 6px; border-radius: 6px; background: var(--edge); overflow: hidden; }
 .k-xp i { display: block; height: 100%; width: 0; border-radius: 6px; background: var(--acc); transition: width .35s cubic-bezier(.2,.9,.3,1); }
@@ -524,7 +524,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-finds { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .k-find { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-radius: 14px; border: 1px dashed var(--edge); color: var(--dim); font-size: 1.0625rem; font-weight: 700; padding: 4px; text-align: center; }
 .k-find svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.k-find b { font: 600 0.75rem/1.1 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: .02em; }
+.k-find b { font: 600 0.75rem/1.1 'Geist Variable', system-ui, sans-serif; letter-spacing: .02em; }
 .k-find.got { border: 1px solid color-mix(in srgb, var(--gold) 55%, var(--edge)); background: radial-gradient(90% 90% at 50% 20%, color-mix(in srgb, var(--gold) 22%, transparent), transparent 75%), var(--surf); color: color-mix(in srgb, var(--gold) 70%, var(--fg)); animation: kFindIn .5s cubic-bezier(.3,1.4,.5,1) both; }
 @keyframes kFindIn { from { transform: scale(.6); opacity: 0; } }
 
@@ -547,7 +547,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-dr-art .rays { stroke: var(--tc); stroke-width: 3; stroke-linecap: round; opacity: .55; transform-origin: 60px 60px; animation: kSpinSlow 9s linear infinite; }
 .k-dr-stage::before { content: ''; position: absolute; inset: 0; background: radial-gradient(closest-side, color-mix(in srgb, var(--tc) 38%, transparent), transparent); animation: kDrGlow 1.2s ease-out both; }
 .k-drop h5 { font-size: 2rem; line-height: 1.05; }
-.k-dr-n { font: 800 1.5rem 'Inter Tight Variable', system-ui, sans-serif; color: color-mix(in srgb, var(--tc) 75%, var(--fg)); margin: 2px 0 0; font-variant-numeric: tabular-nums; }
+.k-dr-n { font: 800 1.5rem 'Geist Variable', system-ui, sans-serif; color: color-mix(in srgb, var(--tc) 75%, var(--fg)); margin: 2px 0 0; font-variant-numeric: tabular-nums; }
 /* A brand mission: the presenting brand in its own colour (a dot plus a text colour that stays readable on any background) */
 #kXWho.brand { color: color-mix(in srgb, var(--brand) 62%, var(--fg)); font-weight: 700; }
 #kXWho.brand::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--brand); vertical-align: 0; }
@@ -563,7 +563,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-scr:has(#kSheet.drop:not([hidden])) .k-toast { bottom: auto; top: max(14px, calc(env(safe-area-inset-top) + 8px)); transform: translateY(-8px); }
 .k-scr:has(#kSheet.drop:not([hidden])) .k-toast.on { transform: none; }
 .k-scr .k-dr-nx { margin: 12px 0 8px; } /* beats .k-scr p { margin: 0 } */
-.k-dr-nx { max-width: 30ch; font: 600 1rem/1.35 'Inter Tight Variable', system-ui, sans-serif; color: color-mix(in srgb, var(--fg) 72%, transparent); animation: kDrNx .5s .6s ease-out both; text-wrap: balance; } /* balance: the last line is never a lone "min" */
+.k-dr-nx { max-width: 30ch; font: 600 1rem/1.35 'Geist Variable', system-ui, sans-serif; color: color-mix(in srgb, var(--fg) 72%, transparent); animation: kDrNx .5s .6s ease-out both; text-wrap: balance; } /* balance: the last line is never a lone "min" */
 .k-dr-nx[hidden] + .k-sh-btns { margin-top: 8px; } /* no "Next:" line: the button would sit 6px under the stones */
 @keyframes kDrNx { from { opacity: 0; transform: translateY(6px); } }
 .k-dr-bits i { position: absolute; left: 50%; top: 50%; width: 7px; height: 7px; margin: -3.5px; border-radius: 2px; background: var(--tc); transform: rotate(var(--a)) translateX(0); opacity: 0; animation: kBurst .8s cubic-bezier(.1,.8,.3,1) forwards; }
@@ -602,18 +602,18 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 /* Examples, hints, habit */
 .k-xbtns { display: flex; gap: 8px; flex-wrap: wrap; }
 .k-xbtns[hidden], .k-xex[hidden] { display: none; }
-.k-chipb { border: 1px solid var(--edge); background: var(--surf); color: var(--fg); border-radius: 999px; padding: 8px 14px; min-height: 40px; font: 700 0.8438rem 'Inter Tight Variable', system-ui, sans-serif; cursor: pointer; transition: transform .2s, background-color .2s; }
+.k-chipb { border: 1px solid var(--edge); background: var(--surf); color: var(--fg); border-radius: 999px; padding: 8px 14px; min-height: 40px; font: 700 0.8438rem 'Geist Variable', system-ui, sans-serif; cursor: pointer; transition: transform .2s, background-color .2s; }
 .k-chipb:active { transform: scale(.96); }
 .k-chipb:disabled, .k-chipb[aria-disabled="true"] { opacity: .5; cursor: default; }
 .k-chipb:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
 .k-xex { border-left: 3px solid var(--acc); background: color-mix(in srgb, var(--acc) 9%, transparent); border-radius: 4px 14px 14px 4px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
-.k-xex pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 500 0.9375rem/1.5 'Inter Tight Variable', system-ui, sans-serif; }
+.k-xex pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 500 0.9375rem/1.5 'Geist Variable', system-ui, sans-serif; }
 #kXHints { display: flex; flex-direction: column; gap: 8px; }
 #kXHints:empty { display: none; }
 .k-habit { gap: 10px; }
 .k-habit h5 { font-size: 1.3438rem; line-height: 1.15; }
 .k-habit p { margin: 0; }
-.k-habit input { width: 100%; box-sizing: border-box; font: 500 1rem/1.4 'Inter Tight Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; }
+.k-habit input { width: 100%; box-sizing: border-box; font: 500 1rem/1.4 'Geist Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; }
 .k-habit input:focus-visible { outline: 2px solid var(--acc); outline-offset: 1px; }
 .k-habit [hidden] { display: none; }
 .k-habit .k-chips span { cursor: pointer; min-height: 34px; display: inline-flex; align-items: center; padding: 6px 12px; }
@@ -624,7 +624,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-go:disabled { opacity: .55; cursor: default; box-shadow: none; }
 
 /* Daily boost */
-.k-boost-chip { align-self: flex-start; display: inline-flex; gap: 6px; padding: 5px 12px; border-radius: 999px; font: 800 0.8438rem 'Inter Tight Variable', system-ui, sans-serif; color: #2a1c00; background: linear-gradient(135deg, #F8D26B, #F2A71B); box-shadow: 0 6px 16px -8px #F2A71B; animation: kBoost 2.6s ease-in-out infinite; }
+.k-boost-chip { align-self: flex-start; display: inline-flex; gap: 6px; padding: 5px 12px; border-radius: 999px; font: 800 0.8438rem 'Geist Variable', system-ui, sans-serif; color: #2a1c00; background: linear-gradient(135deg, #F8D26B, #F2A71B); box-shadow: 0 6px 16px -8px #F2A71B; animation: kBoost 2.6s ease-in-out infinite; }
 .k-boost-chip[hidden] { display: none; }
 .k-main .k-boost-chip { margin-top: 2px; }
 .k-mrow.boost .k-mdot { border-color: #F2A71B; }
@@ -644,13 +644,13 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 @media (prefers-reduced-motion: reduce) { .k-typing i { animation: none; opacity: .7; } }
 
 /* Demo profile marker: always visible, two taps to leave */
-.k-demo { border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent); background: color-mix(in srgb, var(--gold) 14%, transparent); color: var(--gold); border-radius: 999px; padding: 0 12px; min-height: 28px; font: 800 0.7812rem/1 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.k-demo { border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent); background: color-mix(in srgb, var(--gold) 14%, transparent); color: var(--gold); border-radius: 999px; padding: 0 12px; min-height: 28px; font: 800 0.7812rem/1 'Geist Variable', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
 .k-demo[hidden] { display: none; }
 .k-tp .k-demo { margin-right: 4px; }
 .k-demo { position: relative; }
 .k-demo::after { content: ''; position: absolute; inset: -9px -5px; } /* a 44px target around the 28px marker, like .k-av */
 /* A sheet or the reward screen covers the header marker with its scrim: repeat it above them, top right and below a notch, so a screenshot of any of them says demo. app.ts sets --demo-label (translated). */
-.k-scr.demo .k-sheet::before, .k-scr.demo .k-reward::before { content: var(--demo-label); position: absolute; z-index: 1; top: max(8px, calc(env(safe-area-inset-top) + 4px)); right: max(16px, calc(env(safe-area-inset-right) + 8px)); padding: 4px 10px; border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent); border-radius: 999px; background: var(--bg); color: var(--gold); font: 800 0.75rem/1 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
+.k-scr.demo .k-sheet::before, .k-scr.demo .k-reward::before { content: var(--demo-label); position: absolute; z-index: 1; top: max(8px, calc(env(safe-area-inset-top) + 4px)); right: max(16px, calc(env(safe-area-inset-right) + 8px)); padding: 4px 10px; border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent); border-radius: 999px; background: var(--bg); color: var(--gold); font: 800 0.75rem/1 'Geist Variable', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
 
 /* ---- v7: ambient aurora, travelling light edge, button shine, rank halo, readable micro-type ---- */
 @property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
@@ -700,7 +700,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-kc { padding-top: 44px; min-height: 194px; }
 
 /* Start screen: say what KERN is in one line, and make the three steps read as a list, not as buttons */
-.k-promise { max-width: 34ch; font: 500 1.0625rem/1.42 'Inter Tight Variable', system-ui, sans-serif; color: color-mix(in srgb, var(--fg) 82%, transparent); }
+.k-promise { max-width: 34ch; font: 500 1.0625rem/1.42 'Geist Variable', system-ui, sans-serif; color: color-mix(in srgb, var(--fg) 82%, transparent); }
 .k-how { gap: 2px; }
 .k-how li { padding: 6px 0; border: 0; border-radius: 0; background: none; }
 .k-how li + li { border-top: 1px solid var(--edge); }
@@ -769,8 +769,8 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-av { width: 38px; height: 38px; font-size: 1rem; }
 
 /* Type: labels are small caps in the text face, not mono; titles and body are one step up */
-.k-l { font: 650 0.75rem/1.3 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: .1em; }
-#kHi { font: 600 1.0625rem 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; color: var(--dim); }
+.k-l { font: 650 0.75rem/1.3 'Geist Variable', system-ui, sans-serif; letter-spacing: .1em; }
+#kHi { font: 600 1.0625rem 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; color: var(--dim); }
 .k-scr h4 { font-size: 2.375rem; line-height: 1; letter-spacing: -.05em; }
 .k-card h5 { font-size: 1.4375rem; letter-spacing: -.035em; line-height: 1.12; }
 .k-card p { font-size: 1.0625rem; line-height: 1.45; }
@@ -778,10 +778,10 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 
 /* Paths: icon, name, how many are done */
 .k-fields { gap: 10px; }
-.k-fchip { min-height: 48px; padding: 0 18px 0 12px; gap: 9px; font: 700 1rem 'Inter Tight Variable', system-ui, sans-serif; }
+.k-fchip { min-height: 48px; padding: 0 18px 0 12px; gap: 9px; font: 700 1rem 'Geist Variable', system-ui, sans-serif; }
 .k-fi { display: grid; place-items: center; width: 24px; height: 24px; flex: none; }
 .k-fchip.on { --bead: var(--on); }
-.k-fchip small { font: 500 0.8125rem 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: 0; opacity: .8; }
+.k-fchip small { font: 500 0.8125rem 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; opacity: .8; }
 .k-fadd { padding: 0 18px; }
 
 /* The next test: a glass tile with the path's icon instead of a floating object */
@@ -798,7 +798,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 /* The round: three rows, easy to tap */
 .k-mrow { min-height: 68px; padding: 14px 0; }
 .k-mrow b { font-size: 1.125rem; }
-.k-mrow small { font: 500 0.875rem 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
+.k-mrow small { font: 500 0.875rem 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
 
 /* KERN.AI mark: the sparkle in a small glass tile, in the co-pilot's blue */
 .k-ci { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; color: var(--ai); --bead: var(--ai); background: color-mix(in srgb, var(--ai) 14%, transparent); border: 1px solid color-mix(in srgb, var(--ai) 35%, transparent); }
@@ -833,7 +833,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-dr-art { width: 100px; height: 100px; filter: none; }
 .k-dr-art .k-done-i { width: 100%; height: 100%; stroke-width: 1.3; color: var(--fg); --bead: var(--acc); }
 .k-dr-bits, #kDrL { display: none; }
-.k-dr-n { font: 600 1.125rem 'Inter Tight Variable', system-ui, sans-serif; color: var(--fg); }
+.k-dr-n { font: 600 1.125rem 'Geist Variable', system-ui, sans-serif; color: var(--fg); }
 #kShD #kDrS { display: block; text-transform: none; letter-spacing: 0; font-size: 0.9375rem; font-weight: 500; color: var(--dim); }
 
 /* yourKERN: the Kern card leads, without a second frame around it */
@@ -888,7 +888,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-xv[hidden] { display: none; }
 
 /* What to expect (field sheet) and Take it further (yourKERN) */
-.k-about { align-self: flex-start; min-height: 44px; padding: 0 2px; margin-top: -6px; font: 600 0.875rem 'Inter Tight Variable', system-ui, sans-serif; color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
+.k-about { align-self: flex-start; min-height: 44px; padding: 0 2px; margin-top: -6px; font: 600 0.875rem 'Geist Variable', system-ui, sans-serif; color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
 .k-fl-h { display: flex; align-items: center; gap: 12px; }
 .k-fl-i { flex: none; width: 52px; height: 52px; }
 .k-fl-i .k-i { display: block; width: 100%; height: 100%; }
@@ -905,7 +905,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-coop-hint { margin: 0; }
 .k-coq { border-left: 3px solid var(--acc); padding: 2px 0 2px 12px; display: flex; flex-direction: column; gap: 4px; }
 .k-coq p { margin: 0; font-size: 1.0312rem; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
-.k-coop textarea { width: 100%; box-sizing: border-box; font: 500 1rem/1.4 'Inter Tight Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; resize: vertical; }
+.k-coop textarea { width: 100%; box-sizing: border-box; font: 500 1rem/1.4 'Geist Variable', system-ui, sans-serif; color: var(--fg); background: var(--surf); border: 1px solid var(--edge); border-radius: 12px; padding: 12px 14px; resize: vertical; }
 .k-coop textarea:focus-visible { outline: 2px solid var(--acc); outline-offset: 1px; }
 .k-coopr { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 0; border-top: 1px solid var(--edge); }
 .k-coopr:first-child { border-top: 0; padding-top: 4px; }
@@ -1002,7 +1002,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 #kSet .k-sh-in { scroll-padding-top: 76px; }
 .lite .k-main::before { animation: none; }
 /* v8 (design review, 9 Oct): sentences in labels read in sentence case, the serif accent stays on the slogan only, and the compare block after Submit. */
-.k-l.k-s { font: 400 0.875rem/1.45 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
+.k-l.k-s { font: 400 0.875rem/1.45 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
 .k-scr h4 b { font-family: inherit; font-style: normal; font-weight: inherit; font-size: 1em; letter-spacing: inherit; line-height: inherit; }
 .k-vs[hidden], .k-ask[hidden], #kMeterC[hidden], #kWhy[hidden], #kS2Note[hidden], #kKernCard .k-ask-btn[hidden] { display: none; }
 .k-vs { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
@@ -1027,7 +1027,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-play { display: flex; flex-direction: column; gap: 12px; }
 .k-pl-g { display: flex; flex-direction: column; gap: 8px; }
 .k-pl-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.k-pl-chip { min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--edge); background: transparent; color: var(--fg); font: 600 0.9375rem 'Inter Tight Variable', system-ui, sans-serif; cursor: pointer; transition: background .15s, color .15s, transform .15s var(--spring); }
+.k-pl-chip { min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--edge); background: transparent; color: var(--fg); font: 600 0.9375rem 'Geist Variable', system-ui, sans-serif; cursor: pointer; transition: background .15s, color .15s, transform .15s var(--spring); }
 .k-pl-chip[aria-pressed="true"] { background: var(--acc); border-color: var(--acc); color: var(--on); transform: scale(1.04); }
 .k-pl-sort { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .k-pl-sort li { display: grid; grid-template-columns: 28px 1fr 44px 44px 44px; align-items: center; gap: 2px; min-height: 48px; padding: 2px 4px 2px 0; border-radius: 12px; background: color-mix(in srgb, var(--fg) 6%, transparent); touch-action: none; }
@@ -1035,13 +1035,13 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-pl-sort li.cut .k-pl-t { text-decoration: line-through; opacity: .45; }
 .k-pl-grip { align-self: stretch; cursor: grab; background: radial-gradient(circle, var(--dim) 1.5px, transparent 2px) center / 8px 8px; opacity: .7; }
 .k-pl-t { font-size: 0.9375rem; line-height: 1.3; padding: 6px 4px; }
-.k-pl-t small { font: 600 0.75rem 'Inter Tight Variable', system-ui, sans-serif; color: var(--acc); white-space: nowrap; }
+.k-pl-t small { font: 600 0.75rem 'Geist Variable', system-ui, sans-serif; color: var(--acc); white-space: nowrap; }
 .k-pl-mv, .k-pl-x { width: 44px; height: 44px; border: 0; border-radius: 10px; background: transparent; color: var(--fg); font-size: 1.0625rem; cursor: pointer; }
 .k-pl-mv:disabled { opacity: .25; cursor: default; }
 .k-pl-x { color: var(--dim); }
 .k-pl-sort li:has(.k-pl-ear) { grid-template-columns: 28px 44px 1fr 44px 44px 44px; } /* a song row: ▶ before its name */
 .k-pl-ear { color: var(--acc); }
-.k-pl-sum { margin: 0; font: 700 0.9375rem 'Inter Tight Variable', system-ui, sans-serif; color: var(--acc); }
+.k-pl-sum { margin: 0; font: 700 0.9375rem 'Geist Variable', system-ui, sans-serif; color: var(--acc); }
 .k-pl-sum.over { color: var(--gold); }
 @media (prefers-reduced-motion: reduce) { .k-pl-chip { transition: none; } .k-pl-chip[aria-pressed="true"] { transform: none; } }
 /* Beat: a row of 8 steps per drum. Each step is a 44px-high cell with its pad inside, so the cells touch and every target is as wide as the row allows. */
@@ -1067,22 +1067,22 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-kc-q::before, .k-kc-q::after { color: #C9F24A; font-weight: 800; }
 .k-kc-q::before { content: '“'; }
 .k-kc-q::after { content: '”'; }
-.k-kc .k-kc-m { margin-top: 8px; font: 500 0.875rem/1.4 'Inter Tight Variable', system-ui, sans-serif; color: rgba(236,234,223,.7); opacity: 1; }
+.k-kc .k-kc-m { margin-top: 8px; font: 500 0.875rem/1.4 'Geist Variable', system-ui, sans-serif; color: rgba(236,234,223,.7); opacity: 1; }
 .k-kc h5 { margin-top: 18px; padding: 14px 0 0; border-top: 1px solid rgba(236,234,223,.16); font: 800 1.1875rem/1.2 var(--kd); letter-spacing: -.02em; color: var(--bone); }
-.k-kc h5.wait { font: 500 0.9375rem/1.45 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: 0; color: rgba(236,234,223,.85); }
+.k-kc h5.wait { font: 500 0.9375rem/1.45 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; color: rgba(236,234,223,.85); }
 .k-kc h5.no { color: rgba(236,234,223,.55); text-decoration: line-through 1px rgba(236,234,223,.55); }
-.k-kc .k-kc-l { margin-top: 8px; font: 400 0.8125rem/1.45 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; color: rgba(236,234,223,.7); }
+.k-kc .k-kc-l { margin-top: 8px; font: 400 0.8125rem/1.45 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; color: rgba(236,234,223,.7); }
 /* That feels right / Not really: neither is pushed; the one you picked stays lit */
 #kCardAsk button { background: none; color: var(--fg); border-color: color-mix(in srgb, var(--fg) 45%, transparent); }
 #kCardAsk button[aria-pressed="true"] { background: var(--acc); color: var(--on); border-color: var(--acc); }
-#kKernCard #kFb { padding-left: 4px; font: 500 0.875rem/1.45 'Inter Tight Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
+#kKernCard #kFb { padding-left: 4px; font: 500 0.875rem/1.45 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
 #kKernCard #kFb:empty { display: none; }
 
 /* Pilot fixes (9 Oct): the first screens. Two choices of equal weight, a line under each field name, an "Aa" for text size, reasons under the 18+ box and the dimmed Start. */
 .k-choices { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-.k-choice { min-height: 52px; padding: 14px 20px; border-radius: 999px; border: 1.5px solid var(--acc); background: color-mix(in srgb, var(--acc) 12%, transparent); color: var(--fg); font: 800 1.0625rem 'Inter Tight Variable', system-ui, sans-serif; text-align: left; cursor: pointer; transition: transform .45s var(--spring), background-color .2s; }
+.k-choice { min-height: 52px; padding: 14px 20px; border-radius: 999px; border: 1.5px solid var(--acc); background: color-mix(in srgb, var(--acc) 12%, transparent); color: var(--fg); font: 800 1.0625rem 'Geist Variable', system-ui, sans-serif; text-align: left; cursor: pointer; transition: transform .45s var(--spring), background-color .2s; }
 .k-choice:active { transform: scale(.97); transition-duration: .08s; }
-.k-tile small { font: 500 0.8125rem/1.25 'Inter Tight Variable', system-ui, sans-serif; color: var(--dim); text-align: center; }
+.k-tile small { font: 500 0.8125rem/1.25 'Geist Variable', system-ui, sans-serif; color: var(--dim); text-align: center; }
 .k-aa { position: absolute; top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); z-index: 1; min-width: 44px; min-height: 44px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--edge); background: var(--surf); color: var(--fg); font: 800 1rem var(--kd); cursor: pointer; }
 .k-sp #kGoWhy, .k-sp #kPaths { margin-top: -6px; }
 @media (prefers-reduced-motion: reduce) { .k-choice { transition: none; } }
@@ -1100,7 +1100,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 /* Done screen: one small calm line under the buttons (another field, the weekly reminder) */
 .k-dr-more { align-self: stretch; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: 10px; margin: 4px 0 0; }
 .k-dr-more[hidden], .k-lnk[hidden] { display: none; }
-.k-lnk { min-height: 44px; padding: 0 4px; background: none; border: 0; color: var(--dim); font: 600 0.8125rem 'Inter Tight Variable', system-ui, sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.k-lnk { min-height: 44px; padding: 0 4px; background: none; border: 0; color: var(--dim); font: 600 0.8125rem 'Geist Variable', system-ui, sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 /* Readability: labels one step bigger, and the grey a little stronger in both themes (8:1 or better on the page, still AA on cards and tints) */
 .k-scr { --dim: #c4c7b9; }
 .k-scr.light { --dim: #3c4237; }
@@ -1135,3 +1135,163 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-brandnote ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
 #kBrandFrom { color: var(--fg); font-weight: 700; }
 .k-card .k-lnk { align-self: flex-start; margin-left: -4px; }
+
+/* ---- v8 (11 Oct): light first, the SideShift / Cluely look ----
+   Cluely: an airy page with a pale sky gradient fading to white, Geist for the interface, one serif headline (EB Garamond). SideShift: near-white page, heavy tight grotesque headlines,
+   black pill buttons, white cards with a thin border and a soft shadow, small status chips, numbered steps. KERN keeps its own: the lowercase "kern." with a lime dot, lime (#C9F24A)
+   used sparingly (the dot, progress, a selected chip, small highlights, always with ink text), the glass field icons and their accents, and the night-green theme as the alternative.
+   Light is the default theme (app.ts, public/theme-init.js). The type changes (Geist, labels, the serif moments, the mark) apply to both themes; every colour and surface change sits
+   under :root.light, so the dark rules above stay as they were. Text on white never uses lime: --acct (a dark green) is the accent for text and links.
+   Serif (EB Garamond, weight 500, --kg) appears twice: the Home headline and the Kern card's line. Everywhere else is Geist. */
+.k-scr, .k-h { --kd: 'Geist Variable', system-ui, sans-serif; --kg: 'EB Garamond', Georgia, 'Times New Roman', serif; }
+
+/* Type, both themes */
+.k-scr h4 { font-weight: 700; letter-spacing: -.045em; }
+.k-scr h5, .k-card h5 { font-weight: 700; letter-spacing: -.03em; }
+#k-missions h4 { font: 500 clamp(3.25rem, 15.5vw, 4.5rem)/.96 var(--kg); letter-spacing: -.02em; } /* the one big serif headline: about 58px on a 375px phone, 76px in the desktop column */
+@media (min-width: 600px) { #k-missions h4 { font-size: 4.75rem; } }
+.k-l { font: 600 0.8125rem/1.35 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; } /* labels: sentence case, no mono, no capitals */
+.k-mdot, .k-how b, .k-mt b { font-style: normal; font-weight: 600; } /* the numbers were italic serif: Geist now */
+.k-how b { min-width: 34px; font-size: 1.125rem; }
+.k-mt b { font-size: 1.375rem; font-weight: 700; }
+.k-tag span { font-weight: 700; letter-spacing: -.04em; }
+.k-tag strong { font: 700 3.0625rem/1 var(--kd); letter-spacing: -.05em; }
+.k-kt { font-weight: 700; }
+.k-fu b { font: 700 0.8125rem/1.3 var(--kd); letter-spacing: 0; text-transform: none; } /* Ask / Make / Learn: no mono capitals */
+.k-kc h5:not(.wait) { font: 500 1.625rem/1.12 var(--kg); letter-spacing: -.01em; } /* the Kern card's line, the second serif moment */
+
+/* The mark: a rounded black square, a white k, a lime bead. One drawing in the header, on the launch screen and on the first screens (index.astro MARK). */
+.k-logo { font-weight: 700; letter-spacing: -.06em; }
+.k-lgw { display: inline-flex; flex: none; }
+.k-lg { display: block; flex: none; width: 30px; height: 30px; overflow: visible; }
+.k-lg-bg { fill: #0B0F0A; }
+.k-lg-k { fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.k-lg-b { fill: #C9F24A; }
+:root:not(.light) .k-lg-bg { stroke: rgba(236, 234, 223, .3); stroke-width: 1; } /* on the night ground the black square needs an edge */
+.k-ic .k-lg, .k-mark .k-lg { width: 100%; height: 100%; }
+.k-mark { display: block; width: 84px; height: 84px; margin: 0 0 4px; }
+@media (max-width: 359px) { .k-lg { width: 24px; height: 24px; } }
+
+/* ---- Light theme ---- */
+:root.light .k-scr, .k-scr.light {
+  --bg: #FFFFFF; --fg: #0B0F0A; --acc: #C9F24A; --on: #0B0F0A; --line: #E6E9E2; --dim: #5B6357; /* muted text is 6.2:1 on white, 5.1:1 on the sky */
+  --gold: #6A4700; --ai: #1F6079; --surf: #FFFFFF; --edge: #E6E9E2; --bone: #ECEADF;
+  --acct: #35590F; /* lime is 1.3:1 on white: text, links and icons use this dark green (8.1:1) */
+  --line2: #D3D8CC; --sky: #DCE9FF;
+  --shadow: 0 1px 2px rgba(10, 20, 10, .04), 0 10px 28px -14px rgba(10, 20, 10, .16);
+}
+:root.light body { background: #E8EEF7; }
+:root.light .k-scr { background: linear-gradient(180deg, var(--sky) 0, #F4F8FF 260px, #FFFFFF 520px), #FFFFFF; }
+@media (min-width: 600px) { :root.light .k-scr { box-shadow: 0 40px 90px -36px rgba(20, 40, 90, .35), 0 0 0 1px rgba(11, 15, 10, .08); } }
+:root.light .k-scr::before, :root.light .k-scr::after { display: none; } /* no aurora, no film grain */
+:root.light .k-scr :focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+:root.light .k-scr a:not(.k-ask-btn) { color: var(--acct); }
+:root.light .k-scr .k-check input { accent-color: var(--fg); }
+
+/* Header: the wordmark's dot is a small lime bead with an ink edge, like the bead in the mark */
+:root.light .k-scr .k-logo i { display: inline-block; align-self: flex-end; width: .5rem; height: .5rem; margin: 0 0 .32rem -.1rem; border-radius: 50%; background: var(--acc); box-shadow: 0 0 0 1px var(--fg); font-size: 0; line-height: 0; }
+:root.light .k-scr .k-av { background: var(--acc); color: var(--fg); border: 1px solid var(--fg); }
+
+/* Cards: white, a thin border, a soft shadow */
+:root.light .k-scr .k-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 18px; box-shadow: var(--shadow); }
+:root.light .k-scr .k-dare { border-color: var(--gold); }
+:root.light .k-scr .k-card.k-kcard { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+:root.light .k-scr .k-kc { box-shadow: 0 24px 44px -24px rgba(10, 20, 10, .6); }
+
+/* Home hero: the next step, on the sky */
+:root.light .k-scr .k-main { padding: 22px 20px 20px; border: 1px solid #D4E2F8; border-radius: 24px; color: var(--fg); background: linear-gradient(180deg, #E4EEFF 0%, #F3F8FF 58%, #FFFFFF 100%); box-shadow: var(--shadow); }
+:root.light .k-scr .k-main::before { display: none; } /* the travelling light on the edge */
+:root.light .k-scr .k-main .k-l { color: var(--dim); }
+:root.light .k-scr .k-main p { color: color-mix(in srgb, var(--fg) 84%, transparent); opacity: 1; }
+:root.light .k-scr .k-meta .k-l { background: #fff; border: 1px solid var(--line2); color: var(--fg); }
+:root.light .k-scr .k-meta .k-l:first-child { background: var(--acc); border-color: var(--fg); color: var(--fg); }
+:root.light .k-scr .k-main .k-sk { color: var(--dim); opacity: 1; }
+:root.light .k-scr h4 b, :root.light .k-tag strong { color: var(--fg); background: linear-gradient(transparent 62%, var(--acc) 62% 90%, transparent 90%); padding: 0 .06em; -webkit-box-decoration-break: clone; box-decoration-break: clone; } /* the accent word: ink with a lime marker under it */
+
+/* Buttons: black pill for the main action, white pill with a thin border for the rest */
+:root.light .k-scr .k-go, :root.light .k-scr .k-main .k-btn { background: var(--fg); color: #fff; border: 0; border-radius: 999px; min-height: 50px; padding: 14px 26px; box-shadow: none; font-weight: 600; letter-spacing: -.01em; text-align: center; }
+:root.light .k-scr .k-go::before, :root.light .k-scr .k-go:not(:disabled)::before, :root.light .k-scr .k-main .k-btn::before { display: none; } /* the passing shine */
+:root.light .k-scr .k-sp .k-go { align-self: stretch; }
+:root.light .k-scr .k-btn, :root.light .k-scr .k-ask-btn, :root.light .k-scr .k-chipb, :root.light .k-scr .k-win { background: #fff; color: var(--fg); border: 1px solid var(--line2); box-shadow: 0 1px 2px rgba(10, 20, 10, .04); font-weight: 600; }
+:root.light .k-scr .k-main .k-btn { background: var(--fg); color: #fff; border: 0; }
+:root.light .k-scr .k-ask-btn.ok, :root.light .k-scr .k-chipb[aria-pressed="true"] { background: var(--acc); border-color: var(--fg); color: var(--fg); }
+:root.light .k-scr .k-cmp .k-ask-btn, :root.light .k-scr .k-pl-play { color: var(--fg); border-color: var(--line2); }
+:root.light .k-scr .k-set-list .k-ask-btn { border: 0; border-radius: 0; background: transparent; box-shadow: none; } /* the rows of Settings stay rows */
+:root.light .k-scr .k-danger { border-color: #a3241a; }
+:root.light .k-scr .k-send { background: var(--fg); color: #fff; }
+
+/* Chips: white pills with a thin border; the chosen one fills lime with ink text and an ink edge */
+:root.light .k-scr .k-chips span, :root.light .k-scr .k-chips span:not(.sel) { background: #fff; border: 1px solid var(--line2); color: var(--fg); }
+:root.light .k-scr .k-chips span.sel { background: var(--acc); border-color: var(--fg); color: var(--fg); }
+:root.light .k-scr .k-fchip { background: #fff; color: var(--fg); box-shadow: 0 1px 2px rgba(10, 20, 10, .04); }
+:root.light .k-scr .k-fchip.on, :root.light .k-scr .k-fchip.on[data-fa] { background: var(--acc); border-color: var(--fg); box-shadow: none; }
+:root.light .k-scr .k-fchip small { color: var(--dim); opacity: 1; }
+:root.light .k-scr .k-fchip.on small { color: var(--fg); }
+:root.light .k-scr .k-fadd { box-shadow: none; }
+:root.light .k-scr .k-pl-chip { background: #fff; border-color: var(--line2); }
+:root.light .k-scr .k-pl-chip[aria-pressed="true"] { background: var(--acc); border-color: var(--fg); transform: none; }
+:root.light .k-scr .k-pl-step i { background: #fff; border-color: var(--line2); }
+:root.light .k-scr .k-pl-step[aria-pressed="true"] i { background: var(--acc); border-color: var(--fg); }
+:root.light #kCardAsk button { background: #fff; border-color: var(--line2); }
+:root.light #kCardAsk button[aria-pressed="true"] { background: var(--acc); border-color: var(--fg); }
+:root.light .k-scr .k-choice { background: #fff; border: 1.5px solid var(--fg); color: var(--fg); font-weight: 600; box-shadow: var(--shadow); }
+:root.light .k-scr .k-tile { background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); }
+:root.light .k-scr .k-tile.sel { background: color-mix(in srgb, var(--acc) 32%, #fff); border-color: var(--fg); box-shadow: 0 0 0 1px var(--fg); }
+
+/* Glass pictures sit on ink plates, like the mark: the pale glass would wash out on white */
+:root.light .k-scr .k-fi, :root.light .k-scr .k-ti, :root.light .k-scr .k-nxic, :root.light .k-scr .k-fl-i, :root.light .k-scr .k-ci, :root.light .k-scr .k-tabs .ti:has(.k-fp) { background: #0B0F0A; border: 0; box-shadow: none; }
+:root.light .k-scr .k-fi { width: 32px; height: 32px; border-radius: 11px; }
+:root.light .k-scr .k-ti { border-radius: 18px; }
+:root.light .k-scr .k-nxic { border-radius: 19px; }
+:root.light .k-scr .k-fl-i { border-radius: 16px; }
+:root.light .k-scr .k-ci { border-radius: 14px; }
+:root.light .k-scr .k-fi .k-fp, :root.light .k-scr .k-ti .k-fp, :root.light .k-scr .k-nxic .k-fp, :root.light .k-scr .k-fl-i .k-fp, :root.light .k-scr .k-ci .k-fp, :root.light .k-scr .k-tabs .ti .k-fp { filter: none; }
+:root.light .k-scr .k-fchip .k-fp { width: 30px; height: 30px; }
+
+/* Lists and steps */
+:root.light .k-scr .k-mdot { border: 1.5px solid var(--line2); background: #fff; color: var(--fg); }
+:root.light .k-scr .k-mrow.next .k-mdot { background: var(--acc); border-color: var(--fg); animation: none; box-shadow: none; }
+:root.light .k-scr .k-mrow.done .k-mdot { background: var(--fg); border-color: var(--fg); color: var(--acc); }
+:root.light .k-scr .k-mrow:hover em { color: var(--fg); }
+:root.light .k-scr .k-st.now::before { background: var(--acc); border-color: var(--fg); }
+:root.light .k-scr .k-how b { display: grid; place-items: center; min-width: 34px; width: 34px; height: 34px; border: 1px solid var(--line2); border-radius: 50%; background: #fff; color: var(--fg); font-size: .875rem; }
+:root.light .k-scr .k-how li { gap: 14px; }
+
+/* Progress: thin lime on a pale line, with a faint ink edge so it still shows without colour */
+:root.light .k-scr .k-prog i, :root.light .k-scr .k-xp, :root.light .k-scr .k-mt i { background: #E3E7DE; }
+:root.light .k-scr .k-prog b, :root.light .k-scr .k-xp i, :root.light .k-scr .k-mt s, :root.light .k-scr .k-path i.on { background: var(--acc); box-shadow: inset 0 0 0 1px rgba(11, 15, 10, .4); }
+:root.light .k-scr .k-path i { background: #E3E7DE; }
+:root.light .k-scr .k-path i.nx { box-shadow: inset 0 0 0 1.5px var(--fg); }
+:root.light .k-scr .k-dr-path i.now { box-shadow: inset 0 0 0 1px rgba(11, 15, 10, .4); }
+
+/* Accent text: dark green, never lime, on white */
+:root.light .k-scr .k-xm .k-l:first-child, :root.light .k-scr .k-about, :root.light .k-scr .k-fu b, :root.light .k-scr .k-mt b, :root.light .k-scr .k-okm, :root.light .k-scr .k-fb,
+:root.light .k-scr .k-tk.tw::after, :root.light .k-scr .k-pl-sum, :root.light .k-scr .k-pl-t small, :root.light .k-scr .k-pl-ear { color: var(--acct); }
+:root.light .k-scr .k-pl-sum.over { color: var(--gold); }
+:root.light .k-scr .k-fl-cols li::marker { color: var(--acct); }
+:root.light .k-scr .k-tk.on::before { border-color: var(--fg); }
+
+/* Tab bar: white, a thin top border; the active tab has a black label and a small lime dot that slides */
+:root.light .k-scr .k-tabs { background: #fff; border-color: var(--line); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+:root.light .k-scr .k-tabs button { color: var(--dim); font-weight: 600; padding-bottom: 12px; }
+:root.light .k-scr .k-tabs button.on, :root.light .k-scr .k-tabs button.on span, :root.light .k-scr .k-tabs button.on .tl { color: var(--fg); font-weight: 700; }
+:root.light .k-scr .k-tabs button:not(.on) .ti .k-fp { opacity: .6; }
+:root.light .k-scr .k-ind { top: auto; bottom: calc(max(8px, env(safe-area-inset-bottom)) + 1px); width: 7px; height: 7px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 0 1.5px var(--fg); }
+
+:root.light .k-scr .k-body { padding-bottom: calc(100px + env(safe-area-inset-bottom)); } /* the bar is 84px tall: the last card clears it, and so does the toast */
+:root.light .k-scr .k-toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+
+/* Sheets: white, a clean scrim */
+:root.light .k-scr .k-sheet { background: rgba(11, 15, 10, .38); -webkit-backdrop-filter: none; backdrop-filter: none; }
+:root.light #kSet, :root.light #kFld { background: color-mix(in srgb, #0B0F0A calc(38% * (1 - var(--drag, 0))), transparent); }
+:root.light #kSheet { background: var(--bg); }
+:root.light .k-scr .k-sh-in { box-shadow: 0 -16px 48px -20px rgba(10, 20, 10, .3); }
+:root.light #kSheet .k-sh-in { box-shadow: none; }
+:root.light .k-scr .k-seg { background: #fff; border-color: var(--line2); }
+:root.light .k-scr .k-seg::before { box-shadow: inset 0 0 0 1px var(--fg); }
+:root.light #kSet .k-ask-btn::before, :root.light .k-acct .k-ask-btn::before { background: var(--fg); }
+:root.light #kSet .k-set-list .k-danger::before { background: currentColor; }
+
+/* Launch screen and first screens: the sky again */
+:root.light .k-scr .k-load, :root.light .k-scr .k-start { background: linear-gradient(180deg, var(--sky) 0, #F4F8FF 300px, #FFFFFF 560px), #FFFFFF; }
+:root.light .k-scr .k-ic .k-lg { filter: drop-shadow(0 16px 22px rgba(11, 15, 10, .22)); }
