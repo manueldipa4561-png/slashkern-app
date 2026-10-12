@@ -88,7 +88,7 @@ export function format(s) {
     row(`Finished all ${PER_ROUND} of a round`, pct(f.finishedRound, n)),
     row('Started round 2', pct(f.startedRound2, n)),
     row('Shared the card or a dare', pct(f.shared, n)),
-    row('Asked KERN.AI for help', pct(f.askedAi, n)),
+    row('Asked Slash for help', pct(f.askedAi, n)),
     row('Answers per person who answered', s.answersPerAnswerer.toFixed(1)),
     row('Answers followed by a reflection', pct(s.reflection.reflected, s.reflection.answered)),
     '',

@@ -33,7 +33,7 @@ for (const [lang, prompt, re] of [['de', 'Schreib einen Brief an meine Mutter, i
   assert.equal(sent, null, 'heavy words reached the model');
 }
 
-// The KERN.AI tab's check: a free models call, never the model; a rejected key says so.
+// The Slash tab's check: a free models call, never the model; a rejected key says so.
 const realFetch = globalThis.fetch;
 let pingUrl = '';
 globalThis.fetch = async (url) => { pingUrl = String(url); return new Response('{}', { status: 200 }); };
@@ -49,7 +49,7 @@ const ok = await run({ prompt: `  ${P}  ` });
 assert.equal(ok.reply, text);
 assert.deepEqual(sent.messages, [{ role: 'user', content: P }], 'the model gets the trimmed prompt alone');
 assert.equal(sent.max_tokens, 450);
-assert.ok(!sent.system.includes('KERN.AI'), 'run mode must not use the coach prompt');
+assert.ok(!sent.system.includes('You are Slash'), 'run mode must not use the coach prompt');
 assert.equal((await run({ prompt: 'x'.repeat(1500) })).status, 200, '1500 characters is allowed');
 
 for (text of ['Here is your piano di lavoro.', 'Il tuo lavoro è pronto.', '  ']) assert.equal((await run({ prompt: P })).status, 502, `reply "${text}" must not reach the app`);
