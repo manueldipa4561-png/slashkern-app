@@ -55,7 +55,7 @@ export function summarize(rows, { now = Date.now(), tz = 'Europe/Rome' } = {}) {
   };
   const split = (flag) => ({ opened: [...seen.open.values()].filter((r) => !!r.brand === flag).length, answered: [...seen.answer.values()].filter((r) => !!r.brand === flag).length });
 
-  const langs = { en: 0, it: 0, de: 0, fr: 0 };
+  const langs = { en: 0, it: 0, de: 0, fr: 0, nl: 0, sv: 0 };
   for (const p of who.values()) if (p.lang in langs) langs[p.lang] += 1;
   const days = [...who.values()].flatMap((p) => [...p.days]).sort();
   const answerers = peopleIn(seen.answer);
@@ -78,7 +78,7 @@ export function format(s) {
   const f = s.funnel, n = s.people, row = (label, text) => `  ${label.padEnd(34)}${text}`;
   return [
     'KERN usage: people who said yes to anonymous counts',
-    `${s.firstDay} to ${s.lastDay} (Europe/Rome days) · ${n} ${n === 1 ? 'person' : 'people'} · EN ${s.langs.en} · IT ${s.langs.it} · DE ${s.langs.de} · FR ${s.langs.fr}`,
+    `${s.firstDay} to ${s.lastDay} (Europe/Rome days) · ${n} ${n === 1 ? 'person' : 'people'} · EN ${s.langs.en} · IT ${s.langs.it} · DE ${s.langs.de} · FR ${s.langs.fr} · NL ${s.langs.nl} · SV ${s.langs.sv}`,
     ...(n < SMALL_SAMPLE ? [`Small sample (under ${SMALL_SAMPLE} people): quote counts like "3 of 4 wrote an answer", not percentages, and say how many people you invited.`] : []),
     '',
     'What people did',

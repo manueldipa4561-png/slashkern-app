@@ -24,7 +24,7 @@ const t2 = (en, it) => ({ en, it }), pair = ([en, it]) => ({ en, it });
 function roundTrip(d) {
   const s = toSnippets(d, index);
   const [m] = run({ m: (en, it, title, blurb) => ({ en, it, title: pair(title), blurb: pair(blurb) }) }, s.fields);
-  assert.equal(m.en, `Mission ${String(index + 1).padStart(3, '0')} · ${d.labelTag.en}`);
+  assert.equal(m.en, `Project ${String(index + 1).padStart(3, '0')} · ${d.labelTag.en}`);
   assert.deepEqual([m.title, m.blurb], [d.title, d.blurb]);
   const [x] = run({ t2, tag: (en, it) => ({ en, it }) }, s.missions);
   assert.deepEqual(x, { who: d.who, brief: d.brief, asset: d.asset, steps: d.steps, mins: d.mins, bar: d.bar, twist: d.twist });
@@ -45,7 +45,7 @@ for (const text of nasty) {
 }
 
 // 3. Broken or hostile drafts fail with the expected rule names (the dangerous ones also block the snippets, see section 5).
-const liveBrand = live.MX[field][1].who.replace(/^Practice mission · /, '').split(',')[0].replace(/\s*\(.*\)$/, '');
+const liveBrand = live.MX[field][1].who.replace(/^Practice project · /, '').split(',')[0].replace(/\s*\(.*\)$/, '');
 const cases = [
   ['missing Italian', (d) => delete d.steps[0].it, 'bilingual'],
   ['4 steps', (d) => d.steps.push({ en: 'Do one more thing now.', it: 'Fai ancora una cosa adesso.' }), 'steps-3'],

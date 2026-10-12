@@ -23,7 +23,7 @@ export type Play = (Pick | Sort | Beat)[];
 export const PLAY: Record<string, Play> = {
   ...PLAY_DESIGN, ...PLAY_WRITING, ...PLAY_CODE, ...PLAY_VIDEO, ...PLAY_SELLING, ...PLAY_MUSIC, ...PLAY_PROMPTING, // missions 2 to 6, one file per field
   'Design.0': [
-    { kind: 'pick', label: t2('Tap 1 or 2 messages to keep: the rest are cut.', 'Tocca 1 o 2 messaggi da tenere: gli altri si tolgono.'), out: t2('Keep', 'Tengo'), rest: t2('Cut', 'Tolgo'), max: 2,
+    { kind: 'pick', label: t2('Tap 1 or 2 messages to keep: the rest are cut.', 'Tocca 1 o 2 messaggi da tenere: gli altri si tolgono.'), out: t2('Keep', 'Tieni'), rest: t2('Cut', 'Tolgo'), max: 2,
       items: [t2('Pizza night Saturday', 'Serata pizza sabato'), t2('2 for 1 until 9pm', '2x1 fino alle 21'), t2('Live DJ from 10', 'DJ dal vivo dalle 22'), t2('New menu', 'Nuovo menu'), t2('Win a year of pizza', 'Vinci un anno di pizza'), t2('Tag 3 friends', 'Tagga 3 amici'), t2('12 Via Verdi', 'Via Verdi 12')] }, // the dog is part of the photo, not a message: keeping it is the person's call
     { kind: 'pick', label: t2('Tap one colour for the words', 'Tocca un colore per le parole'), out: t2('Colour', 'Colore'), max: 1,
       items: [t2('Red on cream', 'Rosso su crema'), t2('Yellow on black', 'Giallo su nero'), t2('Blue on white', 'Blu su bianco'), t2('Green on bone', 'Verde su avorio')] },
@@ -37,7 +37,7 @@ export const PLAY: Record<string, Play> = {
       items: ['let', 'hoodiesLeft', '0', 'color', '"green"', 'if', '===', 'colour', '"red"', 'paintButton'] },
   ],
   'Video.0': [
-    { kind: 'sort', label: t2('Tap ✕ on slow pieces, drag the best one to the top', 'Tocca ✕ sui pezzi lenti, trascina in cima il migliore'), out: t2('Keep', 'Tengo'), cutOut: t2('Cut', 'Tolgo'), cut: 5,
+    { kind: 'sort', label: t2('Tap ✕ on slow pieces, drag the best one to the top', 'Tocca ✕ sui pezzi lenti, trascina in cima il migliore'), out: t2('Keep', 'Tieni'), cutOut: t2('Cut', 'Tolgo'), cut: 5,
       sum: { label: t2('Total', 'Totale'), max: 6 },
       items: [ // the seconds of the real clip, public/media/tosta.mp4
         { t: t2('0-3s Rocco walks to the van', '0-3s Rocco cammina verso il furgone'), n: 3 },
@@ -107,7 +107,7 @@ const DRUMS = [ // one per row, in the order of the rows
 
 // Sound files are decoded once into the same AudioContext and booked on its clock, so a cue lands on its second.
 // Not cached for offline (the service worker leaves /media/ to the network): offline, the button just goes back to ▶.
-const HEAR_L = t2('Hear it', 'Ascolta'), CREDIT = t2('Sounds made with AI for KERN. Fictional.', 'Suoni creati con l’AI per KERN. Inventati.');
+const HEAR_L = t2('Hear it', 'Ascolta'), CREDIT = t2('Sounds made with AI for slashkern. Fictional.', 'Suoni creati con l’AI per slashkern. Inventati.');
 const bufs = new Map<string, Promise<AudioBuffer>>();
 const load = (c: AudioContext, src: string) => {
   if (!bufs.has(src)) bufs.set(src, fetch(src).then((r) => { if (!r.ok) throw new Error(`${r.status}`); return r.arrayBuffer(); }).then((b) => c.decodeAudioData(b)).catch((e) => { bufs.delete(src); throw e; }));

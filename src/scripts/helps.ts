@@ -1,13 +1,14 @@
 import { t2 } from './i18n';
+import { trendH } from './trending';
 
 // Per mission (same field and index as missions.ts): one worked example of a strong answer, and three hints that go
-// from broad to specific. Hints are always questions: KERN.AI asks, it never answers for you.
+// from broad to specific. Hints are always questions: Slash asks, it never answers for you.
 export type Help = { ex: string; hints: string[] };
 const h = (ex: [string, string], a: [string, string], b: [string, string], c: [string, string]): Help => ({
   ex: t2(...ex), hints: [t2(...a), t2(...b), t2(...c)],
 });
 
-export const HELPS: Record<string, Help[]> = {
+const CORE: Record<string, Help[]> = {
   Design: [
     h(['Keep: Pizza night Saturday, 2 for 1 until 9pm. Cut: Live DJ, new menu, win a year of pizza, tag 3 friends, 12 Via Verdi (the address can go in a second story). Colour: cream letters, big, on the darker bottom of the photo. The dog can stay: your call.', 'Tengo: Serata pizza sabato, 2x1 fino alle 21. Tolgo: DJ dal vivo, nuovo menu, vinci un anno di pizza, tagga 3 amici, Via Verdi 12 (l’indirizzo può andare in una seconda storia). Colore: lettere crema, grandi, sulla parte bassa più scura della foto. Il cane può restare: decidi tu.'],
       ['If a stranger only has one second, what should they read?', 'Se uno sconosciuto ha solo un secondo, cosa deve leggere?'],
@@ -191,3 +192,5 @@ export const HELPS: Record<string, Help[]> = {
       ['What would make you doubt the pick?', 'Cosa ti farebbe dubitare della scelta?']),
   ],
 };
+// The Trending projects (trending.ts) follow the 6 core ones of their category, from index TREND_FROM up.
+export const HELPS: Record<string, Help[]> = Object.fromEntries(Object.entries(CORE).map(([f, l]) => [f, [...l, ...trendH(f)]]));

@@ -6,7 +6,7 @@ const SECONDS = [0, 2, 3, 4, 5, 7, 8, 9].map((s) => t2(`second ${s}`, `secondo $
 // Do it here for missions 2 to 6 of this field (keys '<Field>.1' to '<Field>.5'). Mission 1 is in play.ts.
 export const PLAY_MUSIC: Record<string, Play> = {
   'Music.1': [
-    { kind: 'pick', label: t2('Tap three words for the music', 'Tocca tre parole per la musica'), out: t2('Music', 'Musica'), max: 3,
+    { kind: 'pick', label: t2('Tap three words for the music', 'Tocca tre parole per la musica'), out: t2('The music', 'La musica'), max: 3,
       items: [t2('bouncy', 'saltellante'), t2('claps', 'battimani'), t2('soft hum', 'ronzio morbido'), t2('sleepy', 'assonnato'), t2('crunchy', 'croccante'), t2('whistling', 'fischiettio'), t2('sad violin', 'violino triste'), t2('distorted guitar', 'chitarra distorta')] },
     { kind: 'pick', label: t2('Tap the second the music comes in, then tap Hear it', 'Tocca il secondo in cui entra la musica, poi tocca Ascolta'), out: t2('Music comes in', 'Entra la musica'), max: 1, items: SECONDS,
       hear: { bed: '/media/gufo-bed.m4a', cues: [['/media/gufo-shutter.m4a', 3], ['/media/gufo-dough.m4a', 5]], drop: '/media/gufo-beat.m4a', len: 10 } }, // the shutter at 3s and the dough at 5s, as in the reel's shot list

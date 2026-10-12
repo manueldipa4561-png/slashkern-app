@@ -1,4 +1,5 @@
 import { t2 } from './i18n';
+import { trendX } from './trending';
 
 // One concrete practice mission per mission (6 fields x 6, in rounds of 3). Every company here is fictional and the sheet says so.
 // Shape: who (practice mission tag), brief (scenario + stakes), asset (the real material to work on),
@@ -10,9 +11,9 @@ import { t2 } from './i18n';
 export type Asset = { title: string; body: string; mono: boolean; img?: string; imgIt?: string; only?: boolean; video?: string };
 export type MissionX = { who: string; brief: string; asset: Asset; steps: string[]; mins: number; bar: string[]; twist: string; answer?: string };
 
-const tag = (en: string, it: string) => t2('Practice mission · ' + en, 'Missione di prova · ' + it);
+const tag = (en: string, it: string) => t2('Practice project · ' + en, 'Progetto di prova · ' + it);
 
-export const MX: Record<string, MissionX[]> = {
+const CORE: Record<string, MissionX[]> = {
   Design: [
     {
       who: tag('Pomo Pizza (fictional)', 'Pomo Pizza (fittizia)'),
@@ -1136,3 +1137,5 @@ export const MX: Record<string, MissionX[]> = {
     },
   ],
 };
+// The Trending projects (trending.ts) follow the 6 core ones of their category, from index TREND_FROM up.
+export const MX: Record<string, MissionX[]> = Object.fromEntries(Object.entries(CORE).map(([f, l]) => [f, [...l, ...trendX(f)]]));

@@ -67,8 +67,9 @@ if (PROMPT) { // the real function, byte for byte, except its SYSTEM text
   coachUrl = pathToFileURL(tmp).href;
 }
 const { default: handler } = await import(coachUrl);
-const PAUSE_EN = /pausing the mission/i, PAUSE_IT = /metto in pausa la missione/i, PAUSE_DE = /pausiere ich die Mission/i, PAUSE_FR = /mets la mission en pause/i;
-const isPause = (r) => [PAUSE_EN, PAUSE_IT, PAUSE_DE, PAUSE_FR].some((x) => x.test(r));
+// The fixed pause text of coach.mts (PAUSE), in each app language. It says "project" since 2026-10-12 (it said "mission" before).
+const PAUSE_EN = /pausing the project/i, PAUSE_IT = /metto in pausa il progetto/i, PAUSE_DE = /pausiere ich das Projekt/i, PAUSE_FR = /mets le projet en pause/i, PAUSE_NL = /zet het project op pauze/i, PAUSE_SV = /pausar projektet/i;
+const isPause = (r) => [PAUSE_EN, PAUSE_IT, PAUSE_DE, PAUSE_FR, PAUSE_NL, PAUSE_SV].some((x) => x.test(r));
 
 // --- programmatic checks (deterministic, free) ---
 const unquote = (s) => s.replace(/[“"«][^”"»]*[”"»]/g, 'Q'); // a quoted phrase may hold its own punctuation

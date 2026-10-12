@@ -11,15 +11,16 @@
     "build": "astro build",
     "preview": "astro preview",
     "stats": "node scripts/stats.mjs",
-    "test": "node --experimental-strip-types scripts/check-sync.ts && node scripts/check-content.mjs && node scripts/check-heavy.mjs && node --experimental-strip-types scripts/check-run.mjs && node scripts/check-studio.mjs && node scripts/check-stats.mjs && node scripts/check-design.mjs && npm run --silent eval:coach:selftest",
+    "test": "node --experimental-strip-types scripts/check-sync.ts && node scripts/check-content.mjs && node scripts/check-trending.mjs && node scripts/check-heavy.mjs && node --experimental-strip-types scripts/check-run.mjs && node --experimental-strip-types scripts/check-make.mjs && node scripts/check-studio.mjs && node scripts/check-stats.mjs && node scripts/check-design.mjs && node scripts/check-slash.mjs && node scripts/check-contrast.mjs && npm run --silent eval:coach:selftest",
     "eval:coach:selftest": "node --experimental-strip-types evals/coach/run.mjs --mock",
     "eval:coach": "node --experimental-strip-types evals/coach/run.mjs",
     "eval:coach:all": "node evals/coach/all.mjs"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/inter-tight": "^5.2.0",
-    "@fontsource/instrument-serif": "^5.3.0",
+    "@fontsource/eb-garamond": "^5.3.0",
     "@supabase/supabase-js": "^2.117.2",
     "astro": "^7.3.3"
   },

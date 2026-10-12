@@ -1,0 +1,70 @@
+<!doctype html><meta charset="utf-8"><style>
+@font-face{font-family:G;src:url("file:///Users/manueldipaolo/Developer/yourkern-site/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2");font-weight:100 900}
+html,body{margin:0}body{width:2560px;height:1664px;overflow:hidden;background:#0E1B3D;position:relative;font-family:G}
+.grain{position:absolute;inset:0;opacity:.05;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#w{position:absolute;left:0;top:0;width:0;height:0}
+#s{position:absolute;height:300px;translate:-12% -14%;overflow:visible}
+#b{position:absolute;left:0;top:0;padding:30px 42px 34px;background:#F5F2EA;color:#0E1B3D;border-radius:36px;font:600 46px/1.15 G;letter-spacing:-.02em;white-space:nowrap;transform-origin:0 100%;opacity:0}
+#b::after{content:'';position:absolute;left:-14px;bottom:26px;border:16px solid transparent;border-right:22px solid #F5F2EA;border-left:0}
+#b.l::after{left:auto;right:-14px;border-left:22px solid #F5F2EA;border-right:0}
+#b .c{display:inline-block;width:.08em;height:.9em;margin-left:4px;vertical-align:-.1em;background:#2D4BFF}
+</style><div class=grain></div><div id=b></div><div id=w><svg id=s viewBox="82 69 235 271"><g id=all><path d="M99.56 84.12Q92.48 78.56 92.48 87.56L92.48 293.52Q92.48 311.52 107.50 301.60L157.49 268.57Q164.16 264.16 167.68 271.34L190.00 316.87Q196.16 329.44 209.09 324.08L235.71 313.04Q248.64 307.68 241.86 295.43L219.23 254.52Q215.36 247.52 223.36 247.52L289.52 247.52Q307.52 247.52 293.37 236.40Z" fill="#F5F2EA"/><g id=eg><path id=e d="M113.73 226.02Q108.63 210.34 124.32 205.25L124.34 205.24Q140.02 200.14 145.11 215.83L151.61 235.82Q156.71 251.50 141.02 256.60L141.00 256.60Q125.32 261.70 120.22 246.02ZM167.15 200.06Q162.06 184.38 177.74 179.28L177.76 179.27Q193.44 174.18 198.54 189.86L205.03 209.85Q210.13 225.53 194.45 230.63L194.43 230.64Q178.74 235.73 173.65 220.05Z" fill="#0E1B3D"/></g></g></svg></div>
+<script>
+const EYES = {"neutral": "M113.73 226.02Q108.63 210.34 124.32 205.25L124.34 205.24Q140.02 200.14 145.11 215.83L151.61 235.82Q156.71 251.50 141.02 256.60L141.00 256.60Q125.32 261.70 120.22 246.02ZM167.15 200.06Q162.06 184.38 177.74 179.28L177.76 179.27Q193.44 174.18 198.54 189.86L205.03 209.85Q210.13 225.53 194.45 230.63L194.43 230.64Q178.74 235.73 173.65 220.05Z", "asking": "M116.87 232.21Q112.39 218.43 126.17 213.95L126.19 213.95Q139.97 209.47 144.45 223.25L148.47 235.63Q152.95 249.41 139.17 253.89L139.15 253.90Q125.37 258.37 120.89 244.59ZM166.37 197.26Q161.12 181.10 177.28 175.85L177.30 175.85Q193.45 170.60 198.70 186.75L205.82 208.65Q211.07 224.81 194.91 230.06L194.89 230.06Q178.73 235.31 173.48 219.15Z", "thinking": "M120.84 225.37Q116.06 210.64 130.79 205.85L130.81 205.85Q145.54 201.06 150.33 215.79L152.50 222.47Q157.28 237.20 142.55 241.99L142.53 241.99Q127.80 246.78 123.01 232.05ZM174.27 199.41Q169.48 184.67 184.21 179.89L184.23 179.88Q198.96 175.09 203.75 189.83L205.92 196.50Q210.71 211.24 195.97 216.02L195.96 216.03Q181.22 220.81 176.44 206.08Z", "happy": "M116.69 234.11L117.37 232.51L118.20 231.00L119.18 229.57L120.30 228.25L121.55 227.06L122.92 226.00L124.38 225.08L125.94 224.31L127.56 223.71L129.23 223.27L130.94 223.01L132.67 222.92L134.40 223.01L136.11 223.27L137.78 223.71L139.40 224.31L140.95 225.08L142.42 226.00L143.78 227.06L145.03 228.25L146.16 229.57L147.14 231.00L147.97 232.51L148.64 234.11L140.19 237.18L139.87 236.43L139.48 235.72L139.02 235.05L138.49 234.43L137.90 233.87L137.26 233.37L136.57 232.94L135.84 232.58L135.07 232.29L134.29 232.09L133.48 231.96L132.67 231.92L131.86 231.96L131.05 232.09L130.26 232.29L129.50 232.58L128.77 232.94L128.08 233.37L127.44 233.87L126.85 234.43L126.32 235.05L125.86 235.72L125.47 236.43L125.15 237.18ZM170.12 208.14L170.79 206.55L171.62 205.03L172.61 203.61L173.73 202.29L174.98 201.09L176.34 200.03L177.81 199.11L179.36 198.35L180.98 197.74L182.66 197.31L184.37 197.04L186.09 196.95L187.82 197.04L189.53 197.31L191.21 197.74L192.83 198.35L194.38 199.11L195.84 200.03L197.21 201.09L198.46 202.29L199.58 203.61L200.56 205.03L201.39 206.55L202.07 208.14L193.61 211.22L193.29 210.47L192.90 209.75L192.44 209.08L191.91 208.46L191.32 207.90L190.68 207.40L189.99 206.97L189.26 206.61L188.50 206.33L187.71 206.12L186.91 206.00L186.09 205.95L185.28 206.00L184.48 206.12L183.69 206.33L182.92 206.61L182.19 206.97L181.50 207.40L180.86 207.90L180.27 208.46L179.75 209.08L179.28 209.75L178.89 210.47L178.58 211.22Z", "blink": "M115.55 246.48Q114.01 241.73 131.11 236.17L131.13 236.16Q148.24 230.60 149.79 235.36L149.79 235.36Q151.33 240.11 134.22 245.67L134.20 245.68Q117.10 251.24 115.55 246.48ZM168.97 220.52Q167.43 215.76 184.54 210.20L184.56 210.20Q201.67 204.64 203.21 209.39L203.21 209.39Q204.76 214.15 187.65 219.71L187.63 219.71Q170.52 225.27 168.97 220.52Z", "look": "M107.73 220.02Q102.63 204.34 118.32 199.25L118.34 199.24Q134.02 194.14 139.11 209.83L145.61 229.82Q150.71 245.50 135.02 250.60L135.00 250.60Q119.32 255.70 114.22 240.02ZM161.15 194.06Q156.06 178.38 171.74 173.28L171.76 173.27Q187.44 168.18 192.54 183.86L199.03 203.85Q204.13 219.53 188.45 224.63L188.43 224.64Q172.74 229.73 167.65 214.05Z"};
+const L = 30;
+const ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+const seg = (t, a, b) => Math.min(1, Math.max(0, (t - a) / (b - a)));
+// where Slash stops (tip position, px): clear of the menu bar, the Dock and the desktop icons on the right
+const P = [[760, 760], [1640, 520], [1950, 980], [1480, 1180], [860, 1160], [520, 560]];
+// moves: [start, end, from, to, arc]
+const M = [[2.0, 4.6, 0, 1, -120], [7.0, 9.6, 1, 2, 90], [12.0, 14.4, 2, 3, -70], [16.8, 19.4, 3, 4, 80], [21.8, 24.2, 4, 5, -90], [26.4, 29.0, 5, 0, 100]];
+// lines: [start, end, text, mood]
+const T = []; // no speech: Slash only moves
+const BL = [[1.0, 'neutral'], [5.4, 'happy'], [6.6, 'neutral'], [10.6, 'asking'], [11.6, 'neutral'], [15.4, 'neutral'], [20.3, 'happy'], [21.4, 'neutral'], [25.2, 'neutral'], [29.5, 'neutral']];
+const clicks = [4.75, 9.75, 14.55, 19.55, 24.35];
+window.render = (t) => {
+  t = ((t % L) + L) % L;
+  const all = document.getElementById('all'), eg = document.getElementById('eg'), e = document.getElementById('e'), w = document.getElementById('w'), b = document.getElementById('b');
+  // position along the moves (eased, with a soft arc), else parked
+  let x = P[0][0], y = P[0][1], vx = 0, vy = 0, moving = 0;
+  let park = 0; for (const m of M) if (t >= m[1]) park = m[3];
+  x = P[park][0]; y = P[park][1];
+  for (const [a, z, f, to, arc] of M) if (t >= a && t < z) {
+    const k = seg(t, a, z), q = ease(k), dq = (seg(t + 0.01, a, z) - k) ? (ease(seg(t + 0.01, a, z)) - q) / 0.01 : 0;
+    const [x0, y0] = P[f], [x1, y1] = P[to], dx = x1 - x0, dy = y1 - y0, len = Math.hypot(dx, dy), nx = -dy / len, ny = dx / len, s = Math.sin(q * Math.PI) * arc;
+    x = x0 + dx * q + nx * s; y = y0 + dy * q + ny * s;
+    vx = dx * dq; vy = dy * dq; moving = Math.sin(k * Math.PI);
+  }
+  const bob = Math.sin(t / L * 2 * Math.PI * 6) * 10 * (1 - moving);
+  w.style.transform = `translate(${x.toFixed(1)}px, ${(y + bob).toFixed(1)}px)`;
+  // lean into the movement, a quick press on arrival (the click)
+  const lean = Math.max(-9, Math.min(9, vx / 260));
+  let press = 0; for (const c of clicks) if (t >= c && t < c + 0.42) press = Math.sin(seg(t, c, c + 0.42) * Math.PI);
+  all.setAttribute('transform', `rotate(${lean.toFixed(2)} 120 120) translate(120 120) scale(${(1 - press * 0.07).toFixed(4)}) translate(-120 -120)`);
+  // eyes: mood changes inside blinks; they look where Slash is going
+  let mood = 'neutral'; for (const [bt, m] of BL) if (t >= bt + 0.09) mood = m;
+  e.setAttribute('d', EYES[mood]);
+  let sy = 1; for (const [bt] of BL) if (t >= bt && t < bt + 0.2) sy = Math.max(0.08, Math.abs(1 - 2 * seg(t, bt, bt + 0.2)));
+  const vl = Math.hypot(vx, vy) || 1, look = Math.min(1, Math.hypot(vx, vy) / 400);
+  const ex = vx / vl * 7 * look, ey = vy / vl * 7 * look;
+  eg.setAttribute('transform', `translate(${ex.toFixed(2)} ${ey.toFixed(2)}) translate(0 217.9) scale(1 ${sy.toFixed(3)}) translate(0 -217.9)`);
+  // the speech bubble: types in, holds, fades
+  let shown = false;
+  for (const [a, z, txt] of T) if (t >= a && t < z) {
+    shown = true;
+    const n = Math.min(txt.length, Math.floor((t - a - 0.25) * 26));
+    const caret = (t - a) < (txt.length / 26 + 0.25) || Math.floor((t - a) * 2.4) % 2 === 0;
+    b.innerHTML = (n > 0 ? txt.slice(0, n).replace(/&/g, '&amp;').replace(/</g, '&lt;') : '') + (caret ? '<span class=c></span>' : '');
+    const inn = ease(seg(t, a, a + 0.25)), out = 1 - ease(seg(t, z - 0.3, z));
+    const right = x < 1700;  // bubble on the right unless Slash is far right
+    b.classList.toggle('l', !right);
+    const bw = b.offsetWidth, bh = b.offsetHeight;
+    const bx = right ? x + 250 : x - 40 - bw, by = y + bob - bh + 40;
+    b.style.transformOrigin = right ? '0 100%' : '100% 100%';
+    b.style.transform = `translate(${bx.toFixed(1)}px, ${by.toFixed(1)}px) scale(${(0.92 + 0.08 * inn).toFixed(3)})`;
+    b.style.opacity = (inn * out).toFixed(3);
+  }
+  if (!shown) b.style.opacity = 0;
+};
+render(0);
+</script>

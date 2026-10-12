@@ -51,7 +51,7 @@ export const FIELD_INFO: Record<string, FieldInfo> = {
     hard: [t2('A reply that never comes', 'Una risposta che non arriva mai'), t2('Saying a price out loud', 'Dire un prezzo ad alta voce')],
     steps: {
       ask: t2('Ask someone who sells at a market or online what they say first to a new buyer.', 'Chiedi a chi vende in un mercatino o online cosa dice per prima cosa a un nuovo cliente.'),
-      make: t2('Sell one thing you own with a listing you wrote after the missions.', 'Vendi una cosa tua con un annuncio scritto dopo le missioni.'),
+      make: t2('Sell one thing you own with a listing you wrote after the projects.', 'Vendi una cosa tua con un annuncio scritto dopo i progetti.'),
       learn: t2('Read five listings of the same thing and note which one you would message.', 'Leggi cinque annunci della stessa cosa e segna quello a cui scriveresti.'),
     },
   },

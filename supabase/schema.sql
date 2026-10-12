@@ -121,7 +121,7 @@ alter table public.kern_events add constraint kern_events_field_check check (fie
 alter table public.kern_events drop constraint if exists kern_events_mission_check;
 alter table public.kern_events add constraint kern_events_mission_check check (mission between 0 and 5);
 alter table public.kern_events drop constraint if exists kern_events_lang_check; -- the inline check of earlier versions had this name too
-alter table public.kern_events add constraint kern_events_lang_check check (lang in ('en', 'it', 'de', 'fr'));
+alter table public.kern_events add constraint kern_events_lang_check check (lang in ('en', 'it', 'de', 'fr', 'nl', 'sv'));
 create index if not exists kern_events_aid on public.kern_events (aid, created_at);
 create index if not exists kern_events_time on public.kern_events (created_at);
 alter table public.kern_events enable row level security;

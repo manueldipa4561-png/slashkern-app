@@ -24,7 +24,7 @@ export const SAMPLE_ANSWERS: Seed[] = [
     t: ['Open on the cheese pull at 0:00, then cut to the van. The walk to the van goes at the end, or it goes.', 'Apro sul filo di formaggio a 0:00, poi stacco sul furgone. La camminata verso il furgone va in fondo, o sparisce.'] },
 ];
 
-// Three versions of one idea in KERN.AI, each clearer than the last: they unlock the compare view and the "Do it twice" badge.
+// Three versions of one idea with Slash, each clearer than the last: they unlock the compare view and the "Do it twice" badge.
 export const SAMPLE_IDEA: Pair[] = [
   ['A poster for Friday’s flat dinner.', 'Un poster per la cena di venerdì in casa.'],
   ['A poster for Friday’s flat dinner, with one big word on it.', 'Un poster per la cena di venerdì in casa, con sopra una sola parola grande.'],
@@ -37,7 +37,7 @@ export const sampleAnswers = (it: boolean, now: number) => SAMPLE_ANSWERS.map((s
   r: { e: s.e, again: s.again, ...(s.hard ? { hard: pick(s.hard, it) } : {}), ...(s.tip ? { tip: pick(s.tip, it) } : {}) },
 }));
 export const sampleMine = (it: boolean) => SAMPLE_IDEA.map((p) => pick(p, it));
-// The chat after the opening question: each version of the idea, then the coach's question about it (English keys, translated when shown).
+// The chat after the opening question: each version of the idea, then the assistant's question about it (English keys, translated when shown).
 export const sampleChat = (it: boolean): { who: 'ai' | 'me'; t: string }[] => [
   { who: 'me', t: pick(SAMPLE_IDEA[0], it) }, { who: 'ai', t: FIELDS.Design.qs[0] },
   { who: 'me', t: pick(SAMPLE_IDEA[1], it) }, { who: 'ai', t: FIELDS.Design.qs[1] },

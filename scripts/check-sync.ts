@@ -2,7 +2,8 @@
 import assert from 'node:assert/strict';
 import { nextSpot, roundOf } from '../src/scripts/next.ts';
 import { akey, mergeAnswers, stamp, type Tomb } from '../src/scripts/sync.ts';
-import { MAX_COUNT, MAX_TIME, clampCount, inTime } from '../src/scripts/valid.ts';
+import { MAX_COUNT, MAX_TIME, cleanAi, clampCount, inTime } from '../src/scripts/valid.ts';
+import { MAKE_PER_DAY, canMake, countMake, makeBody, makesLeft, makesToday, parseMake } from '../src/scripts/make.ts';
 
 const x = { f: 'Design', i: 0, at: 1000, t: 'x' };
 const y = { f: 'Design', i: 1, at: 2000, t: 'y' };
@@ -21,6 +22,15 @@ assert.deepEqual(keys(mergeAnswers([], [{ ...x, ed: 1600 }], [[akey(x), 1500]], 
 // A device whose clock is behind still stamps changes newer than what it saw.
 const ahead = Date.now() + 60_000; // one reading of the clock: reading it twice failed whenever a millisecond passed in between
 assert.ok(stamp(ahead) > ahead);
+// "Made with AI help" travels with the answer: the newer copy wins whole, and on a tie the marked copy is kept, from either side. Only a literal true is a mark.
+const made = { ...x, t: 'AI version', ed: 4000, ai: true };
+assert.equal(mergeAnswers([x2], [made], [], []).answers[0].ai, true, 'the newer, marked copy wins');
+assert.equal(mergeAnswers([made], [x2], [], []).answers[0].ai, true, 'whichever side holds it');
+assert.equal(mergeAnswers([{ ...x, ed: 5000 }], [made], [], []).answers[0].ai, undefined, 'a newer own edit of the same answer is the newest version');
+assert.equal(mergeAnswers([{ ...made, ed: 6000 }], [{ ...made, ed: 6000, ai: undefined, t: 'same time, unmarked' }], [], []).answers[0].ai, true, 'a tie never drops the mark');
+assert.equal(mergeAnswers([{ ...made, ed: 6000, ai: undefined }], [{ ...made, ed: 6000 }], [], []).answers[0].ai, true, 'a tie never drops the mark (other side)');
+for (const bad of [false, 'true', 1, null, undefined, {}, []]) assert.equal(cleanAi(bad), undefined, `cleanAi(${JSON.stringify(bad)})`);
+assert.equal(cleanAi(true), true);
 // Tombstones are capped.
 const many: Tomb[] = Array.from({ length: 300 }, (_, k) => [`Design.0.${k}`, k]);
 assert.equal(mergeAnswers([], [], many, []).gone.length, 200);
@@ -126,3 +136,29 @@ const mineBack = [rec({ role: 'in', mine: 'La calda.', theirs: out.a, with: 'Giu
 assert.equal(settleReply(mineBack, reply('La calda.', 'Io'), 9000).status, 'own'); // the reply link I sent, opened on my own device
 const crowd = Array.from({ length: 30 }, (_, k) => rec({ at: k + 1, theirs: 'x', mine: 'm' + k }));
 assert.equal(settleReply([...crowd.slice(0, 29), rec({ at: 99, theirs: 'x' })], reply('Y', 'Z'), 1).coops.length <= 30, true); // the list stays capped
+
+// Make a first version: the request keeps the server's limits, the reply is read from `text` (never `reply`), a pause is not an AI text, every error says what to do, and a project has 3 a day.
+assert.ok(!canMake('x'.repeat(19)) && !canMake(`  ${'x'.repeat(19)}  `) && canMake('x'.repeat(20)));
+const mb = makeBody('it', 'Video', `  ${'m'.repeat(250)}  `, `  ${'i'.repeat(2000)}  `, [{ q: 'q'.repeat(400), a: ' a ' }, { q: '', a: 'no question' }, { q: 'no answer', a: '  ' }, ...Array.from({ length: 6 }, (_, k) => ({ q: `Q${k}`, a: `A${k}` }))]);
+assert.deepEqual([mb.mode, mb.lang, mb.field, mb.mission.length, mb.idea.length], ['make', 'it', 'Video', 200, 1500]);
+assert.equal(mb.qa?.length, 4, 'at most 4 pairs, empty ones dropped');
+assert.deepEqual(mb.qa?.[0], { q: 'q'.repeat(300), a: 'a' }, 'each part is trimmed and cut to 300');
+assert.equal('qa' in makeBody('en', 'Design', 'Poster', 'x'.repeat(30)), false, 'no pairs, no qa key');
+assert.deepEqual(parseMake(200, { text: 'Title\nBody [name]', ai: true }), { kind: 'text', text: 'Title\nBody [name]' });
+assert.deepEqual(parseMake(200, { reply: 'This sounds heavy...' }), { kind: 'pause', reply: 'This sounds heavy...' }, 'a pause is shown as it is, not as AI-made');
+for (const odd of [{ text: 'no ai flag' }, { text: '', ai: true }, { reply: 'x', text: 'y' }, {}, null, 'text']) assert.equal(parseMake(200, odd).kind, 'error', `200 with ${JSON.stringify(odd)}`);
+assert.deepEqual(parseMake(429, { error: 'rate' }), { kind: 'error', why: 'rate' });
+assert.deepEqual(parseMake(429, { error: 'rate_day' }), { kind: 'error', why: 'day' });
+assert.deepEqual(parseMake(400, { error: 'too_short', in: 'idea' }), { kind: 'error', why: 'short' });
+assert.deepEqual(parseMake(400, { error: 'bad_qa', in: 'qa' }), { kind: 'error', why: 'unusable' });
+assert.deepEqual(parseMake(502, { error: 'empty' }), { kind: 'error', why: 'unusable' });
+for (const [status, error] of [[503, 'no_key'], [502, 'upstream'], [500, ''], [404, 'x']] as const) assert.deepEqual(parseMake(status, { error }), { kind: 'error', why: 'down' }, `${status} ${error}`);
+const day = '2026-10-11';
+assert.equal(makesToday(null, 'Video.0', day), 0);
+let box: string | null = null;
+for (let k = 1; k <= MAKE_PER_DAY; k++) { box = countMake(box, 'Video.0', day); assert.equal(makesToday(box, 'Video.0', day), k); }
+assert.equal(makesLeft(box, 'Video.0', day), 0, 'three first versions a day per project');
+assert.equal(makesLeft(box, 'Video.1', day), MAKE_PER_DAY, 'another project has its own three');
+assert.equal(makesToday(box, 'Video.0', '2026-10-12'), 0, 'a new day starts again');
+for (const bad of ['{', '[]', '{"d":"2026-10-11","n":null}', '{"d":"2026-10-11","n":{"Video.0":"2"}}', '{"d":"2026-10-11","n":{"Video.0":-5}}']) assert.ok(makesToday(bad, 'Video.0', day) <= 0, `unreadable storage counts as zero: ${bad}`);
+assert.equal(makesToday(countMake('{', 'Video.0', day), 'Video.0', day), 1, 'a broken record is replaced');

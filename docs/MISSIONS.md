@@ -25,6 +25,9 @@ Real brands will sponsor missions, so build them around a subject a brand could 
 ## Sponsors
 `src/scripts/sponsors.ts` maps `Field.index` to `{ name, color }`. The mission text stays brand-neutral. One line there shows "Brand mission · name" in the brand's `#rrggbb` colour. `npm test` checks that the key points at a real mission.
 
+## Trending projects
+A short "Trending now" shelf on the Projects tab holds practice projects built on what is spreading on TikTok and Instagram. `src/scripts/trending.ts` has them in the same shapes as every mission (label, title and blurb of `fields.ts`, `MissionX` of `missions.ts`, `Help` of `helps.ts`; German and French in `i18n-trending.ts`) and they sit after the 6 core projects of their category, from index `TREND_FROM` (6) up. Rounds, the Kern card's guess and the opt-in counts only look at the core 6. Append only (a saved answer points at the index), 20 to 40 minutes, no money, no promise of reach, AI help always labelled in the brief, never a copy of a real person's face or voice, no copyrighted sound. The shelf says once when the trends were seen ("Seen Aug to Oct 2026. Trends move fast."): when they go stale, replace the entries and that date together. `scripts/check-trending.mjs` checks all of this.
+
 ## Premium and free windows (planned)
 `src/scripts/access.ts` is planned and does not exist yet. The intent: a mission is free, premium, or premium with a free window (open to everyone for a limited time, such as a brand campaign), decided outside the mission text. Until then write every mission as free, with no flags.
 
@@ -33,7 +36,7 @@ Same index in all four files. One worked example each (trimmed):
 
 ```ts
 // fields.ts, inside the field's m: [ ... ]
-m('Mission 008 · sample stand', 'Missione 008 · banchetto assaggi', ['Sell a snack in 10 seconds', 'Vendi uno snack in 10 secondi'], ['Free samples, busy fair.', 'Assaggi gratis, fiera affollata.']),
+m('Project 008 · sample stand', 'Progetto 008 · banchetto assaggi', ['Sell a snack in 10 seconds', 'Vendi uno snack in 10 secondi'], ['Free samples, busy fair.', 'Assaggi gratis, fiera affollata.']),
 
 // missions.ts, inside MX.Selling
 {

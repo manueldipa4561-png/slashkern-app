@@ -25,7 +25,7 @@ export const escapeOdd = (s) => String(s).replace(ALL_ODD, (c) => {
 });
 const safe = (s) => escapeOdd(String(s).slice(0, 160)); // for anything derived from the model that is printed
 
-const EN_PREFIX = 'Practice mission · ', IT_PREFIX = 'Missione di prova · '; // the tag() prefix in src/scripts/missions.ts
+const EN_PREFIX = 'Practice project · ', IT_PREFIX = 'Progetto di prova · '; // the tag() prefix in src/scripts/missions.ts
 const RULES_START = '<!-- studio:rules -->', RULES_END = '<!-- /studio:rules -->';
 const isObj = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
 const enOf = (p) => (typeof p?.en === 'string' ? p.en : ''), itOf = (p) => (typeof p?.it === 'string' ? p.it : '');
@@ -34,21 +34,21 @@ const pad = (index) => String(index + 1).padStart(3, '0');
 
 // Same in-memory bundling trick as scripts/check-content.mjs: the data files import each other without extensions.
 export async function loadLive() {
-  const entry = ['fields', 'missions', 'helps', 'easy', 'i18n', 'next', 'sponsors'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
+  const entry = ['fields', 'missions', 'helps', 'easy', 'i18n', 'next', 'sponsors', 'trending'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
   const { text } = buildSync({ stdin: { contents: entry, resolveDir: ROOT, loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false }).outputFiles[0];
   return import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 }
 
 // The new mission goes in the next round: the first free index after the last one whose index % 3 is the requested kind.
 export const slotIndex = (live, field, kind) => {
-  const n = live.FIELDS[field].m.length;
+  const n = Math.min(live.FIELDS[field].m.length, live.TREND_FROM); // the Trending projects (trending.ts) sit after the core ones and do not count
   return n + ((KINDS[kind] - (n % live.PER_ROUND) + live.PER_ROUND) % live.PER_ROUND);
 };
 
 // ---- Live data to draft JSON (the one example shown to the model) ----
 export function exampleDraft(live, field, kind) {
   const { FIELDS, MX, HELPS, EASY, IT, PER_ROUND } = live;
-  const same = FIELDS[field].m.map((_, i) => i).filter((i) => i % PER_ROUND === KINDS[kind]);
+  const same = FIELDS[field].m.slice(0, live.TREND_FROM).map((_, i) => i).filter((i) => i % PER_ROUND === KINDS[kind]);
   const i = same.find((j) => MX[field][j].who.includes('fictional')) ?? same[0]; // prefer a brandable one: it is the shape we ask for
   const bi = (en) => ({ en, it: IT[en] });
   const tail = (en) => ({ en: en.split(' · ').slice(1).join(' · '), it: IT[en].split(' · ').slice(1).join(' · ') });
@@ -72,7 +72,7 @@ export function exampleDraft(live, field, kind) {
 // ---- Prompt ----
 const LEGEND = `Keys (every {en, it} is an object of two plain-text strings; "it" is natively written Italian, not a literal translation):
 - brand: the invented brand name only (never a real company). who: "<brand>, <what it is> (fictional)" / "<brand>, <cos'è> (fittizio)".
-- labelTag: 1-3 words naming the situation (the app adds "Mission 00N · "). title: the mission title. blurb: one line of stakes.
+- labelTag: 1-3 words naming the situation (the app adds "Project 00N · "). title: the mission title. blurb: one line of stakes.
 - brief: scenario and stakes. asset: the real material to work on (title, body with lines split by a newline, mono true only for code or grids).
 - steps: exactly 3, verb first, one action each. bar: exactly 3 quality bars. mins: whole number. twist: ends with something to post or send.
 - help.ex: one human, slightly imperfect worked answer. help.hints: exactly 3 QUESTIONS, broad to specific, never giving the answer.
@@ -190,7 +190,7 @@ export function validateDraft(draft, { live, field, kind, index }) {
   const tooLong = (re, max) => pairs(re).flatMap((p) => [[p.en, max], [p.it, Math.ceil(max * LIMITS.italianExtra)]].filter(([s, m]) => fits(s) && wordCount(s) > m).map(([s, m]) => `${p.path} has ${wordCount(s)} words, max ${m}`));
   const lines = (s) => s.split('\n').filter((l) => l.trim()).length;
   const title = enOf(d.title), brand = typeof d.brand === 'string' ? d.brand.trim().toLowerCase() : '';
-  const label = `Mission ${pad(index)} · ${enOf(d.labelTag)}`;
+  const label = `Project ${pad(index)} · ${enOf(d.labelTag)}`;
   const used = [...Object.values(live.MX).flat().flatMap((x) => [x.who, live.IT[x.who]]), ...Object.values(live.FIELDS).flatMap((f) => f.m.flatMap((m) => [m[0], live.IT[m[0]]])), ...Object.values(live.SPONSORS).map((s) => s.name)].map((s) => s.toLowerCase());
   const kindProblem = {
     improve: !FIX.test(`${title} ${enOf(d.brief)}`) && 'an "improve" mission must ask to fix, rewrite or trim something that already exists',
@@ -241,7 +241,7 @@ const t2 = (b) => `t2(${q(b.en)}, ${q(b.it)})`;
 const list = (items, ind) => items.map((b) => `${ind}${t2(b)},`).join('\n');
 
 export function toSnippets(d, index) {
-  const [en, it] = [`Mission ${pad(index)} · ${d.labelTag.en}`, `Missione ${pad(index)} · ${d.labelTag.it}`];
+  const [en, it] = [`Project ${pad(index)} · ${d.labelTag.en}`, `Progetto ${pad(index)} · ${d.labelTag.it}`];
   return {
     fields: `    m(${q(en)}, ${q(it)}, ${pair(d.title)}, ${pair(d.blurb)}),\n`,
     missions: `    {

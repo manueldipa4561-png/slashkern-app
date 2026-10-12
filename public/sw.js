@@ -1,7 +1,7 @@
 // Offline support: pages network-first, assets cache-first. Bump CACHE to drop old caches on deploy.
-const CACHE = 'kern-v24';
-const SHELL = ['/', '/privacy/', '/terms/', '/about/','/manifest.webmanifest', '/favicon.svg', '/icons/icon-192.png',
-  '/img/mark.webp', '/img/f/yourkern.webp', '/img/f/yourkern-512.webp', '/img/f/ai.webp', '/img/f/missions.webp',
+const CACHE = 'kern-v30';
+const SHELL = ['/', '/privacy/', '/terms/', '/about/','/manifest.webmanifest', '/theme-init.js', '/favicon.svg', '/icons/icon-192.png', '/brand/mark.svg', '/brand/mark-rev.svg',
+  '/img/f/yourkern.webp', '/img/f/yourkern-512.webp', '/img/f/ai.webp', '/img/f/missions.webp',
   '/img/m/camilla.webp', '/img/m/guitar.webp', '/img/m/jacket.webp', '/img/m/lamp.webp', '/img/m/luca.webp', '/img/m/playlist-en.webp', '/img/m/playlist-it.webp', '/img/m/room.webp', '/img/m/sneakers.webp', '/img/m/story-en.webp', '/img/m/story-it.webp'];
 
 self.addEventListener('install', (e) => {

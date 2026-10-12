@@ -7,15 +7,15 @@ import '@fontsource-variable/bricolage-grotesque';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>About · KERN</title>
-    <meta name="description" content="Who makes KERN, what it is, and what parents should know." />
-    <meta name="theme-color" content="#0F140E" />
+    <title>About · slashkern</title>
+    <meta name="description" content="Who makes slashkern, what it is, and what parents should know." />
+    <meta name="theme-color" content="#0E1B3D" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=slash1" />
     <style>
-      :root { color-scheme: dark; --bg: #0F140E; --fg: #E8E6DA; --acc: #C9F24A; --dim: #b4b7a9; }
-      @media (prefers-color-scheme: light) { :root { color-scheme: light; --bg: #E8E6DA; --fg: #141A12; --acc: #2C5A3A; --dim: #454b40; } }
+      :root { color-scheme: dark; --bg: #0E1B3D; --fg: #EEF2FF; --acc: #7C93FF; --dim: #A9B4D0; }
+      @media (prefers-color-scheme: light) { :root { color-scheme: light; --bg: #F5F7FF; --fg: #0E1B3D; --acc: #2D4BFF; --dim: #5A6478; } }
       body { margin: 0; background: var(--bg); color: var(--fg); font: 400 1rem/1.6 'Inter Tight Variable', system-ui, sans-serif; }
       main { max-width: 640px; margin: 0 auto; padding: 48px 20px 80px; }
       h1 { font: 800 2.5rem/1 'Bricolage Grotesque Variable', sans-serif; letter-spacing: -.04em; margin: 0 0 8px; }
@@ -24,7 +24,7 @@ import '@fontsource-variable/bricolage-grotesque';
       .top a, .foot a { display: inline-block; padding: 10px 6px; margin: -10px -6px; } /* 44px tap areas without moving the links */
       .foot { margin-top: 32px; }
       hr { border: 0; border-top: 1px solid color-mix(in srgb, var(--fg) 20%, transparent); margin: 40px 0; }
-      #en, #it, #de, #fr, [id^="keep"] { scroll-margin-top: 48px; }
+      #en, #it, #de, #fr, #nl, #sv, [id^="keep"] { scroll-margin-top: 48px; }
       table { width: 100%; border-collapse: collapse; margin-top: 8px; }
       th, td { text-align: left; vertical-align: top; padding: 10px 0; border-top: 1px solid color-mix(in srgb, var(--fg) 20%, transparent); }
       th { width: 34%; padding-right: 14px; }
@@ -32,122 +32,182 @@ import '@fontsource-variable/bricolage-grotesque';
   </head>
   <body>
     <main>
-      <p class="top" id="en"><a href="/">← KERN</a> · <a href="#it" lang="it">Italiano</a> · <a href="#de" lang="de">Deutsch</a> · <a href="#fr" lang="fr">Français</a></p>
-      <h1>About KERN</h1>
+      <p class="top" id="en"><a href="/">← slashkern</a> · <a href="#it" lang="it">Italiano</a> · <a href="#de" lang="de">Deutsch</a> · <a href="#fr" lang="fr">Français</a> · <a href="#nl" lang="nl">Nederlands</a> · <a href="#sv" lang="sv">Svenska</a></p>
+      <h1>About slashkern</h1>
       <small>Don’t guess your passion. Test it.</small>
       <h2 id="keep">What we keep</h2>
       <small>As of 9 October 2026</small>
       <table>
-        <tr><th scope="row">On your phone</th><td>Your answers, drafts, reflections, your Kern card and settings. Nobody else sees them.</td></tr>
-        <tr><th scope="row">What leaves your phone</th><td>What you write to KERN.AI, and a prompt you choose to try on the AI, goes to our AI provider (Anthropic) to get a reply; KERN doesn’t keep it. Things you share yourself. Your account copy, if you make an account (Supabase, EU). Usage counts, only if you say yes.</td></tr>
-        <tr><th scope="row">Delete it</th><td>Settings › Delete my data removes everything on this phone, your Kern card included. Delete my account also removes your account copy, if you have one.</td></tr>
-        <tr><th scope="row">What a company sees</th><td>Nothing today. Later, only an answer you choose to send for one brand mission, never your email; off by default, and saying no changes nothing.</td></tr>
-        <tr><th scope="row">How your card is made</th><td>From your own taps after each mission. No AI scores you.</td></tr>
+        <tr><th scope="row">On your phone</th><td>Your answers, drafts, reflections, your Slash card and settings. Nobody else sees them.</td></tr>
+        <tr><th scope="row">What leaves your phone</th><td>What you write to Slash, and a prompt you choose to try on the AI, goes to our AI provider (Anthropic) to get a reply; slashkern doesn’t keep it. Things you share yourself. Your account copy, if you make an account (Supabase, EU). Usage counts, only if you say yes.</td></tr>
+        <tr><th scope="row">Delete it</th><td>Settings › Delete my data removes everything on this phone, your Slash card included. Delete my account also removes your account copy, if you have one.</td></tr>
+        <tr><th scope="row">What a company sees</th><td>Nothing today. Later, only an answer you choose to send for one brand project, never your email; off by default, and saying no changes nothing.</td></tr>
+        <tr><th scope="row">How your card is made</th><td>From your own taps after each project. No AI scores you.</td></tr>
       </table>
       <h2>What it is</h2>
-      <p>KERN is a free app to find your passion by testing different paths. You try short missions in seven fields (design, writing, code, video, selling online, music and prompting with AI), say in 20 seconds how each one felt, and see which path clicks. No account needed.</p>
-      <p>Seven creative and digital paths, for now. Your Kern card comes from your own taps after each mission. No AI scores you.</p>
+      <p>slashkern is a free app to find your passion by testing different paths. You try short projects in seven fields (design, writing, code, video, selling online, music and prompting with AI), say in 20 seconds how each one felt, and see which path clicks. No account needed.</p>
+      <p>Seven creative and digital paths, for now. Your Slash card comes from your own taps after each project. No AI scores you.</p>
       <h2>Who makes it</h2>
-      <p>KERN is made by Manuel Di Paolo, in Italy. Write to <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> for anything: a question, feedback, or your data.</p>
+      <p>slashkern is made by Manuel Di Paolo, in Italy. Write to <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> for anything: a question, feedback, or your data.</p>
       <h2>For parents</h2>
       <ul>
-        <li><b>Age:</b> KERN is for people aged 18 and over for now, because it is built for adults and keeps what people write. The 18+ check is a tick box for now: we ask, we can’t verify it.</li>
+        <li><b>Age:</b> slashkern is for people aged 18 and over for now, because it is built for adults and keeps what people write. The 18+ check is a tick box for now: we ask, we can’t verify it.</li>
         <li><b>What is stored:</b> without an account, answers, reflections and settings stay in the browser on that device. With an account, a copy is kept at Supabase in the EU (Frankfurt, Germany), so it syncs across devices.</li>
-        <li><b>KERN.AI:</b> the co-pilot only asks questions. What someone types to it is sent to the AI provider (Anthropic) to get a reply, and KERN does not keep it. If a message sounds heavy, it pauses the mission and suggests talking to someone they trust or a local helpline.</li>
+        <li><b>Slash:</b> the AI assistant only asks questions. What someone types to it is sent to the AI provider (Anthropic) to get a reply, and slashkern does not keep it. If a message sounds heavy, it pauses the project and suggests talking to someone they trust or a local helpline.</li>
         <li><b>No ads:</b> no advertising and no cookies. Usage counts stay off unless the person says yes, and never include a name or anything they wrote.</li>
-        <li><b>Nothing shared without consent:</b> no company sees an answer unless the person chooses to send it, one mission at a time. That is not active yet.</li>
+        <li><b>Nothing shared without consent:</b> no company sees an answer unless the person chooses to send it, one project at a time. That is not active yet.</li>
         <li><b>Deleting:</b> in Settings, Delete my data (or Delete my account) removes everything. You can also write to <a href="mailto:manuel@trykern.it">manuel@trykern.it</a>.</li>
       </ul>
       <p class="foot"><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></p>
       <hr />
       <section id="it" lang="it">
-        <p class="top"><a href="/">← KERN</a> · <a href="#en" lang="en">English</a> · <a href="#de" lang="de">Deutsch</a> · <a href="#fr" lang="fr">Français</a></p>
-        <h1>Info su KERN</h1>
+        <p class="top"><a href="/">← slashkern</a> · <a href="#en" lang="en">English</a> · <a href="#de" lang="de">Deutsch</a> · <a href="#fr" lang="fr">Français</a> · <a href="#nl" lang="nl">Nederlands</a> · <a href="#sv" lang="sv">Svenska</a></p>
+        <h1>Info su slashkern</h1>
         <small>La passione non si indovina. Si prova.</small>
         <h2 id="keep-it">Cosa conserviamo</h2>
         <small>Aggiornato al 9 ottobre 2026</small>
         <table>
-          <tr><th scope="row">Sul tuo telefono</th><td>Le tue risposte, bozze, riflessioni, la tua Kern card e le impostazioni. Non le vede nessun altro.</td></tr>
-          <tr><th scope="row">Cosa esce dal telefono</th><td>Quello che scrivi a KERN.AI, e un prompt che scegli di provare con l’AI, va al nostro fornitore di AI (Anthropic) per avere una risposta; KERN non lo conserva. Le cose che condividi tu. La copia nel tuo account, se ne crei uno (Supabase, UE). I conteggi di utilizzo, solo se dici di sì.</td></tr>
-          <tr><th scope="row">Cancellare</th><td>Impostazioni › Elimina i miei dati cancella tutto da questo telefono, Kern card compresa. Elimina il mio account cancella anche la copia nel tuo account, se ne hai uno.</td></tr>
-          <tr><th scope="row">Cosa vede un’azienda</th><td>Oggi niente. In futuro, solo una risposta che scegli di mandare per una missione di un brand, mai la tua email; è disattivato di default e dire di no non cambia niente.</td></tr>
-          <tr><th scope="row">Come nasce la tua card</th><td>Dai tuoi tocchi dopo ogni missione. Nessuna AI ti dà un voto.</td></tr>
+          <tr><th scope="row">Sul tuo telefono</th><td>Le tue risposte, bozze, riflessioni, la tua Slash card e le impostazioni. Non le vede nessun altro.</td></tr>
+          <tr><th scope="row">Cosa esce dal telefono</th><td>Quello che scrivi a Slash, e un prompt che scegli di provare con l’AI, va al nostro fornitore di AI (Anthropic) per avere una risposta; slashkern non lo conserva. Le cose che condividi tu. La copia nel tuo account, se ne crei uno (Supabase, UE). I conteggi di utilizzo, solo se dici di sì.</td></tr>
+          <tr><th scope="row">Cancellare</th><td>Impostazioni › Elimina i miei dati cancella tutto da questo telefono, Slash card compresa. Elimina il mio account cancella anche la copia nel tuo account, se ne hai uno.</td></tr>
+          <tr><th scope="row">Cosa vede un’azienda</th><td>Oggi niente. In futuro, solo una risposta che scegli di mandare per un progetto di un brand, mai la tua email; è disattivato di default e dire di no non cambia niente.</td></tr>
+          <tr><th scope="row">Come nasce la tua card</th><td>Dai tuoi tocchi dopo ogni progetto. Nessuna AI ti dà un voto.</td></tr>
         </table>
         <h2>Cos’è</h2>
-        <p>KERN è un’app gratuita per trovare la tua passione provando strade diverse. Fai brevi missioni in sette campi (design, scrittura, codice, video, vendita online, musica e prompting con l’AI), dici in 20 secondi com’è andata e scopri quale strada ti prende. Non serve un account.</p>
-        <p>Sette strade creative e digitali, per ora. La tua Kern card nasce dai tuoi tocchi dopo ogni missione. Nessuna AI ti dà un voto.</p>
+        <p>slashkern è un’app gratuita per trovare la tua passione provando strade diverse. Fai brevi progetti in sette campi (design, scrittura, codice, video, vendita online, musica e prompting con l’AI), dici in 20 secondi com’è andata e scopri quale strada ti prende. Non serve un account.</p>
+        <p>Sette strade creative e digitali, per ora. La tua Slash card nasce dai tuoi tocchi dopo ogni progetto. Nessuna AI ti dà un voto.</p>
         <h2>Chi la fa</h2>
-        <p>KERN è fatta da Manuel Di Paolo, in Italia. Scrivi a <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> per qualsiasi cosa: una domanda, un feedback o i tuoi dati.</p>
+        <p>slashkern è fatta da Manuel Di Paolo, in Italia. Scrivi a <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> per qualsiasi cosa: una domanda, un feedback o i tuoi dati.</p>
         <h2>Per i genitori</h2>
         <ul>
-          <li><b>Età:</b> per ora KERN è per chi ha almeno 18 anni, perché è pensata per gli adulti e conserva quello che si scrive. Per ora il controllo dei 18 anni è una casella da spuntare: lo chiediamo, ma non possiamo verificarlo.</li>
+          <li><b>Età:</b> per ora slashkern è per chi ha almeno 18 anni, perché è pensata per gli adulti e conserva quello che si scrive. Per ora il controllo dei 18 anni è una casella da spuntare: lo chiediamo, ma non possiamo verificarlo.</li>
           <li><b>Cosa viene conservato:</b> senza account, risposte, riflessioni e impostazioni restano nel browser di quel dispositivo. Con un account, una copia è custodita da Supabase nell’UE (Francoforte, Germania), per sincronizzarla tra i dispositivi.</li>
-          <li><b>KERN.AI:</b> il co-pilota fa solo domande. Quello che gli si scrive viene inviato al fornitore di AI (Anthropic) per avere una risposta, e KERN non lo conserva. Se un messaggio sembra pesante, mette in pausa la missione e suggerisce di parlarne con una persona di fiducia o con un servizio di ascolto.</li>
+          <li><b>Slash:</b> l’assistente AI fa solo domande. Quello che gli si scrive viene inviato al fornitore di AI (Anthropic) per avere una risposta, e slashkern non lo conserva. Se un messaggio sembra pesante, mette in pausa il progetto e suggerisce di parlarne con una persona di fiducia o con un servizio di ascolto.</li>
           <li><b>Niente pubblicità:</b> né pubblicità né cookie. I conteggi di utilizzo restano spenti se la persona non dice di sì, e non contengono mai un nome o quello che ha scritto.</li>
-          <li><b>Niente condiviso senza consenso:</b> nessuna azienda vede una risposta se la persona non sceglie di mandargliela, una missione alla volta. Non è ancora attivo.</li>
+          <li><b>Niente condiviso senza consenso:</b> nessuna azienda vede una risposta se la persona non sceglie di mandargliela, un progetto alla volta. Non è ancora attivo.</li>
           <li><b>Cancellare:</b> nelle Impostazioni, Elimina i miei dati (o Elimina il mio account) cancella tutto. Puoi anche scrivere a <a href="mailto:manuel@trykern.it">manuel@trykern.it</a>.</li>
         </ul>
         <p class="foot"><a href="/privacy/#it">Privacy</a> · <a href="/terms/#it">Termini</a></p>
       </section>
       <hr />
       <section id="de" lang="de">
-        <p class="top"><a href="/">← KERN</a> · <a href="#en" lang="en">English</a> · <a href="#it" lang="it">Italiano</a> · <a href="#fr" lang="fr">Français</a></p>
-        <h1>Über KERN</h1>
+        <p class="top"><a href="/">← slashkern</a> · <a href="#en" lang="en">English</a> · <a href="#it" lang="it">Italiano</a> · <a href="#fr" lang="fr">Français</a> · <a href="#nl" lang="nl">Nederlands</a> · <a href="#sv" lang="sv">Svenska</a></p>
+        <h1>Über slashkern</h1>
         <small>Rate deine Leidenschaft nicht. Teste sie.</small>
         <h2 id="keep-de">Was wir speichern</h2>
         <small>Stand: 9. Oktober 2026</small>
         <table>
-          <tr><th scope="row">Auf deinem Handy</th><td>Deine Antworten, Entwürfe, Reflexionen, deine Kern card und deine Einstellungen. Niemand sonst sieht sie.</td></tr>
-          <tr><th scope="row">Was dein Handy verlässt</th><td>Was du KERN.AI schreibst und ein Prompt, den du mit der KI testen willst, gehen an unseren KI-Anbieter (Anthropic), damit er antworten kann; KERN speichert sie nicht. Was du selbst teilst. Die Kopie in deinem Konto, wenn du eins erstellst (Supabase, EU). Nutzungszählungen, nur wenn du Ja sagst.</td></tr>
-          <tr><th scope="row">Löschen</th><td>Einstellungen › Meine Daten löschen entfernt alles auf diesem Handy, auch deine Kern card. Mein Konto löschen entfernt auch die Kopie in deinem Konto, falls du eins hast.</td></tr>
-          <tr><th scope="row">Was ein Unternehmen sieht</th><td>Heute nichts. Später nur eine Antwort, die du für eine Markenmission selbst schickst, nie deine E-Mail; standardmäßig aus, und ein Nein ändert nichts.</td></tr>
-          <tr><th scope="row">Wie deine Karte entsteht</th><td>Aus dem, was du nach jeder Mission selbst antippst. Keine KI bewertet dich.</td></tr>
+          <tr><th scope="row">Auf deinem Handy</th><td>Deine Antworten, Entwürfe, Reflexionen, deine Slash card und deine Einstellungen. Niemand sonst sieht sie.</td></tr>
+          <tr><th scope="row">Was dein Handy verlässt</th><td>Was du Slash schreibst und ein Prompt, den du mit der KI testen willst, gehen an unseren KI-Anbieter (Anthropic), damit er antworten kann; slashkern speichert sie nicht. Was du selbst teilst. Die Kopie in deinem Konto, wenn du eins erstellst (Supabase, EU). Nutzungszählungen, nur wenn du Ja sagst.</td></tr>
+          <tr><th scope="row">Löschen</th><td>Einstellungen › Meine Daten löschen entfernt alles auf diesem Handy, auch deine Slash card. Mein Konto löschen entfernt auch die Kopie in deinem Konto, falls du eins hast.</td></tr>
+          <tr><th scope="row">Was ein Unternehmen sieht</th><td>Heute nichts. Später nur eine Antwort, die du für ein Markenprojekt selbst schickst, nie deine E-Mail; standardmäßig aus, und ein Nein ändert nichts.</td></tr>
+          <tr><th scope="row">Wie deine Karte entsteht</th><td>Aus dem, was du nach jedem Projekt selbst antippst. Keine KI bewertet dich.</td></tr>
         </table>
         <h2>Was es ist</h2>
-        <p>KERN ist eine kostenlose App, mit der du deine Leidenschaft findest, indem du verschiedene Wege ausprobierst. Du machst kurze Missionen in sieben Bereichen (Design, Schreiben, Code, Video, Online-Verkauf, Musik und Prompting mit KI), sagst in 20 Sekunden, wie sich jede angefühlt hat, und siehst, welcher Weg zu dir passt. Kein Konto nötig.</p>
-        <p>Sieben kreative und digitale Wege, vorerst. Deine Kern card entsteht aus dem, was du nach jeder Mission selbst antippst. Keine KI bewertet dich.</p>
+        <p>slashkern ist eine kostenlose App, mit der du deine Leidenschaft findest, indem du verschiedene Wege ausprobierst. Du machst kurze Projekte in sieben Bereichen (Design, Schreiben, Code, Video, Online-Verkauf, Musik und Prompting mit KI), sagst in 20 Sekunden, wie sich jedes angefühlt hat, und siehst, welcher Weg zu dir passt. Kein Konto nötig.</p>
+        <p>Sieben kreative und digitale Wege, vorerst. Deine Slash card entsteht aus dem, was du nach jedem Projekt selbst antippst. Keine KI bewertet dich.</p>
         <h2>Wer es macht</h2>
-        <p>KERN wird von Manuel Di Paolo in Italien gemacht. Schreib an <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> für alles: eine Frage, Feedback oder deine Daten.</p>
+        <p>slashkern wird von Manuel Di Paolo in Italien gemacht. Schreib an <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> für alles: eine Frage, Feedback oder deine Daten.</p>
         <h2>Für Eltern</h2>
         <ul>
-          <li><b>Alter:</b> KERN ist vorerst für Menschen ab 18 Jahren, weil es für Erwachsene gemacht ist und speichert, was Menschen schreiben. Die 18+-Abfrage ist vorerst nur ein Häkchen: Wir fragen, können es aber nicht überprüfen.</li>
+          <li><b>Alter:</b> slashkern ist vorerst für Menschen ab 18 Jahren, weil es für Erwachsene gemacht ist und speichert, was Menschen schreiben. Die 18+-Abfrage ist vorerst nur ein Häkchen: Wir fragen, können es aber nicht überprüfen.</li>
           <li><b>Was gespeichert wird:</b> Ohne Konto bleiben Antworten, Reflexionen und Einstellungen im Browser auf dem jeweiligen Gerät. Mit Konto wird eine Kopie bei Supabase in der EU (Frankfurt, Deutschland) gespeichert, damit sie auf allen Geräten synchronisiert wird.</li>
-          <li><b>KERN.AI:</b> Der Co-Pilot stellt nur Fragen. Was jemand ihm schreibt, wird an den KI-Anbieter (Anthropic) gesendet, um eine Antwort zu bekommen, und KERN behält es nicht. Wenn eine Nachricht schwer klingt, pausiert er die Mission und schlägt vor, mit einer Vertrauensperson oder einer Beratungsstelle in der Nähe zu sprechen.</li>
+          <li><b>Slash:</b> Der KI-Assistent stellt nur Fragen. Was jemand ihm schreibt, wird an den KI-Anbieter (Anthropic) gesendet, um eine Antwort zu bekommen, und slashkern behält es nicht. Wenn eine Nachricht schwer klingt, pausiert er das Projekt und schlägt vor, mit einer Vertrauensperson oder einer Beratungsstelle in der Nähe zu sprechen.</li>
           <li><b>Keine Werbung:</b> keine Werbung und keine Cookies. Nutzungszählungen bleiben aus, solange die Person nicht Ja sagt, und enthalten nie einen Namen oder etwas, das sie geschrieben hat.</li>
-          <li><b>Nichts ohne Einwilligung geteilt:</b> Kein Unternehmen sieht eine Antwort, außer die Person entscheidet sich, sie zu senden, eine Mission nach der anderen. Das ist noch nicht aktiv.</li>
+          <li><b>Nichts ohne Einwilligung geteilt:</b> Kein Unternehmen sieht eine Antwort, außer die Person entscheidet sich, sie zu senden, ein Projekt nach dem anderen. Das ist noch nicht aktiv.</li>
           <li><b>Löschen:</b> In den Einstellungen entfernt das Löschen der Daten (oder des Kontos) alles. Du kannst auch an <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> schreiben.</li>
         </ul>
         <p class="foot"><a href="/privacy/#de">Datenschutz</a> · <a href="/terms/#de">Nutzungsbedingungen</a></p>
       </section>
       <hr />
       <section id="fr" lang="fr">
-        <p class="top"><a href="/">← KERN</a> · <a href="#en" lang="en">English</a> · <a href="#it" lang="it">Italiano</a> · <a href="#de" lang="de">Deutsch</a></p>
-        <h1>À propos de KERN</h1>
+        <p class="top"><a href="/">← slashkern</a> · <a href="#en" lang="en">English</a> · <a href="#it" lang="it">Italiano</a> · <a href="#de" lang="de">Deutsch</a> · <a href="#nl" lang="nl">Nederlands</a> · <a href="#sv" lang="sv">Svenska</a></p>
+        <h1>À propos de slashkern</h1>
         <small>Ne devine pas ta passion. Teste-la.</small>
         <h2 id="keep-fr">Ce qu’on garde</h2>
         <small>À jour au 9 octobre 2026</small>
         <table>
-          <tr><th scope="row">Sur ton téléphone</th><td>Tes réponses, brouillons, réflexions, ta Kern card et tes réglages. Personne d’autre ne les voit.</td></tr>
-          <tr><th scope="row">Ce qui quitte ton téléphone</th><td>Ce que tu écris à KERN.AI, et un prompt que tu choisis d’essayer sur l’IA, va chez notre fournisseur d’IA (Anthropic) pour obtenir une réponse ; KERN ne le garde pas. Ce que tu partages toi-même. La copie de ton compte, si tu en crées un (Supabase, UE). Les statistiques d’utilisation, seulement si tu dis oui.</td></tr>
-          <tr><th scope="row">Supprimer</th><td>Réglages › Supprimer mes données efface tout sur ce téléphone, ta Kern card comprise. Supprimer mon compte efface aussi la copie de ton compte, si tu en as un.</td></tr>
-          <tr><th scope="row">Ce que voit une entreprise</th><td>Rien aujourd’hui. Plus tard, seulement une réponse que tu choisis d’envoyer pour une mission de marque, jamais ton e-mail ; désactivé par défaut, et dire non ne change rien.</td></tr>
-          <tr><th scope="row">Comment ta carte est faite</th><td>À partir de ce que tu touches toi-même après chaque mission. Aucune IA ne te note.</td></tr>
+          <tr><th scope="row">Sur ton téléphone</th><td>Tes réponses, brouillons, réflexions, ta Slash card et tes réglages. Personne d’autre ne les voit.</td></tr>
+          <tr><th scope="row">Ce qui quitte ton téléphone</th><td>Ce que tu écris à Slash, et un prompt que tu choisis d’essayer sur l’IA, va chez notre fournisseur d’IA (Anthropic) pour obtenir une réponse ; slashkern ne le garde pas. Ce que tu partages toi-même. La copie de ton compte, si tu en crées un (Supabase, UE). Les statistiques d’utilisation, seulement si tu dis oui.</td></tr>
+          <tr><th scope="row">Supprimer</th><td>Réglages › Supprimer mes données efface tout sur ce téléphone, ta Slash card comprise. Supprimer mon compte efface aussi la copie de ton compte, si tu en as un.</td></tr>
+          <tr><th scope="row">Ce que voit une entreprise</th><td>Rien aujourd’hui. Plus tard, seulement une réponse que tu choisis d’envoyer pour un projet de marque, jamais ton e-mail ; désactivé par défaut, et dire non ne change rien.</td></tr>
+          <tr><th scope="row">Comment ta carte est faite</th><td>À partir de ce que tu touches toi-même après chaque projet. Aucune IA ne te note.</td></tr>
         </table>
         <h2>Ce que c’est</h2>
-        <p>KERN est une app gratuite pour trouver ta passion en testant différents chemins. Tu essaies de courtes missions dans sept domaines (design, écriture, code, vidéo, vente en ligne, musique et prompting avec l’IA), tu dis en 20 secondes ce que tu as ressenti pour chacune, et tu vois quel chemin te parle. Pas besoin de compte.</p>
-        <p>Sept chemins créatifs et numériques, pour l’instant. Ta Kern card vient de ce que tu touches toi-même après chaque mission. Aucune IA ne te note.</p>
+        <p>slashkern est une app gratuite pour trouver ta passion en testant différents chemins. Tu essaies de petits projets dans sept domaines (design, écriture, code, vidéo, vente en ligne, musique et prompting avec l’IA), tu dis en 20 secondes ce que tu as ressenti pour chacun, et tu vois quel chemin te parle. Pas besoin de compte.</p>
+        <p>Sept chemins créatifs et numériques, pour l’instant. Ta Slash card vient de ce que tu touches toi-même après chaque projet. Aucune IA ne te note.</p>
         <h2>Qui le fait</h2>
-        <p>KERN est fait par Manuel Di Paolo, en Italie. Écris à <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> pour tout : une question, un retour ou tes données.</p>
+        <p>slashkern est fait par Manuel Di Paolo, en Italie. Écris à <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> pour tout : une question, un retour ou tes données.</p>
         <h2>Pour les parents</h2>
         <ul>
-          <li><b>Âge :</b> KERN est pour l’instant destiné aux personnes de 18 ans et plus, parce qu’il est conçu pour les adultes et conserve ce que les gens écrivent. La vérification des 18 ans n’est pour l’instant qu’une case à cocher : on demande, mais on ne peut pas vérifier.</li>
+          <li><b>Âge :</b> slashkern est pour l’instant destiné aux personnes de 18 ans et plus, parce qu’il est conçu pour les adultes et conserve ce que les gens écrivent. La vérification des 18 ans n’est pour l’instant qu’une case à cocher : on demande, mais on ne peut pas vérifier.</li>
           <li><b>Ce qui est conservé :</b> sans compte, les réponses, réflexions et réglages restent dans le navigateur de l’appareil utilisé. Avec un compte, une copie est conservée chez Supabase dans l’UE (Francfort, Allemagne), pour la synchroniser entre les appareils.</li>
-          <li><b>KERN.AI :</b> le copilote ne fait que poser des questions. Ce qu’on lui écrit est envoyé au fournisseur d’IA (Anthropic) pour obtenir une réponse, et KERN ne le conserve pas. Si un message semble lourd, il met la mission en pause et suggère de parler à une personne de confiance ou à une ligne d’écoute près de chez soi.</li>
+          <li><b>Slash :</b> l’assistant IA ne fait que poser des questions. Ce qu’on lui écrit est envoyé au fournisseur d’IA (Anthropic) pour obtenir une réponse, et slashkern ne le conserve pas. Si un message semble lourd, il met le projet en pause et suggère de parler à une personne de confiance ou à une ligne d’écoute près de chez soi.</li>
           <li><b>Pas de pub :</b> ni publicité ni cookies. Les statistiques d’utilisation restent désactivées tant que la personne ne dit pas oui, et ne contiennent jamais un nom ni ce qu’elle a écrit.</li>
-          <li><b>Rien de partagé sans consentement :</b> aucune entreprise ne voit une réponse si la personne ne choisit pas de la lui envoyer, une mission à la fois. Ce n’est pas encore actif.</li>
+          <li><b>Rien de partagé sans consentement :</b> aucune entreprise ne voit une réponse si la personne ne choisit pas de la lui envoyer, un projet à la fois. Ce n’est pas encore actif.</li>
           <li><b>Supprimer :</b> dans les réglages, supprimer les données (ou le compte) efface tout. Tu peux aussi écrire à <a href="mailto:manuel@trykern.it">manuel@trykern.it</a>.</li>
         </ul>
         <p class="foot"><a href="/privacy/#fr">Confidentialité</a> · <a href="/terms/#fr">Conditions d’utilisation</a></p>
+      </section>
+      <hr />
+      <section id="nl" lang="nl">
+        <p class="top"><a href="/">← slashkern</a> · <a href="#en" lang="en">English</a> · <a href="#it" lang="it">Italiano</a> · <a href="#de" lang="de">Deutsch</a> · <a href="#fr" lang="fr">Français</a> · <a href="#sv" lang="sv">Svenska</a></p>
+        <h1>Over slashkern</h1>
+        <small>Je passie raad je niet. Die test je.</small>
+        <h2 id="keep-nl">Wat we bewaren</h2>
+        <small>Stand van zaken: 9 oktober 2026</small>
+        <table>
+          <tr><th scope="row">Op je telefoon</th><td>Je antwoorden, concepten, reflecties, je Slash-kaart en je instellingen. Niemand anders ziet ze.</td></tr>
+          <tr><th scope="row">Wat je telefoon verlaat</th><td>Wat je aan Slash schrijft, en een prompt die je op de AI wilt proberen, gaat naar onze AI-aanbieder (Anthropic) om een antwoord te krijgen; slashkern bewaart het niet. Wat je zelf deelt. De kopie in je account, als je er een maakt (Supabase, EU). Gebruikstellingen, alleen als je ja zegt.</td></tr>
+          <tr><th scope="row">Verwijderen</th><td>Instellingen › Mijn gegevens verwijderen wist alles op deze telefoon, ook je Slash-kaart. Mijn account verwijderen wist ook de kopie in je account, als je er een hebt.</td></tr>
+          <tr><th scope="row">Wat een bedrijf ziet</th><td>Vandaag niets. Later alleen een antwoord dat je zelf kiest te sturen voor één merkproject, nooit je e-mailadres; standaard uit, en nee zeggen verandert niets.</td></tr>
+          <tr><th scope="row">Hoe je kaart ontstaat</th><td>Uit wat je zelf aantikt na elk project. Geen AI geeft je een cijfer.</td></tr>
+        </table>
+        <h2>Wat het is</h2>
+        <p>slashkern is een gratis app om je passie te vinden door verschillende richtingen uit te proberen. Je doet korte projecten in zeven richtingen (design, schrijven, code, video, online verkopen, muziek en AI-prompts), zegt in 20 seconden hoe elk project voelde, en ziet welke richting bij je past. Geen account nodig.</p>
+        <p>Zeven creatieve en digitale richtingen, voorlopig. Je Slash-kaart ontstaat uit wat je zelf aantikt na elk project. Geen AI geeft je een cijfer.</p>
+        <h2>Wie het maakt</h2>
+        <p>slashkern wordt gemaakt door Manuel Di Paolo, in Italië. Schrijf naar <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> voor alles: een vraag, feedback of je gegevens.</p>
+        <h2>Voor ouders</h2>
+        <ul>
+          <li><b>Leeftijd:</b> slashkern is voorlopig voor mensen van 18 jaar en ouder, omdat het voor volwassenen is gemaakt en bewaart wat mensen schrijven. De 18+-check is voorlopig een vinkje: we vragen het, maar kunnen het niet controleren.</li>
+          <li><b>Wat er wordt opgeslagen:</b> zonder account blijven antwoorden, reflecties en instellingen in de browser op dat apparaat. Met een account wordt een kopie bewaard bij Supabase in de EU (Frankfurt, Duitsland), zodat die op alle apparaten wordt gesynchroniseerd.</li>
+          <li><b>Slash:</b> de AI-assistent stelt alleen vragen. Wat iemand aan de assistent schrijft, wordt naar de AI-aanbieder (Anthropic) gestuurd om een antwoord te krijgen, en slashkern bewaart het niet. Als een bericht zwaar klinkt, pauzeert de assistent het project en stelt voor om te praten met iemand die ze vertrouwen of met een hulplijn in de buurt.</li>
+          <li><b>Geen advertenties:</b> geen advertenties en geen cookies. Gebruikstellingen blijven uit tot de persoon ja zegt, en bevatten nooit een naam of iets wat die persoon heeft geschreven.</li>
+          <li><b>Niets gedeeld zonder toestemming:</b> geen enkel bedrijf ziet een antwoord, tenzij de persoon ervoor kiest het te sturen, één project tegelijk. Dat is nog niet actief.</li>
+          <li><b>Verwijderen:</b> in Instellingen wist Mijn gegevens verwijderen (of Mijn account verwijderen) alles. Je kunt ook schrijven naar <a href="mailto:manuel@trykern.it">manuel@trykern.it</a>.</li>
+        </ul>
+        <p class="foot"><a href="/privacy/#nl">Privacy</a> · <a href="/terms/#nl">Gebruiksvoorwaarden</a></p>
+      </section>
+      <hr />
+      <section id="sv" lang="sv">
+        <p class="top"><a href="/">← slashkern</a> · <a href="#en" lang="en">English</a> · <a href="#it" lang="it">Italiano</a> · <a href="#de" lang="de">Deutsch</a> · <a href="#fr" lang="fr">Français</a> · <a href="#nl" lang="nl">Nederlands</a></p>
+        <h1>Om slashkern</h1>
+        <small>Gissa inte din passion. Testa den.</small>
+        <h2 id="keep-sv">Det här sparar vi</h2>
+        <small>Läget den 9 oktober 2026</small>
+        <table>
+          <tr><th scope="row">På din telefon</th><td>Dina svar, utkast, reflektioner, ditt Slash-kort och dina inställningar. Ingen annan ser dem.</td></tr>
+          <tr><th scope="row">Det som lämnar din telefon</th><td>Det du skriver till Slash, och en prompt som du väljer att testa på AI:n, går till vår AI-leverantör (Anthropic) för att få ett svar; slashkern sparar det inte. Det du själv delar. Kopian i ditt konto, om du skapar ett (Supabase, EU). Användningsstatistik, bara om du säger ja.</td></tr>
+          <tr><th scope="row">Radera</th><td>Inställningar › Radera mina data tar bort allt på den här telefonen, även ditt Slash-kort. Radera mitt konto tar också bort kopian i ditt konto, om du har ett.</td></tr>
+          <tr><th scope="row">Det ett företag ser</th><td>Ingenting i dag. Senare bara ett svar som du själv väljer att skicka för ett varumärkesprojekt, aldrig din e-postadress; avstängt som standard, och att säga nej ändrar ingenting.</td></tr>
+          <tr><th scope="row">Så skapas ditt kort</th><td>Av det du själv trycker på efter varje projekt. Ingen AI betygsätter dig.</td></tr>
+        </table>
+        <h2>Vad det är</h2>
+        <p>slashkern är en gratis app för att hitta din passion genom att testa olika vägar. Du gör korta projekt inom sju inriktningar (design, skrivande, kod, video, onlineförsäljning, musik och AI-promptar), säger på 20 sekunder hur varje projekt kändes och ser vilken väg som passar dig. Inget konto behövs.</p>
+        <p>Sju kreativa och digitala vägar, tills vidare. Ditt Slash-kort skapas av det du själv trycker på efter varje projekt. Ingen AI betygsätter dig.</p>
+        <h2>Vem som gör det</h2>
+        <p>slashkern görs av Manuel Di Paolo, i Italien. Skriv till <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> om vad som helst: en fråga, feedback eller dina data.</p>
+        <h2>För föräldrar</h2>
+        <ul>
+          <li><b>Ålder:</b> slashkern är tills vidare för personer som är 18 år eller äldre, eftersom det är byggt för vuxna och sparar det som folk skriver. 18+-kontrollen är tills vidare en kryssruta: vi frågar, men vi kan inte kontrollera det.</li>
+          <li><b>Det här sparas:</b> utan konto stannar svar, reflektioner och inställningar i webbläsaren på den enheten. Med konto sparas en kopia hos Supabase i EU (Frankfurt, Tyskland), så att den synkas mellan enheterna.</li>
+          <li><b>Slash:</b> AI-assistenten ställer bara frågor. Det någon skriver till den skickas till AI-leverantören (Anthropic) för att få ett svar, och slashkern sparar det inte. Om ett meddelande låter tungt pausar assistenten projektet och föreslår att personen pratar med någon hen litar på eller med en stödlinje där hen bor.</li>
+          <li><b>Ingen reklam:</b> ingen reklam och inga cookies. Användningsstatistiken är avstängd tills personen säger ja, och innehåller aldrig ett namn eller något som personen har skrivit.</li>
+          <li><b>Inget delas utan samtycke:</b> inget företag ser ett svar om inte personen väljer att skicka det, ett projekt i taget. Det är inte aktivt än.</li>
+          <li><b>Radera:</b> i Inställningar tar Radera mina data (eller Radera mitt konto) bort allt. Du kan också skriva till <a href="mailto:manuel@trykern.it">manuel@trykern.it</a>.</li>
+        </ul>
+        <p class="foot"><a href="/privacy/#sv">Integritet</a> · <a href="/terms/#sv">Användarvillkor</a></p>
       </section>
     </main>
   </body>
