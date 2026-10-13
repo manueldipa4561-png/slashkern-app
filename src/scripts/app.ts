@@ -28,7 +28,7 @@ import * as cloud from './cloud';
 import * as stats from './stats';
 import { akey, ver, stamp, mergeAnswers, type Tomb } from './sync';
 import { inTime, clampCount, cleanAi, cleanName } from './valid';
-import { canMake, countMake, makeBody, makesLeft, parseMake, type MakeBody, type MakeResult, type Pair as QaPair } from './make';
+import { canMake, countMake, countPic, makeBody, makesLeft, parseMake, parsePic, picBody, picsLeft, type MakeBody, type MakeResult, type PicBody, type PicResult, type Pair as QaPair } from './make';
 import { attachMic, bindVoicePicker, listenButton, refreshVoice, stopSpeaking, voice } from './voice';
 import { slash, type Mood, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX } from './slash';
 import { PIECES, PIECE_AT, cleanRuns, type Piece, type Run } from './pieces';
@@ -2405,6 +2405,22 @@ const MK = {
     unusable: t2('Slash could not make a first version from this. Your own project is saved.', 'Slash non è riuscito a creare una prima versione da questo. Il tuo progetto è salvato.'),
   },
 };
+// "Make a picture of my idea" (make.ts, /api/image, Design only): one picture of the idea they wrote, shown and saveable, never kept in the project. Marked with the same chip.
+const PIC = {
+  go: t2('Make a picture of my idea', 'Crea un’immagine della mia idea'),
+  busy: t2('Making your picture… about 10 seconds', 'Sto creando la tua immagine… circa 10 secondi'),
+  ready: t2('Here is a picture of your idea. Make another if you like.', 'Ecco un’immagine della tua idea. Creane un’altra se vuoi.'),
+  alt: t2('Picture made with AI from your idea', 'Immagine creata con l’AI dalla tua idea'),
+  save: t2('Save the picture', 'Salva l’immagine'),
+  more: t2('Make another picture', 'Crea un’altra immagine'),
+  why: {
+    offline: MK.why.offline, rate: MK.why.rate, short: MK.why.short,
+    day: t2('That is enough pictures for today. Your own project is saved.', 'Per oggi bastano le immagini. Il tuo progetto è salvato.'),
+    down: t2('Picture-making is not available right now. Your own project is saved.', 'Creare immagini non è possibile in questo momento. Il tuo progetto è salvato.'),
+    unusable: t2('Slash could not make a picture from this. Try describing it in other words.', 'Slash non è riuscito a creare un’immagine da questo. Prova a descriverlo con altre parole.'),
+    slow: t2('That took too long. Try again.', 'Ci ha messo troppo. Riprova.'),
+  },
+};
 const makeRaw = () => { try { return localStorage.getItem(MAKES); } catch { return null; } };
 // Its own request: the made text is under `text` (not `reply`), a pause is `reply` with no text, and every failure becomes a reason (make.ts parseMake).
 async function postMake(body: MakeBody): Promise<MakeResult> {
@@ -2414,6 +2430,14 @@ async function postMake(body: MakeBody): Promise<MakeResult> {
     return parseMake(r.status, await r.json().catch(() => null));
   } catch { return { kind: 'error', why: navigator.onLine === false ? 'offline' : 'down' }; } finally { clearTimeout(to); }
 }
+// Its own request: a picture takes about 10 seconds, so it waits up to 40; a stopped or slow call says "took too long" (make.ts parsePic).
+async function postPic(body: PicBody): Promise<PicResult> {
+  const ctl = new AbortController(), to = window.setTimeout(() => ctl.abort(), 40000);
+  try {
+    const r = await fetch('/api/image', { method: 'POST', headers: { 'content-type': 'application/json' }, signal: ctl.signal, body: JSON.stringify(body) });
+    return parsePic(r.status, await r.json().catch(() => null));
+  } catch (e) { return { kind: 'error', why: (e as Error)?.name === 'AbortError' ? 'slow' : navigator.onLine === false ? 'offline' : 'down' }; } finally { clearTimeout(to); }
+}
 type MakeCtx = { key: () => string; field: () => string; title: () => string; idea: () => string; qa: () => QaPair[]; answer: () => Answer | undefined };
 let makeN = 0;
 function makePanel(host: HTMLElement, ctx: MakeCtx) {
@@ -2421,25 +2445,26 @@ function makePanel(host: HTMLElement, ctx: MakeCtx) {
   const id = `kMk${makeN++}`;
   const go = mk('button', 'k-ask-btn k-make-go'), msg = mk('p', 'k-l k-s k-make-msg'), out = mk('div', 'k-make-out'), chip = mk('span', 'k-ai-chip'), lab = mk('label', 'k-sr k-l'), box = mk('textarea'), note = mk('p', 'k-l k-s');
   const row = mk('div', 'k-btnrow'), use = mk('button', 'k-go'), more = mk('button', 'k-ask-btn'), keep = mk('button', 'k-sk');
+  const pic = mk('button', 'k-ask-btn k-make-go k-pic-go'), fig = mk('div', 'k-make-out k-pic-out'), img = mk('img', 'k-pic-img'), pchip = mk('span', 'k-ai-chip'), prow = mk('div', 'k-btnrow'), psave = mk('button', 'k-go'), pmore = mk('button', 'k-ask-btn'), pclose = mk('button', 'k-sk');
   // Slash beside the status line: thinking (and speaking) while the draft is requested, happy when it arrives. Only a face: the waiting is said to a screen reader by its own live region, `wait`.
   const face = mk('span', 'k-slash-av k-slash-md'), wait = mk('span', 'k-sr'), line = mk('div', 'k-make-say');
-  go.type = use.type = more.type = keep.type = 'button'; msg.setAttribute('role', 'status'); msg.setAttribute('aria-live', 'polite');
+  go.type = use.type = more.type = keep.type = pic.type = pmore.type = pclose.type = psave.type = 'button'; fig.hidden = true; prow.append(psave, pmore, pclose); fig.append(pchip, img, prow); msg.setAttribute('role', 'status'); msg.setAttribute('aria-live', 'polite');
   wait.setAttribute('role', 'status'); wait.setAttribute('aria-live', 'polite'); face.hidden = line.hidden = true; line.append(face, msg);
   box.id = id; box.rows = 8; box.maxLength = 2000; lab.htmlFor = id;
-  row.append(use, more, keep); out.append(chip, lab, box, note, row); host.replaceChildren(go, wait, line, out);
+  row.append(use, more, keep); out.append(chip, lab, box, note, row); host.replaceChildren(go, pic, wait, line, out, fig);
   attachMic(box, 'inside'); // the edit box takes dictation too
-  let busy = false;
-  const relabel = () => { go.textContent = tr(busy ? MK.busy : MK.go); chip.textContent = tr(AI_TAG); lab.textContent = tr(MK.label); note.textContent = tr(MK.note); use.textContent = tr(MK.use); more.textContent = tr(busy ? MK.busy : MK.more); keep.textContent = tr(MK.keep); };
+  let busy = false, picBusy = false;
+  const relabel = () => { go.textContent = tr(busy ? MK.busy : MK.go); chip.textContent = tr(AI_TAG); lab.textContent = tr(MK.label); note.textContent = tr(MK.note); use.textContent = tr(MK.use); more.textContent = tr(busy ? MK.busy : MK.more); keep.textContent = tr(MK.keep); pic.textContent = tr(picBusy ? PIC.busy : PIC.go); pchip.textContent = tr(AI_TAG); img.alt = tr(PIC.alt); psave.textContent = tr(PIC.save); pmore.textContent = tr(picBusy ? PIC.busy : PIC.more); pclose.textContent = tr('Close'); };
   const tell = (text: string) => { msg.textContent = text; msg.hidden = !text; line.hidden = face.hidden && msg.hidden; };
   const look = (mood: Mood | null, speaking = false) => { face.innerHTML = mood ? slash(mood, speaking) : ''; face.hidden = !mood; line.hidden = face.hidden && msg.hidden; };
   const left = () => makesLeft(makeRaw(), ctx.key(), new Date().toDateString());
   const sync = () => { // shown only for a saved project the person wrote (not one that is already AI-made) with an idea of 20+ characters
     const a = ctx.answer();
     host.hidden = !a || !!a.ai || !canMake(ctx.idea());
-    out.hidden = true; tell(''); look(null); wait.textContent = ''; go.hidden = false; busy = false; go.removeAttribute('aria-disabled'); more.removeAttribute('aria-disabled'); more.hidden = false; relabel();
+    out.hidden = true; tell(''); look(null); wait.textContent = ''; go.hidden = false; busy = false; go.removeAttribute('aria-disabled'); more.removeAttribute('aria-disabled'); more.hidden = false; fig.hidden = true; picBusy = false; pic.hidden = ctx.field() !== 'Design'; pic.removeAttribute('aria-disabled'); relabel();
   };
   const run = async () => {
-    if (busy) return;
+    if (busy || picBusy) return;
     const idea = ctx.idea(), qa = ctx.qa();
     if (!canMake(idea)) { tell(tr(MK.why.short)); return; }
     if ([idea, ...qa.flatMap((p) => [p.q, p.a])].some((t) => HEAVY.test(t))) { tell(tr(HEAVY_REPLY)); return; } // heavy words: nothing is sent, the project pauses (the server checks again)
@@ -2454,6 +2479,29 @@ function makePanel(host: HTMLElement, ctx: MakeCtx) {
     } else if (res.kind === 'pause') tell(res.reply); // the fixed pause text, as it came: not an AI-made version, no chip
     else tell(tr(MK.why[res.why]));
   };
+  const runPic = async () => {
+    if (busy || picBusy) return;
+    const idea = ctx.idea(), title = ctx.title();
+    if (!canMake(idea)) { tell(tr(PIC.why.short)); return; }
+    if (HEAVY.test(idea) || HEAVY.test(title)) { tell(tr(HEAVY_REPLY)); return; } // heavy words: nothing is sent, the project pauses (the server checks again)
+    if (picsLeft(makeRaw(), ctx.key(), new Date().toDateString()) <= 0) { tell(tr(PIC.why.day)); return; }
+    picBusy = true; pic.setAttribute('aria-disabled', 'true'); pmore.setAttribute('aria-disabled', 'true'); relabel(); tell(''); look('thinking', true); wait.textContent = tr(PIC.busy);
+    const res = await postPic(picBody(S.lang, ctx.field(), title, idea));
+    picBusy = false; pic.removeAttribute('aria-disabled'); pmore.removeAttribute('aria-disabled'); relabel(); wait.textContent = '';
+    look(res.kind === 'image' ? 'happy' : null);
+    if (res.kind === 'image') {
+      try { localStorage.setItem(MAKES, countPic(makeRaw(), ctx.key(), new Date().toDateString())); } catch { /* storage blocked: no daily count */ }
+      img.src = res.src; fig.hidden = false; pmore.hidden = picsLeft(makeRaw(), ctx.key(), new Date().toDateString()) <= 0; tell(tr(PIC.ready)); reveal(fig);
+    } else if (res.kind === 'pause') tell(res.reply); // the fixed pause text, as it came
+    else tell(tr(PIC.why[res.why]));
+  };
+  psave.addEventListener('click', () => { // a download of the picture on screen: a link made on the spot, so the button keeps its own colours
+    if (!img.src) return;
+    const a = Object.assign(document.createElement('a'), { href: img.src, download: 'slashkern-picture.jpg' });
+    document.body.append(a); a.click(); a.remove();
+  });
+  pic.addEventListener('click', runPic); pmore.addEventListener('click', runPic);
+  pclose.addEventListener('click', () => { fig.hidden = true; img.removeAttribute('src'); look(null); tell(''); });
   go.addEventListener('click', run); more.addEventListener('click', run);
   use.addEventListener('click', once(() => {
     const a = ctx.answer(), t = box.value.trim();

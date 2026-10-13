@@ -40,3 +40,27 @@ export const countMake = (raw: string | null, key: string, day: string): string 
   return JSON.stringify({ d: day, n: { ...n, [key]: makesToday(raw, key, day) + 1 } });
 };
 export const makesLeft = (raw: string | null, key: string, day: string) => Math.max(0, MAKE_PER_DAY - makesToday(raw, key, day));
+
+// "Make a picture of my idea" (netlify/functions/image.mts, Design only): a picture of the idea the person wrote. It is shown and can be saved to the phone; it is not kept in the project (a picture is too big to sync).
+export const PIC_PER_DAY = 3; // pictures per project per day on this device (the server also keeps its own, wider limit)
+export type PicBody = { lang: string; field: string; mission: string; idea: string };
+export type PicWhy = MakeWhy | 'slow';
+export type PicResult = { kind: 'image'; src: string } | { kind: 'pause'; reply: string } | { kind: 'error'; why: PicWhy };
+export const picBody = (lang: string, field: string, mission: string, idea: string): PicBody => ({ lang, field, mission: clip(mission, MAKE_MISSION_MAX), idea: clip(idea, MAKE_IDEA_MAX) });
+// 200 { image: a JPEG data URL, ai: true } is a picture; 200 { reply } is the fixed pause (no picture); 504 or { error: 'slow' } means it took too long; the rest follow parseMake.
+export const parsePic = (status: number, json: unknown): PicResult => {
+  const j = (json && typeof json === 'object' ? json : {}) as Record<string, unknown>;
+  if (status === 200) {
+    if (typeof j.image === 'string' && j.ai === true && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(j.image)) return { kind: 'image', src: j.image };
+    if (typeof j.reply === 'string' && j.reply.trim() && j.image === undefined) return { kind: 'pause', reply: j.reply };
+    return { kind: 'error', why: 'down' };
+  }
+  const code = typeof j.error === 'string' ? j.error : '';
+  if (status === 504 || code === 'slow') return { kind: 'error', why: 'slow' };
+  if (status === 429) return { kind: 'error', why: code === 'rate_day' ? 'day' : 'rate' };
+  if (status === 400) return { kind: 'error', why: code === 'too_short' && j.in === 'idea' ? 'short' : 'unusable' };
+  if (status === 502 && code === 'empty') return { kind: 'error', why: 'unusable' };
+  return { kind: 'error', why: 'down' }; // 503 no_key, 502 upstream, anything else
+};
+export const picsLeft = (raw: string | null, key: string, day: string) => Math.max(0, PIC_PER_DAY - makesToday(raw, `${key}.pic`, day));
+export const countPic = (raw: string | null, key: string, day: string) => countMake(raw, `${key}.pic`, day);

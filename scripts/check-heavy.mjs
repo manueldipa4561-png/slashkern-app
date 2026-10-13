@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 
 const FILES = ['src/scripts/app.ts', 'netlify/functions/coach.mts'];
 const literals = FILES.map((f) => {
-  const m = readFileSync(f, 'utf8').match(/^const HEAVY = (\/.+\/[a-z]*);$/m);
+  const m = readFileSync(f, 'utf8').match(/^(?:export )?const HEAVY = (\/.+\/[a-z]*);$/m);
   assert.ok(m, `${f}: no "const HEAVY = /.../;" line found`);
   return m[1];
 });
@@ -51,7 +51,7 @@ for (const t of HEAVY_TEXTS) assert.ok(HEAVY.test(t), `HEAVY must pause on "${t}
 for (const t of FINE_TEXTS) assert.ok(!HEAVY.test(t), `HEAVY must not pause on "${t}"`);
 
 // The pause itself: the server's PAUSE and the app's HEAVY_REPLY (Italian in i18n.ts, German, French, Dutch and Swedish in CRISIS_DE / CRISIS_FR / CRISIS_NL / CRISIS_SV) are the same fixed text, with the checked numbers.
-const pause = readFileSync(FILES[1], 'utf8').match(/^const PAUSE: Record<string, string> = \{ en: (".+?"), it: (".+?"), de: (".+?"), fr: (".+?"), nl: (".+?"), sv: (".+?") \};$/m);
+const pause = readFileSync(FILES[1], 'utf8').match(/^(?:export )?const PAUSE: Record<string, string> = \{ en: (".+?"), it: (".+?"), de: (".+?"), fr: (".+?"), nl: (".+?"), sv: (".+?") \};$/m);
 const appReply = readFileSync(FILES[0], 'utf8').match(/^const HEAVY_REPLY = (".+");$/m);
 assert.ok(pause && appReply, 'no "const PAUSE: Record<string, string> = { en: "...", it: "...", de: "...", fr: "...", nl: "...", sv: "..." };" in coach.mts or no "const HEAVY_REPLY = "...";" in app.ts');
 const [en, it, de, fr, nl, sv] = pause.slice(1).map((t) => JSON.parse(t));

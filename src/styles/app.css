@@ -1499,6 +1499,8 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-make-out { display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: var(--surf); }
 .k-make-out textarea { width: 100%; box-sizing: border-box; min-height: 168px; padding: 12px 14px; padding-right: 56px; border: 1px solid var(--line2); border-radius: 14px; background: #fff; color: var(--fg); font: 500 1rem/1.45 var(--kd); resize: vertical; }
 .k-make-out .k-btnrow { align-items: stretch; }
+.k-pic-go { margin-top: 8px; }
+.k-pic-img { display: block; width: 100%; max-width: 26rem; height: auto; aspect-ratio: 1; border-radius: 14px; border: 1px solid var(--line2); background: #fff; }
 .k-make-host > .k-make-go { align-self: stretch; }
 .k-pj-c .k-cat::after, .k-fprice .k-cat::after { content: '·'; margin-left: 8px; } /* the same 8px as the row's gap on both sides of the dot */
 .k-make-host > .k-make-go { justify-content: center; text-align: center; }

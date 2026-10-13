@@ -15,6 +15,10 @@
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.supabase.co; media-src 'self' blob:; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
 
+# A picture takes about 9 seconds; a synchronous function stops at 10 unless the site is allowed 26 (Pro plans may need Netlify to switch it on: see netlify/functions/image.mts).
+[functions."image"]
+  timeout = 26
+
 [[headers]]
   for = "/sw.js"
   [headers.values]
