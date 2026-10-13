@@ -1,1 +1,34 @@
-/* The Music piece's page (src/scripts/piece-music.ts). Classes start with .k-pc-music; sizes in rem; imported by piece.css. */
+/* The Music piece's page (src/scripts/piece-music.ts): a release card on the app's navy. The picked colour is --mu (--mu-on is the text that reads on it); everything else on the card is
+   navy, paper and one muted blue-grey, so the card reads the same whatever the colour. Classes start with .k-pc-music; sizes in rem; imported by piece.css, which comes after this file, so
+   the card's own custom properties are set with two classes (.k-pc.k-pc-music) to beat .k-pc. */
+.k-pc.k-pc-music { --pc-bg: #0E1B3D; --pc-ink: #EEF2FF; --mu: #FF4F9A; --mu-on: #14181F; --mu-dim: #A9B4D0; gap: 18px; padding-bottom: 14px; box-shadow: 0 0 0 1px rgba(238, 242, 255, .16), 0 24px 44px -28px rgba(14, 27, 61, .7); } /* a light hairline keeps the navy card's edge on a navy screen too */
+.k-pc-music .k-pc-tag { font-size: 0.75rem; color: var(--mu-dim); }
+.k-pc-music-cover { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 16px; box-shadow: 0 0 0 1px rgba(238, 242, 255, .2), 0 22px 30px -20px rgba(0, 0, 0, .75); }
+.k-pc-music-cover text { font-family: var(--kd); font-weight: 800; }
+.k-pc-music-thump { transform-box: fill-box; transform-origin: 50% 50%; }
+.k-pc-music-head { display: flex; flex-direction: column; gap: 10px; }
+.k-pc-music .k-pc-name { font-size: 3rem; text-wrap: balance; }
+.k-pc-music .k-pc-name.long { font-size: 2.25rem; }
+.k-pc-music-by { font: 600 0.75rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mu-dim); overflow-wrap: anywhere; }
+
+/* The beat: 3 rows of 8 squares, a filled one is a hit. While it plays, the sounding column lights (a lighter square, and a bigger one, so it does not rely on colour alone). */
+.k-pc-music-seq { display: flex; flex-direction: column; gap: 6px; }
+.k-pc-music-row { display: grid; grid-template-columns: 4.5rem repeat(8, minmax(0, 1fr)); gap: 5px; align-items: center; }
+.k-pc-music-rl { font: 600 0.75rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--mu-dim); }
+.k-pc-music-cell { display: block; aspect-ratio: 1; border-radius: 28%; background: rgba(238, 242, 255, .08); box-shadow: inset 0 0 0 1.5px rgba(238, 242, 255, .22); transition: transform .12s, background-color .12s; }
+.k-pc-music-cell.on { background: var(--mu); box-shadow: none; }
+.k-pc-music-cell.lit { transform: scale(1.16); background: rgba(238, 242, 255, .34); }
+.k-pc-music-cell.on.lit { background: var(--pc-ink); box-shadow: 0 0 0 2px var(--mu); }
+
+.k-pc-music-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; }
+.k-pc-music-play { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 24px 0 18px; border: 0; border-radius: 999px; background: var(--mu); color: var(--mu-on); font: 800 1rem/1 var(--kd); letter-spacing: -.01em; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .15s, background-color .15s; }
+.k-pc-music-play[hidden] { display: none; }
+.k-pc-music-play[aria-pressed="true"] { background: var(--pc-ink); color: var(--pc-bg); }
+@media (hover: hover) { .k-pc-music-play:hover { transform: translateY(-1px); } }
+.k-pc-music-play:active { transform: scale(.96); }
+.k-pc-music .k-pc-music-play:focus-visible { outline: 2px solid var(--pc-ink); outline-offset: 3px; }
+.k-pc-music-ico { flex: none; width: 1.25rem; height: 1.25rem; fill: currentColor; }
+.k-pc-music-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; margin-left: auto; font: 600 0.75rem/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--mu-dim); }
+.k-pc-music-meta b { font: 800 0.9375rem/1 var(--mono); color: var(--pc-ink); }
+.k-pc-music .k-pc-foot { border-top: 1.5px solid rgba(238, 242, 255, .22); }
+@media (prefers-reduced-motion: reduce) { .k-pc-music-cell, .k-pc-music-play { transition: none; } .k-pc-music-play:active { transform: none; } }

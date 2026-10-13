@@ -17,9 +17,10 @@ Every part of the page is something the person picked or wrote. Slash only asks 
 ## What the person gets
 
 - **The page**, on screen, in the app (Your page lists each finished piece as a small copy of itself).
-- **A picture to save and post** (1080 px wide, 4:5 or taller): "Save as image".
-- **A share link** for a CV or a message: `/p/#…`. The piece rides in the part after the `#`, so it never reaches a server; the page it opens (`src/pages/p.astro`, `src/scripts/public-page.ts`) is read-only, needs no account, and says it was shared by link and not checked. A link is read like stored data: untrusted, cleaned by `cleanRun`, finished pieces only.
+- **A picture to save and post** (1080 px wide, 1350 to 2400 px tall): "Save as image".
+- **A share link** for a CV or a message: `/p/#…`. The piece rides in the part after the `#`, so it never reaches a server; the page it opens (`src/pages/p.astro`, `src/scripts/public-page.ts`) is read-only, needs no account, and says it was shared by link and not checked. A link is read like stored data: untrusted, cleaned by `cleanRun`, finished pieces only. The longest run any piece allows (every line and AI answer at its limit, in emoji) still fits `LINK_MAX`; `scripts/check-pieces.mjs` tests it.
 - **A name on the page** (optional), and **how it was made**: when it was started and finished, that no AI wrote any of it (or what the AI wrote), and how many questions Slash asked.
+- **The practice-project line.** Every page, picture and share page ends with "Practice project · Bar Ficus (fictional)" (`pageOf` and `picOf` in `pieces.ts` add it, so a piece module does not): a posted picture or a shared link never reads as real client work.
 
 Accounts, handles and pages that companies can browse are not built yet (the backend is on branch `worktree-agent-ad0ad96cb9f4d2c26`, `supabase/creators.sql`; its `publish_project` fits a piece).
 
@@ -27,10 +28,10 @@ Accounts, handles and pages that companies can browse are not built yet (the bac
 
 | File | What it holds |
 | --- | --- |
-| `src/scripts/piece-types.ts` | the types (`Piece`, `Step` of four kinds, `Run`, `Kind`), step builders, `stepOk`, colour maths, the logo/cover `SHAPES` |
-| `src/scripts/piece-kit.ts` | DOM helpers, `Draw` (the canvas picture) and `playBeat` (a tiny drum machine) |
+| `src/scripts/piece-types.ts` | the types (`Piece`, `Step` of four kinds, `Run`, `Kind`), step builders, `stepOk`, colour maths, the logo/cover `SHAPES` and how wide letters may be in each (`FIT`, `letterSize`) |
+| `src/scripts/piece-kit.ts` | DOM helpers, `Draw` (the canvas picture; `footer` takes a second line of the byline as a note) and `playBeat` (a tiny drum machine) |
 | `src/scripts/piece-<name>.ts` | one piece: data, `view` (pure), `dom` (the page), `img` (the picture), optionally `file` and `prompt` |
-| `src/scripts/pieces.ts` | the registry (`PIECES`, `kindOf`), the words around every piece (`PL`), `cleanRun`, share links |
+| `src/scripts/pieces.ts` | the registry (`PIECES`, `kindOf`), `pageOf` and `picOf` (a page and a picture with the practice-project line), the words around every piece (`PL`), `cleanRun`, share links |
 | `src/scripts/pieces-ui.ts` | the screens: the card on Projects, the steps, the finished page, the list on Your page |
 | `src/styles/piece.css`, `piece-<name>.css` | the pages (shared by the app and the share page) |
 | `src/scripts/i18n-piece-<name>.ts` | German, French, Dutch and Swedish for one piece; `i18n-pieces.ts` merges them |

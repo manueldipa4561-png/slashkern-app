@@ -18,7 +18,7 @@ export type Step = Say & (
   | { kind: 'beat' }
   | { kind: 'run'; max: number }
 );
-export type Piece = { id: string; n: number; f: string; title: string; blurb: string; who: string; client: string; brief: string; mins: number; steps: Step[]; monoFrom?: number }; // monoFrom: the text step whose initials go in a logo or cover (else the client's)
+export type Piece = { id: string; n: number; f: string; title: string; blurb: string; who: string; client: string; brief: string; mins: number; steps: Step[]; monoFrom?: number; cover?: boolean }; // monoFrom: the text step whose initials go in a logo or cover (else the client's); cover: the picked colour is the ground and the shape sits on it (else the shape is filled with it)
 
 // A saved piece in progress or made. f and i make its sync key like an answer's (sync.ts), so i starts at PIECE_AT: it can never equal the index of a project.
 // s: one entry per step done: the ids joined by "," for a pick, the text for a line, 24 zeros and ones for a beat, the AI's text for a run. done: when the last step was saved.
@@ -46,7 +46,7 @@ export const tag = (en: string, it: string) => t2('Practice project · ' + en, '
 
 export const BEAT_STEPS = 8, BEAT_ROWS = 3, BEAT_MIN = 4; // a beat answer is rows of kick, snare, hat, 8 steps each
 export const wordsIn = (t: string) => (t.trim() ? t.trim().split(/\s+/).length : 0);
-export const initials = (name: string) => name.split(/\s+/).map((w) => [...w][0] ?? '').join('').toUpperCase().slice(0, 2);
+export const initials = (name: string) => [...name.split(/\s+/).map((w) => [...w].find((c) => /[\p{L}\p{N}]/u.test(c)) ?? '').join('').toUpperCase()].slice(0, 2).join(''); // the first letter or digit of each word: a word that is only an emoji or a symbol gives none, and nothing is cut in half
 
 // One answer is allowed for its step.
 export const stepOk = (st: Step, a: string): boolean => {
@@ -80,3 +80,10 @@ export const SHAPES: Opt[] = [
   o('drop', 'Drop', 'Goccia', { d: 'M50 6C50 6 84 42 84 62a34 34 0 0 1-68 0C16 42 50 6 50 6Z' }),
   o('hex', 'Hexagon', 'Esagono', { d: 'M50 5L89 27.5V72.5L50 95L11 72.5V27.5Z' }),
 ];
+// Letters inside a shape (a cover, a logo preview) are cut out in the ground colour, so wherever they cross the shape's edge they vanish into it (a name like "Wide Mow" has the widest pair, WM). Per shape,
+// w is how wide letters may be at the height they stand (on the shape's own 100 grid, worked out from its outline) and dy how far down they sit (a drop and an arch carry their weight low).
+// The size is then the largest up to 34 (the size of the logo letters in the brand sheet) that fits: letterSize(shape id, the letters' width in em).
+export const FIT: Record<string, { w: number; dy: number }> = { circle: { w: 80, dy: 0 }, arch: { w: 70, dy: 3 }, leaf: { w: 44, dy: 0 }, burst: { w: 64, dy: 0 }, drop: { w: 54, dy: 8 }, hex: { w: 74, dy: 0 } };
+const FIT_OTHER = { w: 44, dy: 0 }; // a shape added later is treated like the narrowest until it has its own numbers
+export const fitOf = (shape: string) => FIT[shape] ?? FIT_OTHER;
+export const letterSize = (shape: string, em: number) => Math.min(34, Math.floor(fitOf(shape).w / (Math.max(em, 0.1) * 1.06))); // 6% to spare: the font may not be loaded yet when the width is measured

@@ -1,6 +1,6 @@
-import { BEAT_MIN, BEAT_ROWS, BEAT_STEPS, INK, PAPER, PIECE_AT, PL, initials, keep, kindOf, latestRun, pieceFor, pieceLink, pieceOf, readable, stepOk, wordsIn, type Piece, type Run, type Step } from './pieces';
+import { BEAT_MIN, BEAT_ROWS, BEAT_STEPS, INK, PAPER, PIECE_AT, PL, initials, keep, kindOf, latestRun, letterSize, pageOf, pieceFor, pieceLink, pieceOf, picOf, readable, stepOk, wordsIn, type Piece, type Run, type Step } from './pieces';
 import { lookOf } from './piece-brand';
-import { canPlay, el, logoSvg, playBeat } from './piece-kit';
+import { canPlay, el, emOf, logoSvg, playBeat } from './piece-kit';
 import { akey, stamp, ver, type Tomb } from './sync';
 
 // The screens of a piece (data and drawing in piece-<name>.ts, listed in pieces.ts): a card on Projects, small steps full screen, the finished page, and the list on Your page.
@@ -28,13 +28,13 @@ export function initPieces(ctx: Ctx) {
 
   const byline = (r: Run) => fill(S.name.trim() ? PL.by : PL.on, { n: S.name.trim(), d: ctx.when(r.done ?? r.at) });
   // The letters in a logo or a cover: the initials of the client, or of a line the person wrote (monoFrom).
-  const monoOf = (p: Piece, r: Run) => (p.monoFrom !== undefined && r.s[p.monoFrom] ? initials(r.s[p.monoFrom]) : initials(p.client));
+  const monoOf = (p: Piece, r: Run) => ((p.monoFrom !== undefined && initials(r.s[p.monoFrom] ?? '')) || initials(p.client));
   // The colours picked so far, as the shape previews will use them: one colour is the fill itself, three go through the brand sheet's rules.
-  const previewOf = (p: Piece, r: Run) => {
+  const previewOf = (p: Piece, r: Run): { fill: string; letters: string; ground?: string } => {
     const k = p.steps.findIndex((s) => s.kind === 'pick' && s.look === 'swatch'), st = p.steps[k];
     if (st?.kind !== 'pick' || !r.s[k]) return { fill: INK, letters: PAPER };
     const hex = r.s[k].split(',').map((id) => st.opts.find((o) => o.id === id)?.hex).filter((h): h is string => !!h);
-    if (hex.length === 1) return { fill: hex[0], letters: readable(hex[0]) };
+    if (hex.length === 1) return p.cover ? { fill: readable(hex[0]), letters: hex[0], ground: hex[0] } : { fill: hex[0], letters: readable(hex[0]) }; // a cover shows the colour as its ground, as the finished page does
     if (hex.length === st.n) { const l = lookOf(hex); return { fill: l.logo, letters: l.onLogo }; }
     return { fill: INK, letters: PAPER };
   };
@@ -45,6 +45,7 @@ export function initPieces(ctx: Ctx) {
     opts.querySelectorAll<HTMLElement>('.k-opt').forEach((b) => {
       const k = picks.indexOf(b.dataset.id!), n = b.querySelector('.k-opt-n');
       b.setAttribute('aria-pressed', String(k >= 0)); if (n) n.textContent = k >= 0 && st.n > 1 ? String(k + 1) : '';
+      b.setAttribute('aria-label', k >= 0 && st.n > 1 ? `${b.dataset.name}, ${k + 1}` : b.dataset.name!); // a screen reader hears the place too
     });
   };
   const check = () => {
@@ -60,14 +61,16 @@ export function initPieces(ctx: Ctx) {
     const { p, run, step } = cur!, st = p.steps[step] as Pick, pv = previewOf(p, run), mono = monoOf(p, run);
     opts.hidden = false; opts.className = 'k-bo' + (st.look ? ' ' + st.look : '');
     opts.replaceChildren(...st.opts.map((o) => {
-      const b = el('button', 'k-opt'), label = el('span', '', tr(o.label));
-      b.type = 'button'; b.dataset.id = o.id; b.setAttribute('aria-pressed', 'false');
+      const b = el('button', 'k-opt'), label = el('span', '', tr(o.label)), n = el('em', 'k-opt-n');
+      b.type = 'button'; b.dataset.id = o.id; b.dataset.name = tr(o.label); b.setAttribute('aria-pressed', 'false'); n.setAttribute('aria-hidden', 'true');
       if (st.look === 'swatch') {
-        const sw = el('i', 'k-opt-sw'), n = el('em', 'k-opt-n');
-        sw.style.background = o.hex!; sw.setAttribute('aria-hidden', 'true'); n.setAttribute('aria-hidden', 'true');
-        b.append(sw, label, n); b.setAttribute('aria-label', `${tr(o.label)}, ${o.hex}`);
-      } else if (st.look === 'shape') b.append(logoSvg(o.d!, pv.fill, pv.letters, mono, ''), label);
+        const sw = el('i', 'k-opt-sw');
+        sw.style.background = o.hex!; sw.setAttribute('aria-hidden', 'true');
+        b.append(sw, label); b.dataset.name = `${tr(o.label)}, ${o.hex}`;
+      } else if (st.look === 'shape') b.append(logoSvg(o.d!, pv.fill, pv.letters, mono, '', p.monoFrom !== undefined ? letterSize(o.id, emOf(mono)) : undefined, pv.ground), label); // letters the person typed may be wide: fit them to each shape
       else b.append(label);
+      if (st.n > 1) b.append(n); // the order in which the picks were tapped: 1, 2, 3
+      b.setAttribute('aria-label', b.dataset.name);
       b.addEventListener('click', () => {
         const k = picks.indexOf(o.id);
         if (k >= 0) picks.splice(k, 1); else if (picks.length < st.n) picks.push(o.id); else picks[st.n - 1] = o.id; // a full pick swaps the latest one
@@ -143,7 +146,7 @@ export function initPieces(ctx: Ctx) {
     const { p, run } = cur, k = kindOf(p);
     stopSound(); stopSound = () => {};
     stepEl.hidden = true; resEl.hidden = false; put(num, '');
-    $('kBPiece').replaceChildren(k.dom(v, byline(run), t));
+    $('kBPiece').replaceChildren(pageOf(p, v, byline(run), t));
     put($('kBRH'), tr(PL.ready)); put($('kBNameL'), tr(PL.nameL)); nameIn.value = S.name; put($('kBLink'), tr(PL.link)); put($('kBLinkN'), tr(PL.linkNote)); put($('kBSave'), tr(PL.save)); put($('kBDone'), tr(PL.done));
     fileBtn.hidden = !k.file; if (k.file) put(fileBtn, k.file(v, byline(run), t).label);
     put(how.querySelector<HTMLElement>('summary')!, tr(PL.how)); how.open = false;
@@ -154,7 +157,7 @@ export function initPieces(ctx: Ctx) {
   };
   const saveImage = async () => {
     const v = view(); if (!v || !cur) return;
-    const blob = await kindOf(cur.p).img(v, byline(cur.run), t); if (!blob) return;
+    const blob = await picOf(cur.p, v, byline(cur.run), t); if (!blob) return;
     const file = new File([blob], `slashkern-${cur.p.id}.png`, { type: 'image/png' });
     if (navigator.canShare?.({ files: [file] })) { try { await navigator.share({ files: [file], title: 'slashkern' }); return; } catch (e) { if ((e as DOMException).name === 'AbortError') return; } }
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; a.click();
@@ -219,14 +222,18 @@ export function initPieces(ctx: Ctx) {
   $('kBSave').addEventListener('click', ctx.once(() => { void saveImage(); }));
   fileBtn.addEventListener('click', ctx.once(saveFile));
   $('kBLink').addEventListener('click', ctx.once(() => { if (cur?.run.done) ctx.share('slashkern', fill(PL.linkText, { t: tr(cur.p.title) }), pieceLink(location.origin, cur.run, S.name)); }));
-  nameIn.addEventListener('input', () => { ctx.setName(nameIn.value); const v = view(); if (v && cur) $('kBPiece').replaceChildren(kindOf(cur.p).dom(v, byline(cur.run), t)); }); // the name shows on the page as it is typed
+  nameIn.addEventListener('input', () => { ctx.setName(nameIn.value); const v = view(); if (v && cur) $('kBPiece').replaceChildren(pageOf(cur.p, v, byline(cur.run), t)); }); // the name shows on the page as it is typed
   build.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); closeBuild(); } });
   askBtn.addEventListener('click', async () => {
     if (!cur || askBtn.getAttribute('aria-disabled') === 'true') return;
     const { p, run, step } = cur, st = p.steps[step];
-    const draft = st.kind === 'text' ? ta.value.trim() : st.kind === 'pick' ? picks.map((id) => (st as Pick).opts.find((o) => o.id === id)?.label ?? '').filter(Boolean).join(', ') : '';
+    const labels = (k: number) => { const q = p.steps[k], a = run.s[k]; return q.kind === 'pick' && a ? a.split(',').map((id) => q.opts.find((o) => o.id === id)?.label ?? '').filter(Boolean).join(', ') : ''; };
+    const picked = p.steps.slice(0, step).map((_, k) => labels(k)).filter(Boolean).join('; '), wrote = p.steps.slice(0, step).map((q, k) => (q.kind === 'text' ? run.s[k] : '')).filter(Boolean).join(' / ');
+    // Slash is told what this step is and what the person chose before (fixed option labels go in the project note); what they typed goes in their own message, where the distress words are checked.
+    const now = st.kind === 'text' ? ta.value.trim() : st.kind === 'pick' ? picks.map((id) => st.opts.find((o) => o.id === id)?.label ?? '').filter(Boolean).join(', ') : '', draft = [now, wrote && `(earlier I wrote: ${wrote})`].filter(Boolean).join(' ');
+    const brief = [st.q, st.hint, picked && `Chosen so far: ${picked}.`].join(' ');
     askBtn.setAttribute('aria-disabled', 'true'); askBtn.setAttribute('aria-expanded', 'true');
-    const asked = await ctx.ask(coach, { title: p.title, brief: st.q }, p.f, draft, () => cur?.p === p && cur.step === step && build.classList.contains('on'));
+    const asked = await ctx.ask(coach, { title: p.title, brief }, p.f, draft, () => cur?.p === p && cur.step === step && build.classList.contains('on'));
     if (asked && cur?.run === run) { run.q = Math.min(99, (run.q ?? 0) + 1); if (S.builds.includes(run)) ctx.save(); }
     askBtn.removeAttribute('aria-disabled');
   });

@@ -31,7 +31,7 @@ import { inTime, clampCount, cleanAi, cleanName } from './valid';
 import { canMake, countMake, makeBody, makesLeft, parseMake, type MakeBody, type MakeResult, type Pair as QaPair } from './make';
 import { attachMic, listenButton, refreshVoice, stopSpeaking, voice } from './voice';
 import { slash, type Mood, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX } from './slash';
-import { PIECE_AT, cleanRuns, type Run } from './pieces';
+import { PIECES, PIECE_AT, cleanRuns, type Piece, type Run } from './pieces';
 import { initPieces, type RunReply } from './pieces-ui';
 
 type Again = 'yes' | 'maybe' | 'no';
@@ -147,12 +147,18 @@ const sanitize = (s: any): State | null => { // eslint-disable-line @typescript-
   } catch { return null; }
 };
 // Sample trail for the demo (texts in demo.ts): 6 answers in 3 fields, all reflected, about 530 stones (rank Cairn), a few finds, three versions of an idea with Slash. Badges are earned from the answers themselves.
+// A finished sample piece for the demo: the first options of every pick, the example line of every text step (in the demo's language), a beat, and for the AI step a short sample marked AI.
+const samplePiece = (p: Piece, at: number, it: boolean): Run => ({
+  f: p.f, i: PIECE_AT + p.n, at, done: at + 9 * 6e4, ...(p.steps.some((st) => st.kind === 'run') ? { ai: true as const } : {}),
+  s: p.steps.map((st) => (st.kind === 'pick' ? st.opts.slice(0, st.n).map((x) => x.id).join(',') : st.kind === 'text' ? (it ? IT[st.ph] : st.ph) ?? st.ph : st.kind === 'beat' ? '100010011010001010101010'
+    : it ? 'Ogni sabato alle 10:00, sei posti, argilla inclusa. Vieni a fare una ciotola storta con noi. Mattine lente, mani calde.' : 'Saturdays at 10:00, six seats, clay included. Come make a wobbly bowl with us. Slow mornings, warm hands.')),
+});
 const demoState = (): State => {
   let real: { lang?: string; text?: number } = {};
   try { real = JSON.parse(localStorage.getItem('kern:v1') || '{}') || {}; } catch { /* no real profile to read */ }
   const lang: Lang = isLang(real.lang) ? real.lang : fresh().lang, text = real.text;
   const it = lang === 'it', answers = sampleAnswers(it, Date.now());
-  const made = Date.now() - 2 * 864e5, builds = [{ f: 'Design', i: PIECE_AT, at: made, done: made + 9 * 6e4, s: ['plant', 'friendly,cosy,local', 'tomato,cream,espresso', 'leaf', it ? 'Caffè, piante, Rosa.' : 'Coffee, plants, Rosa.'] }]; // one finished piece (the brand sheet) on Your page
+  const made = Date.now() - 2 * 864e5, builds = [{ f: 'Design', i: PIECE_AT, at: made, done: made + 9 * 6e4, s: ['plant', 'friendly,cosy,local', 'tomato,cream,espresso', 'leaf', it ? 'Caffè, piante, Rosa.' : 'Coffee, plants, Rosa.'] }, ...PIECES.filter((p) => p.f !== 'Design').map((p, k) => samplePiece(p, made - (k + 1) * 36e5, it))]; // a finished piece in every field on Your page: the brand sheet by hand, the others from their first options and example lines
   return sanitize({ v: 1, name: 'Giulia', field: 'Design', fields: ['Design', 'Writing', 'Video'], onboarded: true, stones: answers.reduce((s, a) => s + 50 + (a.r ? 20 : 0) + (a.x || 0), 0), answers, msgs: [{ who: 'ai', t: OPEN }, ...sampleChat(it)], mine: sampleMine(it), builds, dared: true, lang, theme: 'light', text, guess: 'Saved. This sharpens your Slash card.' }) || fresh(); // guess: the reply to "A first guess" (That feels right), not a sentence of its own
 };
 let recovered = ''; // set when a saved trail could not be read in full at start-up: the notice to show once the app is up

@@ -13,16 +13,19 @@ export const svgEl = (tag: string, attrs: Record<string, string> = {}, text = ''
   return e;
 };
 
-// A shape with letters in it (a logo, a cover), on a 100 x 100 grid. alt '' makes it decorative.
-export function logoSvg(d: string, fill: string, letters: string, mono: string, alt: string): SVGSVGElement {
+// A shape with letters in it (a logo, a cover), on a 100 x 100 grid; size is the letters' font size on that grid (letterSize fits wide ones to the shape), ground a square colour behind it. alt '' makes it decorative.
+export function logoSvg(d: string, fill: string, letters: string, mono: string, alt: string, size = 34, ground?: string): SVGSVGElement {
   const svg = svgEl('svg', { viewBox: '0 0 100 100', class: 'k-pc-logo' }) as SVGSVGElement;
   if (alt) { svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', alt); } else svg.setAttribute('aria-hidden', 'true');
-  svg.append(svgEl('path', { d, fill }), svgEl('text', { x: '50', y: '50', dy: '.35em', 'text-anchor': 'middle', 'font-size': '34', fill: letters }, mono));
+  if (ground) svg.append(svgEl('rect', { width: '100', height: '100', rx: '14', fill: ground }));
+  svg.append(svgEl('path', { d, fill }), svgEl('text', { x: '50', y: '50', dy: '.35em', 'text-anchor': 'middle', 'font-size': String(size), fill: letters }, mono));
   return svg;
 }
 
 export const FONT = "'Geist Variable', system-ui, sans-serif";
 export const font = (weight: number, px: number) => `${weight} ${px}px ${FONT}`;
+// The width of letters in em (in the page font at weight 800), measured on a canvas (the one given, or a new one); without a canvas, a plain guess.
+export const emOf = (s: string, x: CanvasRenderingContext2D | null = document.createElement('canvas').getContext('2d')) => { if (!x) return [...s].length * 0.8; x.font = font(800, 100); return x.measureText(s).width / 100; };
 
 // The picture: 1080 wide, as tall as the page needs and never shorter than 1350 (4:5, the tallest a post shows whole) or taller than 2400. Draw it top to bottom: measure with wrap(),
 // call size(height), then paint; size() clears the canvas. The footer sits at the bottom edge, whatever the height.
@@ -58,11 +61,12 @@ export class Draw {
   }
   // Lines one under the other from py (the first baseline); returns the baseline after the last one.
   lines(ls: string[], f: string, color: string, px: number, py: number, lh: number, align: CanvasTextAlign = 'left') { ls.forEach((l, k) => this.put(l, f, color, px, py + k * lh, align)); return py + ls.length * lh; }
-  // A thin rule, who made it and when, and the slashkern mark and name, at the bottom edge.
+  // A thin rule, who made it and when, and the slashkern mark and name, at the bottom edge. A second line in by (after a "\n") is a note under the byline: the practice-project line (picOf).
   footer(by: string, ink: string, bg: string) {
-    const x = this.x, { W, M, H, TW } = this;
+    const x = this.x, { W, M, H, TW } = this, [first, ...more] = by.split('\n'), note = more.join(' ').trim();
     x.globalAlpha = 0.22; this.fillRect(M, H - 134, TW, 3, 2, ink); x.globalAlpha = 1;
-    this.put(by, font(600, 28), ink, M, H - 76);
+    this.put(first, font(600, 28), ink, M, H - (note ? 80 : 76));
+    if (note) { let px = 26; while (px > 20 && ((x.font = font(600, px)), x.measureText(note).width > TW)) px--; this.put(note, font(600, px), ink, M, H - 42); } // the longest note shrinks to fit the width
     const [vx, vy, vw, vh] = SLASH_VIEWBOX.split(' ').map(Number), k = 44 / vh, tx = W - M;
     x.font = font(800, 40); const nw = x.measureText('slashkern').width;
     this.put('slashkern', font(800, 40), ink, tx, H - 70, 'right');

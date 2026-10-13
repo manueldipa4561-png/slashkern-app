@@ -6,9 +6,9 @@
 @import './piece-prompting.css';
 /* A finished piece as a page (piece-view.ts renderBrand): in the person's own colours, shown in the app (index.astro) and on the page a share link opens (p.astro). Sizes in rem, so the text size setting scales them. */
 .k-pc { --kd: 'Geist Variable', system-ui, sans-serif; --mono: ui-monospace, 'SF Mono', Consolas, Menlo, monospace; --pc-bg: #FBF8F2; --pc-ink: #14181F; --pc-acc: #D8452B; --pc-on-acc: #fff; display: flex; flex-direction: column; gap: 22px; padding: 22px 20px 16px; border-radius: 22px; background: var(--pc-bg); color: var(--pc-ink); box-shadow: 0 0 0 1px rgba(14, 27, 61, .1), 0 24px 44px -28px rgba(14, 27, 61, .6); }
-.k-pc p, .k-pc ul, .k-pc blockquote { margin: 0; }
-.k-pc ul { padding: 0; list-style: none; }
-.k-pc-tag, .k-pc-l { font: 600 0.6875rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+:where(.k-pc p, .k-pc ul, .k-pc blockquote) { margin: 0; } /* :where() has no weight, so a piece's own one-class rule (.k-pc-x-list { padding }) wins whatever the order */
+:where(.k-pc ul) { padding: 0; list-style: none; }
+.k-pc-tag, .k-pc-l { font: 600 0.75rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 .k-pc-head { display: flex; flex-direction: column; gap: 6px; }
 .k-pc-logo { display: block; width: 84px; height: 84px; margin: 6px 0 8px; }
 .k-pc-logo text { font-family: var(--kd); font-weight: 800; }
@@ -24,8 +24,9 @@
 .k-pc-words { display: flex; flex-wrap: wrap; gap: 6px; }
 .k-pc-words li { border: 1.5px solid var(--pc-ink); border-radius: 999px; padding: 5px 12px; font: 600 0.875rem/1.2 var(--kd); }
 .k-pc-one { padding-left: 14px; border-left: 5px solid var(--pc-acc); font: 700 1.25rem/1.25 var(--kd); letter-spacing: -.02em; }
-.k-pc-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; border-top: 1.5px solid color-mix(in srgb, var(--pc-ink) 22%, transparent); font: 600 0.75rem/1.3 var(--kd); }
+.k-pc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; padding-top: 12px; border-top: 1.5px solid color-mix(in srgb, var(--pc-ink) 22%, transparent); font: 600 0.75rem/1.3 var(--kd); }
 .k-pc-brand { font-weight: 800; letter-spacing: -.04em; }
+.k-pc-prac { flex: 0 0 100%; font: 600 0.75rem/1.3 var(--kd); text-wrap: balance; } /* "Practice project · … (fictional)": the last row of the footer (pageOf) */
 
 /* The page a share link opens (p.astro, public-page.ts): the sheet, how it was made, a note that it was not checked, and a way in. */
 body.pub-body { margin: 0; min-height: 100dvh; background: #F5F7FF; color: #0E1B3D; font: 400 1rem/1.5 'Geist Variable', system-ui, sans-serif; }

@@ -145,6 +145,14 @@ for (const k of KINDS) {
   const back = readPieceLink(hashOf(link));
   assert.deepEqual(back.run, cleanRun(mine), `${k.piece.id}: the link reads back whole`); assert.equal(back.name, 'Giulia');
 }
+// The longest run a piece allows (every line and AI answer at its limit, in emoji: 4 bytes each, the most a character takes) and the longest name still make a link a page can open: a person's own finished piece
+// must never end in "This link does not work".
+for (const k of KINDS) {
+  const st = k.piece.steps, worst = { ...sample(k.piece), s: sample(k.piece).s.map((a, i) => (st[i].kind === 'text' || st[i].kind === 'run' ? '🔥'.repeat(st[i].max) : a)) };
+  assert.equal(cleanRun(worst).s.length, st.length, `${k.piece.id}: the longest run is a valid one`);
+  const long = pieceLink('https://slashkern.app', worst, '🔥'.repeat(40)), data = hashOf(long).length - 1;
+  assert.ok(readPieceLink(hashOf(long)), `${k.piece.id}: the longest possible link is readable (${data} of ${LINK_MAX} characters)`);
+}
 const mine = sample(p0), link = pieceLink('https://slashkern.app', mine, 'Giulia'), back = readPieceLink(hashOf(link));
 assert.deepEqual(readPieceLink(hashOf(link).slice(1)).run, back.run, 'with or without the #');
 const textAt = p0.steps.findIndex((st) => st.kind === 'text'), accented = { ...mine, s: mine.s.map((a, k) => (k === textAt ? 'Caffè, città, 🌿' : a)) };

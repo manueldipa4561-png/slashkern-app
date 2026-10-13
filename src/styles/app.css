@@ -1582,6 +1582,8 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-opt-sw { display: block; height: 58px; border-radius: 12px; box-shadow: inset 0 0 0 1px rgba(20, 24, 31, .2); }
 .k-opt-n { position: absolute; top: 14px; left: 14px; display: none; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--fg); color: #fff; font: 800 0.8125rem/1 var(--kd); font-style: normal; }
 .k-opt[aria-pressed="true"] .k-opt-n:not(:empty) { display: grid; }
+.k-bo:not(.swatch):not(.shape) .k-opt-n { position: static; flex: none; margin-left: auto; } /* in a row the number sits at its right end, in a chip after the word */
+.k-bo.chip .k-opt-n { margin-left: 0; }
 .k-bo.shape .k-opt { flex-direction: column; justify-content: center; gap: 6px; padding: 12px 6px 10px; text-align: center; font-size: 0.875rem; }
 .k-bo.shape .k-pc-logo { width: 58px; height: 58px; }
 .k-build .k-brief .k-fbrief { margin: 0 0 4px; }

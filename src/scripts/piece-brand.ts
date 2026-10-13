@@ -71,7 +71,7 @@ export function dom(v: V, by: string, t: T): HTMLElement {
   root.setAttribute('aria-label', `${v.name} · ${t.tr(L.tag)}`);
   const head = el('div', 'k-pc-head'), name = el('div', 'k-pc-name', v.name), line = el('p', 'k-pc-line', v.line);
   name.setAttribute('role', 'heading'); name.setAttribute('aria-level', '3');
-  head.append(logoSvg(v.shape.d, look.logo, look.onLogo, v.mono, t.fill(L.logo, { s: v.shape.label.toLowerCase(), m: v.mono })), name, line);
+  head.append(logoSvg(v.shape.d, look.logo, look.onLogo, v.mono, t.fill(L.logo, { s: v.shape.label, m: v.mono })), name, line);
   const sw = el('ul', 'k-pc-sw');
   for (const c of v.swatches) { const li = el('li'), chip = el('i'); chip.style.background = c.hex; li.append(chip, el('b', '', c.name), el('small', '', c.hex)); sw.append(li); }
   const words = el('ul', 'k-pc-words');

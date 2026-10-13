@@ -1,6 +1,6 @@
 import { t2 } from './i18n';
 import { cleanAi, cleanName, inTime } from './valid';
-import { PIECE_AT, keep, stepOk, type Kind, type Piece, type Run } from './piece-types';
+import { PIECE_AT, keep, stepOk, type Kind, type Piece, type Run, type T } from './piece-types';
 import * as brand from './piece-brand';
 import * as writing from './piece-writing';
 import * as code from './piece-code';
@@ -21,6 +21,15 @@ export const PIECES: Piece[] = KINDS.map((k) => k.piece);
 export const kindOf = (p: Piece) => KINDS.find((k) => k.piece === p)!;
 export const pieceOf = (r: { f: string; i: number }) => PIECES.find((p) => p.f === r.f && PIECE_AT + p.n === r.i);
 export const pieceFor = (f: string) => PIECES.find((p) => p.f === f);
+
+// The finished page and its picture, as a person shows them: each says, once, that the client is made up ("Practice project · Bar Ficus (fictional)"), so a posted picture or a shared link
+// never reads as real client work. The page gets the line as the last row of its footer, the picture in its footer (Draw.footer takes a second line of the byline as a note).
+export const pageOf = (p: Piece, v: unknown, by: string, t: T): HTMLElement => {
+  const card = kindOf(p).dom(v, by, t);
+  (card.querySelector('.k-pc-foot') ?? card).append(Object.assign(document.createElement('p'), { className: 'k-pc-prac', textContent: t.tr(p.who) }));
+  return card;
+};
+export const picOf = (p: Piece, v: unknown, by: string, t: T) => kindOf(p).img(v, `${by}\n${t.tr(p.who)}`, t);
 
 // The words around a piece: the card on Projects, the steps, the proof. In one place so their translations are checked with the rest (scripts/check-content.mjs). The words on the page
 // itself (the labels of a brand sheet, a storyboard...) are in each piece's module.
@@ -96,7 +105,7 @@ export const latestRun = (runs: readonly Run[], p: Piece): Run | undefined => ru
 
 // A link to one finished piece, to put on a CV or send in a message: its picks and line, the name on it and when it was made, as URL-safe base64 after the # (so it never reaches a
 // server). Anyone with the link sees the page, which says it was shared by link and not checked. A link is read like stored data: untrusted, cleaned by cleanRun, finished pieces only.
-export const LINK_MAX = 3200; // characters of data a link may carry (a prompt and what the AI made of it are the longest)
+export const LINK_MAX = 4800; // characters of data a link may carry: the longest run any piece allows, all in emoji (4 bytes each), takes 4655 (scripts/check-pieces.mjs tests it); a usual one about 1700
 const toB64 = (s: string) => btoa(String.fromCharCode(...new TextEncoder().encode(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 const fromB64 = (b: string) => new TextDecoder().decode(Uint8Array.from(atob(b.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0)));
 export const pieceLink = (origin: string, r: Run, name: string) => `${origin}/p/#${toB64(JSON.stringify({ v: 1, f: r.f, i: r.i, at: r.at, s: r.s, done: r.done, q: r.q, ai: r.ai, n: cleanName(name).trim() }))}`;

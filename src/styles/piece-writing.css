@@ -1,1 +1,35 @@
-/* The Writing piece's page (src/scripts/piece-writing.ts). Classes start with .k-pc-writing; sizes in rem; imported by piece.css. */
+/* The Writing piece's page (src/scripts/piece-writing.ts): a launch kit for a new flavour, in the flavour's own colour (--pc-bg, --pc-ink and --pc-shine arrive from the module, --pc-n is the
+   length of the longest word of the name). Classes start with .k-pc-writing; sizes in rem; imported by piece.css above its base rules, so every rule here is scoped under .k-pc-writing to
+   win over them. The sign is the board colour (INK of piece-types.ts) with paper-coloured chalk (PAPER) and the post a white card, so both read the same on every flavour.
+   Type that depends on the person's words (the name, the sign) is sized from its length with min() and calc() between a cap and a floor, so it is as big as fits from 300 px up
+   and never smaller than the app's smallest text; a word that still does not fit breaks (overflow-wrap) instead of running out of the card. */
+.k-pc-writing { gap: 28px; }
+.k-pc-writing .k-pc-tag, .k-pc-writing .k-pc-l { font-size: 0.75rem; line-height: 1.2; }
+
+/* the name as a poster */
+.k-pc-writing .k-pc-writing-hero { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.k-pc-writing .k-pc-writing-new { padding: 7px 12px 6px; border: 1.5px solid var(--pc-ink); border-radius: 999px; }
+.k-pc-writing .k-pc-writing-name { margin-top: 6px; font-size: max(1rem, min(3.75rem, calc(32rem / var(--pc-n, 9)))); line-height: .92; text-wrap: balance; }
+.k-pc-writing .k-pc-writing-taste { font: 600 1.125rem/1.3 var(--kd); letter-spacing: -.01em; overflow-wrap: anywhere; }
+.k-pc-writing .k-pc-writing-for { font: 600 0.75rem/1.5 var(--mono); letter-spacing: .06em; text-transform: uppercase; overflow-wrap: anywhere; text-wrap: balance; }
+
+/* the sign: a chalkboard with a stitched edge and four screws; data-s is 1 for a very short sign, 2 for a short one, 3 for the rest */
+.k-pc-writing .k-pc-writing-board { position: relative; padding: 36px 32px; border-radius: 18px; background: #14181F; color: #FBF8F2; text-align: center; font: 700 1.5rem/1.2 var(--kd); letter-spacing: -.02em; overflow-wrap: anywhere; text-wrap: balance; }
+.k-pc-writing .k-pc-writing-board[data-s='1'] { font-size: 2.25rem; line-height: 1.1; }
+.k-pc-writing .k-pc-writing-board[data-s='2'] { font-size: 1.75rem; line-height: 1.15; }
+.k-pc-writing .k-pc-writing-board::before { content: ''; position: absolute; inset: 9px; border: 2px dashed rgba(251, 248, 242, .5); border-radius: 11px; pointer-events: none; }
+.k-pc-writing .k-pc-writing-board::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 21px 21px, rgba(251, 248, 242, .5) 0 2.5px, transparent 3px), radial-gradient(circle at calc(100% - 21px) 21px, rgba(251, 248, 242, .5) 0 2.5px, transparent 3px), radial-gradient(circle at 21px calc(100% - 21px), rgba(251, 248, 242, .5) 0 2.5px, transparent 3px), radial-gradient(circle at calc(100% - 21px) calc(100% - 21px), rgba(251, 248, 242, .5) 0 2.5px, transparent 3px); }
+
+/* the first post: a white card with its avatar, a square picture, three shapes and the caption */
+.k-pc-writing .k-pc-writing-post { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 12px; border-radius: 18px; background: #fff; color: #14181F; box-shadow: 0 0 0 1px rgba(20, 24, 31, .1), 0 16px 26px -18px rgba(20, 24, 31, .6); }
+.k-pc-writing .k-pc-writing-ph { display: flex; align-items: center; gap: 10px; }
+.k-pc-writing .k-pc-writing-av { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--pc-bg); color: var(--pc-ink); box-shadow: inset 0 0 0 1px rgba(20, 24, 31, .14); font: 800 0.8125rem/1 var(--kd); letter-spacing: -.02em; }
+.k-pc-writing .k-pc-writing-ph b { display: block; font: 700 0.9375rem/1.2 var(--kd); }
+.k-pc-writing .k-pc-writing-ph small { display: block; color: #5A6478; font: 500 0.75rem/1.2 var(--kd); }
+.k-pc-writing .k-pc-writing-pic { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; box-sizing: border-box; aspect-ratio: 1 / 1; padding: 16px; border-radius: 12px; background: var(--pc-bg); color: var(--pc-ink); }
+.k-pc-writing .k-pc-writing-pic::before { content: ''; position: absolute; top: -14%; right: -12%; width: 70%; aspect-ratio: 1 / 1; border-radius: 50%; background: var(--pc-shine); }
+.k-pc-writing .k-pc-writing-pt { position: relative; font: 600 0.75rem/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.k-pc-writing .k-pc-writing-pn { position: relative; font: 800 1rem/.95 var(--kd); font-size: max(0.875rem, min(2.75rem, calc(24rem / var(--pc-n, 9)))); letter-spacing: -.05em; overflow-wrap: anywhere; text-wrap: balance; }
+.k-pc-writing .k-pc-writing-ico { display: flex; gap: 14px; }
+.k-pc-writing .k-pc-writing-i { display: block; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.k-pc-writing .k-pc-writing-cap { font: 500 0.9375rem/1.45 var(--kd); overflow-wrap: anywhere; white-space: pre-line; } /* the caption keeps the line breaks the person typed */

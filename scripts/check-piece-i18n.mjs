@@ -12,7 +12,8 @@ const entry = ['i18n', 'pieces', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv'].map
 const { text } = buildSync({ stdin: { contents: entry, resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false, logLevel: 'silent' }).outputFiles[0];
 const { IT, DE, FR, NL, SV, CLASHES } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 
-const written = (k) => source.includes(k) || source.includes(k.replace(/'/g, "\\'")) || source.includes(k.replace(/"/g, '\\"'));
+// A text belongs to a file when it is written there as a quoted string (not merely found inside a comment).
+const written = (k) => source.includes(`'${k.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`) || source.includes(`"${k.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`) || source.includes('`' + k + '`');
 const keys = Object.keys(IT).filter(written);
 const blanks = (t) => [...t.matchAll(/\{\w+\}|href="[^"]*"/g)].map((m) => m[0]).sort().join(' ');
 let bad = 0;
