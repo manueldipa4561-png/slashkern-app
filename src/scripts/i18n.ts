@@ -33,6 +33,8 @@ export const IT: Record<string, string> = {
         'Text size': 'Dimensione del testo',
         "Slash's voice": "La voce di Slash",
         'Default voice': 'Voce predefinita',
+        "Slash's own voice": "La voce originale di Slash",
+        "Slash's own voice sends the question to our voice provider (ElevenLabs) to make the audio.": "La voce originale di Slash invia la domanda al nostro fornitore di voce (ElevenLabs) per creare l’audio.",
         'Small': 'Piccolo',
         'Default': 'Normale',
         'Large': 'Grande',

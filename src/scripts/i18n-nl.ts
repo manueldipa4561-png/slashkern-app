@@ -37,6 +37,8 @@ const NL_GEN: Record<string, string> = {
   "Text size": "Tekstgrootte",
   "Slash's voice": "Stem van Slash",
   "Default voice": "Standaardstem",
+  "Slash's own voice": "Slashs eigen stem",
+  "Slash's own voice sends the question to our voice provider (ElevenLabs) to make the audio.": "Slashs eigen stem stuurt de vraag naar onze stemaanbieder (ElevenLabs) om de audio te maken.",
   "Small": "Klein",
   "Default": "Standaard",
   "Large": "Groot",

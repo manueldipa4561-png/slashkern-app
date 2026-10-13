@@ -2380,7 +2380,7 @@ $('kMicOk').addEventListener('click', () => {
 });
 $('kMicNo').addEventListener('click', () => { micGo = null; dismiss(kMic); });
 const addListen = (p: HTMLElement, text: string) => { const b = listenButton(text); if (b) p.append(b); }; // a small Listen button on an assistant question
-bindVoicePicker($('kVoRow'), $('kVoice') as HTMLSelectElement); // Settings: which of the phone's voices reads Slash's questions
+bindVoicePicker($('kVoRow'), $('kVoice') as HTMLSelectElement, $('kVoNote')); // Settings: which of the phone's voices reads Slash's questions
 attachMic(kTa, 'inside'); attachMic(kF2Ta, 'inside'); attachMic($<HTMLTextAreaElement>('kCoTa'), 'inside'); attachMic(inEl, 'after', inEl.closest('.k-comp') ?? undefined);
 
 // "Make a first version with AI" (make.ts, mode 'make' of the coach function): at the end of a project, only when the person asks, from the idea they wrote. The assistant itself keeps asking questions only.

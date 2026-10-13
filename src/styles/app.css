@@ -1549,6 +1549,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 /* the language menu in Settings (one control for any number of languages) */
 .k-select { appearance: none; -webkit-appearance: none; min-height: 44px; min-width: 9.5rem; padding: 0 2.25rem 0 .875rem; border: 1.5px solid var(--edge, #C9D1E6); border-radius: 12px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%230E1B3D' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right .875rem center; color: var(--fg, #0E1B3D); font: 600 .9375rem 'Geist Variable', system-ui, sans-serif; }
 .k-select:focus-visible { outline: 2px solid var(--acc, #2D4BFF); outline-offset: 2px; }
+#kVoNote { flex-basis: 100%; margin: 0; }
 #kVoice { width: 11rem; max-width: 100%; text-overflow: ellipsis; } /* voice names vary in length: a fixed width keeps the menu on the label's row */
 
 /* v12 components (12 Oct), from the SideShift / Cluely / Handshake / Duolingo study, adapted to the navy system: one accent, no glows, no points.

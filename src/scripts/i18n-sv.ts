@@ -37,6 +37,8 @@ const SV_GEN: Record<string, string> = {
   "Text size": "Textstorlek",
   "Slash's voice": "Slashs röst",
   "Default voice": "Standardröst",
+  "Slash's own voice": "Slashs egen röst",
+  "Slash's own voice sends the question to our voice provider (ElevenLabs) to make the audio.": "Slashs egen röst skickar frågan till vår röstleverantör (ElevenLabs) för att skapa ljudet.",
   "Small": "Liten",
   "Default": "Standard",
   "Large": "Stor",

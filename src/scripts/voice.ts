@@ -94,45 +94,99 @@ function chosenVoice(): SpeechSynthesisVoice | undefined {
   let id = ''; try { id = localStorage.getItem(voiceKey()) || ''; } catch { /* the default voice */ }
   return id ? voicesHere().find((v) => v.voiceURI === id) : undefined;
 }
-let picker: { row: HTMLElement; sel: HTMLSelectElement } | null = null;
+let picker: { row: HTMLElement; sel: HTMLSelectElement; note: HTMLElement } | null = null;
+// Slash's own voice (the server function /api/speak, ElevenLabs): offered only when its ping answers "live", chosen on purpose, and kept per language like the phone voices.
+const SLASH = 'slash:'; // saved as slash:a or slash:b (plain "slash" is how an earlier build saved the one voice)
+const SLASH_NAMES = { a: 'Josh', b: 'Rachel' } as const; // the two voices the server offers (speak.mts)
+let slashOk = false;
+const stored = () => { try { return localStorage.getItem(voiceKey()) || ''; } catch { return ''; } };
+const slashPick = (): 'a' | 'b' | '' => { const v = stored(); if (!slashOk) return ''; if (v === 'slash' || v === 'slash:a') return 'a'; return v === 'slash:b' ? 'b' : ''; };
+const wantsSlash = () => slashPick() !== '';
 function fillPicker() {
   if (!picker) return;
   const list = voicesHere();
-  picker.sel.replaceChildren(new Option(voice.tr('Default voice'), ''), ...list.map((v) => new Option(v.name, v.voiceURI)));
-  picker.sel.value = chosenVoice()?.voiceURI ?? '';
-  picker.row.hidden = list.length < 2; // one voice is no choice
+  picker.sel.replaceChildren(new Option(voice.tr('Default voice'), ''), ...(slashOk ? (['a', 'b'] as const).map((k) => new Option(`${voice.tr("Slash's own voice")} · ${SLASH_NAMES[k]}`, SLASH + k)) : []), ...list.map((v) => new Option(v.name, v.voiceURI)));
+  picker.sel.value = wantsSlash() ? SLASH + slashPick() : chosenVoice()?.voiceURI ?? '';
+  picker.note.hidden = !wantsSlash(); // the one line that says where the text goes
+  picker.row.hidden = list.length < 2 && !slashOk; // one voice is no choice
 }
-export function bindVoicePicker(row: HTMLElement, sel: HTMLSelectElement) {
-  picker = { row, sel };
+// Once per page load: a free call that says whether the site has a working voice key. No speech is made.
+async function pingSlash() {
+  try {
+    const r = await fetch('/api/speak', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ mode: 'ping' }), signal: AbortSignal.timeout(6000) });
+    slashOk = r.ok && (await r.json().catch(() => null))?.reply === 'live';
+  } catch { slashOk = false; }
+  fillPicker();
+}
+export function bindVoicePicker(row: HTMLElement, sel: HTMLSelectElement, note: HTMLElement) {
+  picker = { row, sel, note };
   sel.addEventListener('change', () => {
     try { if (sel.value) localStorage.setItem(voiceKey(), sel.value); else localStorage.removeItem(voiceKey()); } catch { /* not kept: the default voice next time */ }
     stopSpeaking();
-    const mine = chosenVoice(), u = new w.SpeechSynthesisUtterance!(voice.tr("Slash's voice")); u.lang = tag(); if (mine) u.voice = mine; // a short sample in the new voice
+    note.hidden = !sel.value.startsWith(SLASH);
+    if (sel.value.startsWith(SLASH) || !canSpeak) return; // Slash's voice is heard on a Listen button; the phone's voices get a short sample
+    const mine = chosenVoice(), u = new w.SpeechSynthesisUtterance!(voice.tr("Slash's voice")); u.lang = tag(); if (mine) u.voice = mine;
     try { window.speechSynthesis.speak(u); } catch { /* no sample */ }
   });
   if (canSpeak) window.speechSynthesis.addEventListener('voiceschanged', fillPicker); // Chrome and Safari load the voice list late
   fillPicker();
+  window.setTimeout(() => void pingSlash(), 1500); // after the page has settled
 }
 
 // Read aloud: a small "Listen" button on an assistant question. Off by default; a second tap, another button, a new screen or a language switch stops it.
 export const canSpeak = !!(w.SpeechSynthesisUtterance && 'speechSynthesis' in window);
-let speaking: HTMLButtonElement | null = null;
+let speaking: HTMLButtonElement | null = null, audio: HTMLAudioElement | null = null, abort: AbortController | null = null, audioUrl = '';
 export function stopSpeaking() {
+  abort?.abort(); abort = null;
+  if (audio) { audio.pause(); audio = null; }
+  if (audioUrl) { URL.revokeObjectURL(audioUrl); audioUrl = ''; }
   if (canSpeak) { try { window.speechSynthesis.cancel(); } catch { /* nothing to stop */ } }
   if (speaking) { speaking.setAttribute('aria-pressed', 'false'); speaking.textContent = voice.tr('Listen'); speaking.setAttribute('aria-label', voice.tr('Listen to this question')); speaking = null; }
 }
+// A device's plays of Slash's own voice a day: audio costs money, and the server has its own limit too.
+const DAY_KEY = 'kern:slash-day', DAY_MAX = 60;
+const underDayCap = () => {
+  try {
+    const [d, n] = (localStorage.getItem(DAY_KEY) || '').split(':'), today = new Date().toISOString().slice(0, 10), used = d === today ? Number(n) || 0 : 0;
+    if (used >= DAY_MAX) return false;
+    localStorage.setItem(DAY_KEY, `${today}:${used + 1}`);
+  } catch { /* no storage: the server's limit still holds */ }
+  return true;
+};
+// true: played, or stopped on purpose. false: it failed, and the phone's own voice reads the question instead.
+async function playSlash(text: string, b: HTMLButtonElement): Promise<boolean> {
+  if (!underDayCap()) return false;
+  const ctl = new AbortController(), to = window.setTimeout(() => ctl.abort(), 15000);
+  abort = ctl;
+  try {
+    const r = await fetch('/api/speak', { method: 'POST', headers: { 'content-type': 'application/json' }, signal: ctl.signal, body: JSON.stringify({ lang: voice.lang(), text, voice: slashPick() || 'a' }) });
+    if (!r.ok) { if (r.status !== 429) slashOk = false; return false; } // a busy server keeps the option; a broken key or outage hides it for this visit
+    const blob = await r.blob();
+    if (speaking !== b) return true; // stopped while it loaded
+    audioUrl = URL.createObjectURL(blob);
+    const a = new Audio(audioUrl); audio = a;
+    a.onended = a.onerror = () => { if (speaking === b) stopSpeaking(); };
+    await a.play();
+    return true;
+  } catch { return speaking !== b; } finally { clearTimeout(to); if (abort === ctl) abort = null; }
+}
 export function listenButton(text: string): HTMLButtonElement | null {
-  if (!canSpeak || !text.trim()) return null;
+  if ((!canSpeak && !slashOk) || !text.trim()) return null;
   const b = document.createElement('button');
   b.type = 'button'; b.className = 'k-listen'; b.setAttribute('aria-pressed', 'false'); b.textContent = voice.tr('Listen'); b.setAttribute('aria-label', voice.tr('Listen to this question'));
-  b.addEventListener('click', () => {
-    if (speaking === b) { stopSpeaking(); return; }
-    stopSpeaking();
+  const phone = () => {
+    if (speaking !== b || !canSpeak) { if (speaking === b) stopSpeaking(); return; }
     const u = new w.SpeechSynthesisUtterance!(text); u.lang = tag();
     const mine = chosenVoice(); if (mine) u.voice = mine; // the voice picked in Settings, else the phone's default for this language
     u.onend = u.onerror = () => { if (speaking === b) stopSpeaking(); };
-    speaking = b; b.setAttribute('aria-pressed', 'true'); b.textContent = voice.tr('Stop'); b.setAttribute('aria-label', voice.tr('Stop reading'));
     try { window.speechSynthesis.speak(u); } catch { stopSpeaking(); }
+  };
+  b.addEventListener('click', () => {
+    if (speaking === b) { stopSpeaking(); return; }
+    stopSpeaking();
+    speaking = b; b.setAttribute('aria-pressed', 'true'); b.textContent = voice.tr('Stop'); b.setAttribute('aria-label', voice.tr('Stop reading'));
+    if (wantsSlash()) void playSlash(text, b).then((done) => { if (!done) { fillPicker(); phone(); } });
+    else phone();
   });
   return b;
 }

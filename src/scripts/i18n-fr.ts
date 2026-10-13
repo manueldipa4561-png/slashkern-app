@@ -37,6 +37,8 @@ const FR_GEN: Record<string, string> = {
   "Text size": "Taille du texte",
   "Slash's voice": "Voix de Slash",
   "Default voice": "Voix par défaut",
+  "Slash's own voice": "La vraie voix de Slash",
+  "Slash's own voice sends the question to our voice provider (ElevenLabs) to make the audio.": "La vraie voix de Slash envoie la question à notre fournisseur de voix (ElevenLabs) pour créer l’audio.",
   "Small": "Petit",
   "Default": "Par défaut",
   "Large": "Grand",
