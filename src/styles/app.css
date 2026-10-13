@@ -1272,6 +1272,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 :root.light .k-scr .k-fi, :root.light .k-scr .k-ti, :root.light .k-scr .k-fl-i, :root.light .k-scr .k-ci { background: var(--fg); border: 0; box-shadow: none; }
 :root.light .k-scr .k-fi { width: 32px; height: 32px; border-radius: 11px; }
 :root.light .k-scr .k-ti { border-radius: 18px; }
+:root.light .k-scr .k-ti:has(.k-fp) { background: none; } /* a picture brings its own tile: the navy square behind it showed as a dark sliver when a selected picture tilts */
 :root.light .k-scr .k-fl-i { border-radius: 16px; }
 :root.light .k-scr .k-ci { border-radius: 14px; color: #fff; --bead: var(--accd); }
 :root.light .k-scr .k-fp { filter: none; }
