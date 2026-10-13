@@ -1,0 +1,31 @@
+/* The Prompting piece's page (src/scripts/piece-prompting.ts). Classes start with .k-pc-prompting-; sizes in rem; imported by piece.css. A prompt card in clay and paper: the job, the choices,
+   then a small chat. The prompt is in clay (it is yours); what the AI made sits in a dashed white bubble under an "AI" pill, so nobody can mistake whose part is whose.
+   The colours (--pc-bg, --pc-ink, --pc-acc, --pc-on-acc) are set on the article by the module, from the same constants the picture uses. */
+.k-pc-prompting-card .k-pc-tag, .k-pc-prompting-card .k-pc-l { font-size: 0.75rem; }
+
+.k-pc-prompting-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.k-pc-prompting-head > div { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.k-pc-prompting-bowl { flex: none; width: 2.75rem; height: 2.75rem; margin: 3px; color: var(--pc-acc); transform: rotate(-9deg); } /* a wobbly bowl, like the picture's; the margin holds the corners the tilt reaches */
+
+.k-pc-prompting-task { font: 800 1.625rem/1.1 var(--kd); letter-spacing: -.04em; overflow-wrap: anywhere; text-wrap: balance; }
+.k-pc-prompting-task::after { content: ''; display: block; width: 44px; height: 5px; margin-top: 14px; border-radius: 3px; background: var(--pc-acc); }
+
+.k-pc-prompting-chips { display: flex; flex-wrap: wrap; gap: 14px 10px; }
+.k-pc-prompting-chips li { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; max-width: 100%; }
+.k-pc-prompting-chips b { padding: 6px 14px; border: 1.5px solid var(--pc-ink); border-radius: 18px; font: 700 0.9375rem/1.25 var(--kd); overflow-wrap: anywhere; }
+
+/* The facts echo the dashes of the prompt below them. */
+.k-pc-prompting-facts li { display: flex; gap: 12px; padding: 9px 0; border-top: 1px solid color-mix(in srgb, var(--pc-ink) 20%, transparent); font: 600 0.9375rem/1.35 var(--kd); overflow-wrap: anywhere; }
+.k-pc-prompting-facts li::before { content: ''; flex: none; width: 14px; height: 3px; margin-top: .62em; border-radius: 2px; background: var(--pc-acc); }
+
+/* The chat: yours on the right in clay (monospace, the text exactly as it was sent), the AI's on the left, dashed, under its pill. */
+.k-pc-prompting-you { align-items: flex-end; }
+.k-pc-prompting-msg { align-items: flex-start; }
+.k-pc-prompting-bubble { box-sizing: border-box; max-width: 94%; margin: 0; padding: 12px 14px; border-radius: 20px 20px 20px 5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.k-pc-prompting-you .k-pc-prompting-bubble { border-radius: 20px 20px 5px 20px; background: var(--pc-acc); color: var(--pc-on-acc); font: 500 0.9rem/1.5 var(--mono); }
+.k-pc-prompting-bubble span { display: block; } /* one block per line of the prompt, so a bullet that wraps hangs its indent (2ch is the dash and its space) */
+.k-pc-prompting-li { padding-left: 2ch; text-indent: -2ch; }
+.k-pc-prompting-out { border: 1.5px dashed var(--pc-ink); background: #FFFFFF; font: 500 0.9375rem/1.5 var(--kd); }
+.k-pc-prompting-ailabel { display: flex; align-items: center; gap: 8px; }
+.k-pc-prompting-ai { padding: 3px 10px; border-radius: 999px; background: var(--pc-ink); color: var(--pc-bg); font: 800 0.75rem/1.3 var(--kd); letter-spacing: .02em; }
+.k-pc-prompting-none { padding: 12px 14px; border: 1.5px dashed var(--pc-ink); border-radius: 20px 20px 20px 5px; font: 500 0.875rem/1.45 var(--mono); overflow-wrap: anywhere; text-wrap: balance; }

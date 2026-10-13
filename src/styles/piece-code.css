@@ -1,0 +1,21 @@
+/* The Code piece's page (src/scripts/piece-code.ts): a browser window in the person's theme and letters, on a desk the colour of the accent. Classes start with .k-pc-code-; sizes in rem; imported by piece.css.
+   The theme arrives as custom properties on the article: --cw-bg (the page), --cw-ink, --cw-acc, --cw-on (ink on the accent), --cw-card, --cw-tint (the top box), --cw-line, --cw-dot, --cw-mute, and the
+   letters: --cw-font, --cw-weight, --cw-track, --cw-r (round corners), --cw-btn (the button's), --cw-caps, --cw-ctrack and --cw-sub (italic or not). --pc-bg and --pc-ink are the desk. */
+.k-pc-code-win { overflow: hidden; border-radius: 14px; background: var(--cw-bg); color: var(--cw-ink); font-family: var(--cw-font); box-shadow: 0 0 0 1px rgba(0, 0, 0, .07), 0 22px 30px -18px rgba(0, 0, 0, .6); }
+.k-pc-code-bar { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-bottom: 1px solid var(--cw-line); background: var(--cw-card); }
+.k-pc-code-dots { display: flex; flex: none; gap: 5px; }
+.k-pc-code-dots i { display: block; width: 9px; height: 9px; border-radius: 50%; background: var(--cw-dot); }
+.k-pc-code-url { flex: 1; min-width: 0; padding: 4px 10px; border-radius: 999px; background: var(--cw-bg); color: var(--cw-mute); font: 500 0.75rem/1.3 var(--mono); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.k-pc-code-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2px 14px; padding: 12px 16px 6px; }
+.k-pc-code-brand { font: var(--cw-weight) 1.0625rem/1.2 var(--cw-font); letter-spacing: var(--cw-track); }
+.k-pc-code-links { display: flex; flex-wrap: wrap; gap: 2px 12px; font: 600 0.75rem/1.4 var(--cw-font); text-transform: var(--cw-caps); letter-spacing: var(--cw-ctrack); }
+.k-pc-code-hero { display: flex; flex-direction: column; gap: 10px; margin: 6px 12px 0; padding: 20px 16px 0; overflow: hidden; border-radius: var(--cw-r); background: var(--cw-tint); }
+.k-pc-code-h { font: var(--cw-weight) 1.875rem/1.05 var(--cw-font); letter-spacing: var(--cw-track); overflow-wrap: anywhere; text-wrap: balance; }
+.k-pc-code-sub { font: 500 0.9375rem/1.4 var(--cw-font); font-style: var(--cw-sub); color: var(--cw-mute); text-wrap: balance; }
+.k-pc-code-btn { align-self: flex-start; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; max-width: 100%; min-height: 44px; margin: 6px 0 0; padding: 10px 22px; border-radius: var(--cw-btn); background: var(--cw-acc); color: var(--cw-on); font: 700 1rem/1.2 var(--cw-font); text-align: center; text-transform: var(--cw-caps); letter-spacing: var(--cw-ctrack); overflow-wrap: anywhere; }
+.k-pc-code-art { display: block; width: calc(100% + 32px); height: auto; margin: 0 -16px; }
+.k-pc .k-pc-code-cards { display: flex; flex-direction: column; gap: 10px; padding: 12px; }
+.k-pc-code-card { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); gap: 12px; padding: 14px; border: 1px solid var(--cw-line); border-radius: calc(var(--cw-r) * .7); background: var(--cw-card); }
+.k-pc-code-ic { display: block; width: 2.5rem; height: 2.5rem; }
+.k-pc-code-ct { font: var(--cw-weight) 1.0625rem/1.2 var(--cw-font); letter-spacing: var(--cw-track); overflow-wrap: anywhere; }
+.k-pc .k-pc-code-cp { margin-top: 4px; font: 400 0.9rem/1.45 var(--cw-font); text-wrap: balance; }

@@ -6,7 +6,7 @@ import { buildSync } from 'esbuild';
 import { PER_ROUND as STATS_PER_ROUND } from './stats-core.mjs';
 
 // The data files import each other without extensions, so bundle them in memory instead of importing directly.
-const entry = ['fields', 'missions', 'helps', 'easy', 'i18n', 'next', 'sponsors', 'loot', 'demo', 'play', 'fieldinfo', 'coopask', 'projects', 'trending', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
+const entry = ['fields', 'missions', 'helps', 'easy', 'i18n', 'next', 'sponsors', 'loot', 'demo', 'play', 'fieldinfo', 'coopask', 'projects', 'trending', 'pieces', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
 const { text } = buildSync({ stdin: { contents: entry, resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false }).outputFiles[0];
 const { FIELDS, MX, HELPS, EASY, IT, DE, FR, NL, SV, CLASHES, PER_ROUND, TREND_FROM, TRENDING, SPONSORS, RELICS, SAMPLE_ANSWERS, SAMPLE_IDEA, sampleChat, swapSample, PLAY } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 

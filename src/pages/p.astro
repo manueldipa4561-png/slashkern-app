@@ -1,0 +1,38 @@
+---
+import '@fontsource-variable/geist';
+import '../styles/piece.css';
+// The page a piece's share link opens (src/scripts/pieces.ts pieceLink): /p/#<the piece>. The piece rides in the part after the #, so it never reaches a server; public-page.ts reads it.
+const MARK = '<img src="/brand/mark.svg" width="235" height="271" alt="" />';
+// A link preview (chat apps, social) is read without running the page, so it cannot show the piece itself: it says what a piece is. The image needs a full address (Netlify gives the site's address as URL while it builds).
+const site = (process.env.URL ?? '').replace(/\/$/, '');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>slashkern</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#F5F7FF" />
+    <meta name="description" content="A piece made on slashkern: small choices, step by step, that end in one page to show. Every choice is the maker's." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="A piece made on slashkern" />
+    <meta property="og:description" content="Small choices, step by step, that end in one page to show. Every choice is the maker's." />
+    <meta property="og:image" content={`${site}/og.jpg`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.ico?v=slash2" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg?v=slash2" type="image/svg+xml" />
+  </head>
+  <body class="pub-body">
+    <main class="pub" id="pub">
+      <header class="pub-top"><a class="pub-logo" href="/"><span set:html={MARK} /><span>slashke<span class="k-rn">r</span>n</span></a></header>
+      <div id="pubSheet"></div>
+      <details class="pub-how" id="pubHow" hidden><summary></summary><div id="pubHowB"></div></details>
+      <p class="pub-note" id="pubNote"></p>
+      <a class="pub-cta" id="pubCta" href="/"></a>
+    </main>
+    <script>import '../scripts/public-page';</script>
+  </body>
+</html>
