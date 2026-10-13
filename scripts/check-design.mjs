@@ -56,7 +56,7 @@ assert.ok(/theme: 'light',/.test(appSrc) && !/data-k-theme|\.kTheme|'dark'/.test
 const markSvg = readFileSync('public/brand/mark.svg', 'utf8'), body = markSvg.match(/<path d="([^"]+)" fill="#0E1B3D"/)?.[1];
 assert.ok(body && readFileSync('public/brand/mark-rev.svg', 'utf8').includes(body), 'public/brand: mark.svg (navy body) and mark-rev.svg (the same body, reversed)');
 assert.ok(page.includes(`const MARK = '<img class="k-lg" src="/brand/mark.svg"`) && page.includes(`const MARK_REV = '<img class="k-lg" src="/brand/mark-rev.svg"`), 'index.astro: MARK and MARK_REV are the two brand images');
-assert.ok(/<div class="k-logo"><span class="k-lgw" set:html=\{MARK\} \/>slashkern<\/div>/.test(page), 'index.astro: the header is the mark and "slashkern"');
+assert.ok(/<div class="k-logo"><span class="k-lgw" set:html=\{MARK\} \/><span>slashke<span class="k-rn">r<\/span>n<\/span><\/div>/.test(page), 'index.astro: the header is the mark and "slashkern" (r and n spaced)');
 assert.ok(/class="k-fs k-f0"[^]*?set:html=\{MARK_REV\}/.test(page) && /class="k-kt"><span class="k-lgw" set:html=\{MARK_REV\}/.test(page), 'index.astro: the navy welcome screen and the Slash card show the reversed mark');
 assert.ok(!page.includes('M7 29A25 25 0 0 1 57 29Z') && !/>\s*kern\s*</.test(page) && !/kern<i>\.<\/i>/.test(page) && !page.includes('mark.webp'), 'index.astro: no slit disc, no "kern" wordmark left');
 assert.match(readFileSync('public/manifest.webmanifest', 'utf8'), /"name": "slashkern",\s*"short_name": "slashkern"[\s\S]*"background_color": "#0E1B3D"[\s\S]*"theme_color": "#0E1B3D"/, 'manifest: slashkern, navy background and theme colour');
