@@ -42,7 +42,8 @@ if (!MOCK && !existsSync(statePath)) writeFileSync(statePath, JSON.stringify({
 const als = new AsyncLocalStorage(), realFetch = globalThis.fetch;
 const mockUpstream = (init) => {
   const body = JSON.parse(init.body), last = body.messages[body.messages.length - 1].content;
-  const c = cases.find((x) => last.includes(x.messages[x.messages.length - 1].t.replace(/[<>]/g, '')));
+  const textOf = (x) => x.messages[x.messages.length - 1].t.replace(/[<>]/g, '');
+  const c = cases.filter((x) => last.includes(textOf(x))).sort((a, b) => textOf(b).length - textOf(a).length)[0]; // the longest match: "ok" is inside "book"
   const text = NULL_MOCK ? 'Great idea! Here is a finished version you can use: Friday dinner, big red word, done.' : c.oracle;
   return new Response(JSON.stringify({ model: body.model, content: [{ type: 'text', text }], stop_reason: 'end_turn', usage: { input_tokens: 500, output_tokens: 40 } }), { status: 200 });
 };
@@ -82,9 +83,11 @@ const WORDS = { // a few common words per language: the reply is in the language
   en: /\b(the|and|what|you|your|is|to|of|a|how|which|first|it|that|for|are|with|one)\b/gi,
   de: /\b(der|die|das|und|ist|du|dein|deine|nicht|was|wie|welche[nrs]?|mit|für|ein|eine[nrm]?|zu|es|ich|auf|den|dem|wer|zuerst)\b/gi,
   fr: /\b(le|les|et|est|tu|ton|ta|tes|pas|que|quoi|comment|quel(le)?s?|avec|pour|une|du|des|ce|qui|en|d'abord)\b/gi,
+  nl: /\b(de|het|een|je|jij|jouw|niet|wat|hoe|welke|met|voor|van|dat|dit|eerst|ik|zijn|bij|dan|hij|zij|toen|ook|maar|er|naar)\b/gi, // no "is" or "en": they are English and French words too
+  sv: /\b(och|är|det|ett|inte|vad|hur|vilken|vilket|vilka|med|för|som|på|att|först|jag|han|hon|dig|din|ditt|när|om)\b/gi, // no "du", "den", "dem" or "en": they are French or German words too
 };
 const replyLang = (c) => c.reply_lang ?? c.lang; // the person's language when the case says so (reply_lang), else the app language
-const LANG_NAME = { en: 'English', it: 'Italian', de: 'German', fr: 'French' };
+const LANG_NAME = { en: 'English', it: 'Italian', de: 'German', fr: 'French', nl: 'Dutch', sv: 'Swedish' };
 const langOk = (r, lang) => { if (!r) return 0; const n = Object.fromEntries(Object.entries(WORDS).map(([l, re]) => [l, (r.match(re) || []).length])); return Object.entries(n).every(([l, k]) => l === lang || n[lang] > k) ? 1 : 0; };
 
 // --- judge (a different, stronger model than the one under test; replies are untrusted data) ---

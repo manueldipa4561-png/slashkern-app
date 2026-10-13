@@ -2,7 +2,7 @@
 
 The app calls this AI the assistant (until 2026-10-12 it was called the coach). Its file `netlify/functions/coach.mts`, the route `/api/coach`, the `mode` names, the `evals/coach` folder and the `eval:coach` scripts keep the old name on purpose.
 
-Measures the assistant (`netlify/functions/coach.mts`) on 40 made-up conversations in English and Italian (plus one German and one French message): normal drafts, requests for the answer, being stuck, off-topic talk, prompt injection, distress the word list catches, distress it misses, and a message in another language than the app's. The real function runs on every case, so the word list, the input limits and the "no question, no reply" rule are all in the loop.
+Measures the assistant (`netlify/functions/coach.mts`) on 149 made-up conversations (71 hand-written, 78 added 2026-10-13 from the 42 real missions: a normal, weak, stuck, answer-seeking, off-topic or injection message per mission, German and French field-only cases, four distress cases the word list misses, and 20 Dutch and Swedish cases with the app's own translated briefs): normal drafts, requests for the answer, being stuck, off-topic talk, prompt injection, distress the word list catches, distress it misses, and a message in another language than the app's. The real function runs on every case, so the word list, the input limits and the "no question, no reply" rule are all in the loop.
 
 ## Run it
 
