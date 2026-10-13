@@ -29,7 +29,7 @@ import * as stats from './stats';
 import { akey, ver, stamp, mergeAnswers, type Tomb } from './sync';
 import { inTime, clampCount, cleanAi, cleanName } from './valid';
 import { canMake, countMake, makeBody, makesLeft, parseMake, type MakeBody, type MakeResult, type Pair as QaPair } from './make';
-import { attachMic, listenButton, refreshVoice, stopSpeaking, voice } from './voice';
+import { attachMic, bindVoicePicker, listenButton, refreshVoice, stopSpeaking, voice } from './voice';
 import { slash, type Mood, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX } from './slash';
 import { PIECES, PIECE_AT, cleanRuns, type Piece, type Run } from './pieces';
 import { initPieces, type RunReply } from './pieces-ui';
@@ -2380,6 +2380,7 @@ $('kMicOk').addEventListener('click', () => {
 });
 $('kMicNo').addEventListener('click', () => { micGo = null; dismiss(kMic); });
 const addListen = (p: HTMLElement, text: string) => { const b = listenButton(text); if (b) p.append(b); }; // a small Listen button on an assistant question
+bindVoicePicker($('kVoRow'), $('kVoice') as HTMLSelectElement); // Settings: which of the phone's voices reads Slash's questions
 attachMic(kTa, 'inside'); attachMic(kF2Ta, 'inside'); attachMic($<HTMLTextAreaElement>('kCoTa'), 'inside'); attachMic(inEl, 'after', inEl.closest('.k-comp') ?? undefined);
 
 // "Make a first version with AI" (make.ts, mode 'make' of the coach function): at the end of a project, only when the person asks, from the idea they wrote. The assistant itself keeps asking questions only.

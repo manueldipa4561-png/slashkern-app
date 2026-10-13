@@ -80,7 +80,39 @@ export function attachMic(field: HTMLInputElement | HTMLTextAreaElement, placeme
   return m;
 }
 // A language switch relabels the buttons and the tips.
-export const refreshVoice = () => { mics.forEach((m) => { const on = m.btn.getAttribute('aria-pressed') === 'true'; m.btn.setAttribute('aria-label', voice.tr(on ? 'Stop listening' : 'Talk instead of typing')); m.tip.textContent = voice.tr(TIP); }); paint(); };
+export const refreshVoice = () => { mics.forEach((m) => { const on = m.btn.getAttribute('aria-pressed') === 'true'; m.btn.setAttribute('aria-label', voice.tr(on ? 'Stop listening' : 'Talk instead of typing')); m.tip.textContent = voice.tr(TIP); }); paint(); fillPicker(); };
+
+// Slash's voice: the voices this phone has for the app language, as one menu in Settings. The pick is kept on this device (voices belong to the device) and the Listen buttons use it.
+const voiceKey = () => `kern:voice:${voice.lang()}`;
+const voicesHere = (): SpeechSynthesisVoice[] => {
+  if (!canSpeak) return [];
+  const base = tag().slice(0, 2).toLowerCase();
+  return window.speechSynthesis.getVoices().filter((v) => v.lang.toLowerCase().replace('_', '-').startsWith(base) && !NOVELTY.test(v.name));
+};
+const NOVELTY = /^(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox)\b/; // macOS joke voices: not a voice for a coach
+function chosenVoice(): SpeechSynthesisVoice | undefined {
+  let id = ''; try { id = localStorage.getItem(voiceKey()) || ''; } catch { /* the default voice */ }
+  return id ? voicesHere().find((v) => v.voiceURI === id) : undefined;
+}
+let picker: { row: HTMLElement; sel: HTMLSelectElement } | null = null;
+function fillPicker() {
+  if (!picker) return;
+  const list = voicesHere();
+  picker.sel.replaceChildren(new Option(voice.tr('Default voice'), ''), ...list.map((v) => new Option(v.name, v.voiceURI)));
+  picker.sel.value = chosenVoice()?.voiceURI ?? '';
+  picker.row.hidden = list.length < 2; // one voice is no choice
+}
+export function bindVoicePicker(row: HTMLElement, sel: HTMLSelectElement) {
+  picker = { row, sel };
+  sel.addEventListener('change', () => {
+    try { if (sel.value) localStorage.setItem(voiceKey(), sel.value); else localStorage.removeItem(voiceKey()); } catch { /* not kept: the default voice next time */ }
+    stopSpeaking();
+    const mine = chosenVoice(), u = new w.SpeechSynthesisUtterance!(voice.tr("Slash's voice")); u.lang = tag(); if (mine) u.voice = mine; // a short sample in the new voice
+    try { window.speechSynthesis.speak(u); } catch { /* no sample */ }
+  });
+  if (canSpeak) window.speechSynthesis.addEventListener('voiceschanged', fillPicker); // Chrome and Safari load the voice list late
+  fillPicker();
+}
 
 // Read aloud: a small "Listen" button on an assistant question. Off by default; a second tap, another button, a new screen or a language switch stops it.
 export const canSpeak = !!(w.SpeechSynthesisUtterance && 'speechSynthesis' in window);
@@ -97,6 +129,7 @@ export function listenButton(text: string): HTMLButtonElement | null {
     if (speaking === b) { stopSpeaking(); return; }
     stopSpeaking();
     const u = new w.SpeechSynthesisUtterance!(text); u.lang = tag();
+    const mine = chosenVoice(); if (mine) u.voice = mine; // the voice picked in Settings, else the phone's default for this language
     u.onend = u.onerror = () => { if (speaking === b) stopSpeaking(); };
     speaking = b; b.setAttribute('aria-pressed', 'true'); b.textContent = voice.tr('Stop'); b.setAttribute('aria-label', voice.tr('Stop reading'));
     try { window.speechSynthesis.speak(u); } catch { stopSpeaking(); }

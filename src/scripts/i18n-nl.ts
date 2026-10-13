@@ -35,6 +35,8 @@ const NL_GEN: Record<string, string> = {
   "<a href=\"/about/\">About</a> · <a href=\"/privacy/\">Privacy</a> · <a href=\"/terms/\">Terms</a> · slashkern 1.0": "<a href=\"/about/\">Over ons</a> · <a href=\"/privacy/\">Privacy</a> · <a href=\"/terms/\">Voorwaarden</a> · slashkern 1.0",
   "Done.": "Klaar.",
   "Text size": "Tekstgrootte",
+  "Slash's voice": "Stem van Slash",
+  "Default voice": "Standaardstem",
   "Small": "Klein",
   "Default": "Standaard",
   "Large": "Groot",

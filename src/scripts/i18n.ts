@@ -31,6 +31,8 @@ export const IT: Record<string, string> = {
         '<a href="/about/">About</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · slashkern 1.0': '<a href="/about/">Info</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Termini</a> · slashkern 1.0',
         'Done.': 'Fatto.',
         'Text size': 'Dimensione del testo',
+        "Slash's voice": "La voce di Slash",
+        'Default voice': 'Voce predefinita',
         'Small': 'Piccolo',
         'Default': 'Normale',
         'Large': 'Grande',

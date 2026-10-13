@@ -35,6 +35,8 @@ const SV_GEN: Record<string, string> = {
   "<a href=\"/about/\">About</a> · <a href=\"/privacy/\">Privacy</a> · <a href=\"/terms/\">Terms</a> · slashkern 1.0": "<a href=\"/about/\">Om</a> · <a href=\"/privacy/\">Integritet</a> · <a href=\"/terms/\">Villkor</a> · slashkern 1.0",
   "Done.": "Klart.",
   "Text size": "Textstorlek",
+  "Slash's voice": "Slashs röst",
+  "Default voice": "Standardröst",
   "Small": "Liten",
   "Default": "Standard",
   "Large": "Stor",

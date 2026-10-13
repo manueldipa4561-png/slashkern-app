@@ -35,6 +35,8 @@ const FR_GEN: Record<string, string> = {
   "<a href=\"/about/\">About</a> · <a href=\"/privacy/\">Privacy</a> · <a href=\"/terms/\">Terms</a> · slashkern 1.0": "<a href=\"/about/\">À propos</a> · <a href=\"/privacy/\">Confidentialité</a> · <a href=\"/terms/\">Conditions</a> · slashkern 1.0",
   "Done.": "C'est fait.",
   "Text size": "Taille du texte",
+  "Slash's voice": "Voix de Slash",
+  "Default voice": "Voix par défaut",
   "Small": "Petit",
   "Default": "Par défaut",
   "Large": "Grand",
