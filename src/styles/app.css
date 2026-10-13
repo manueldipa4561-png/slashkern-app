@@ -1554,3 +1554,6 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 #kXSteps .k-tk.on:not(:last-child)::after { background: var(--acc); }
 /* points were cut in v2: no "+25" on any task */
 .k-tk.tw::after { content: none; }
+
+/* Wordmark: a hair of space between r and n, so the tight "rn" never reads as "m" (slashkem) */
+.k-rn { letter-spacing: -.025em; }
