@@ -43,11 +43,11 @@
       "label": "Pick a piece or a short project to make next"
     },
     {
-      "src": "/screenshots/mission.webp",
+      "src": "/screenshots/piece.webp",
       "sizes": "780x1688",
       "type": "image/webp",
       "form_factor": "narrow",
-      "label": "Make it one step at a time, with Slash to help"
+      "label": "Finish a piece and get a page you can show"
     },
     {
       "src": "/screenshots/kerncard.webp",
