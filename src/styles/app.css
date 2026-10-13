@@ -1157,7 +1157,8 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-scr h5, .k-card h5 { font-weight: 700; letter-spacing: -.035em; }
 #k-missions h4 { font: 700 clamp(2.375rem, 10.5vw, 3.5rem)/1.02 var(--kd); letter-spacing: -.045em; overflow-wrap: anywhere; hyphens: auto; } /* the Home hero: the one big line, Geist, heavy and tight */
 @media (min-width: 600px) { #k-missions h4 { font-size: 3.75rem; } }
-.k-tile span, .k-fchip span { overflow-wrap: anywhere; hyphens: auto; } /* the longer category names (Websites and small tools, Posts und Bildunterschriften) wrap inside a tile */
+.k-tile span, .k-fchip span { overflow-wrap: anywhere; hyphens: manual; text-wrap: balance; } /* names wrap at spaces (no "lo-ghi"); only a word too long for the tile (Bildunterschriften) breaks */
+:is(:lang(de), :lang(nl), :lang(sv)) :is(.k-tile, .k-fchip) span { hyphens: auto; } /* long compound words (Bildunterschriften, Produktanzeigen) break with a hyphen */
 .k-l { font: 600 0.8125rem/1.35 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; text-transform: none; } /* labels: sentence case, no mono, no capitals */
 .k-mdot, .k-how b, .k-mt b { font-style: normal; font-weight: 600; }
 .k-mt b { font-size: 1.375rem; font-weight: 700; }
