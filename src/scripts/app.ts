@@ -32,7 +32,7 @@ import { canMake, countMake, makeBody, makesLeft, parseMake, type MakeBody, type
 import { attachMic, listenButton, refreshVoice, stopSpeaking, voice } from './voice';
 import { slash, type Mood, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX } from './slash';
 import { cleanRuns, type Run } from './pieces';
-import { initPieces } from './pieces-ui';
+import { initPieces, type RunReply } from './pieces-ui';
 
 type Again = 'yes' | 'maybe' | 'no';
 type Refl = { e?: Feel; again?: Again; hard?: string; tip?: string; sid?: number }; // sid: the tip's shared sign, if published
@@ -2463,8 +2463,17 @@ const makeF = makePanel($('kMakeF'), {
 });
 
 // Pieces (pieces.ts): five small steps that end in one page to show. The screens are pieces-ui.ts; Slash's question in a step is the same one the first run uses (slashAsk).
+// The AI's answer to the prompt a piece sends (the Prompting piece): the safeguards of "Try your prompt on the AI" apply: distress words are never sent, 5 tries a day, plain text back.
+const runPiece = async (prompt: string): Promise<RunReply> => {
+  if (prompt.length < RUN_MIN || prompt.length > RUN_MAX) return { ok: false, why: 'long' };
+  if (HEAVY.test(prompt)) return { ok: false, why: 'pause', text: tr(HEAVY_REPLY) };
+  if ((runsToday().piece || 0) >= RUN_DAY) return { ok: false, why: 'day' };
+  countRun('piece');
+  const reply = await postCoach({ mode: 'run', lang: S.lang, field: 'Prompting', prompt });
+  return reply ? { ok: true, text: reply } : { ok: false, why: 'offline' };
+};
 piecesUi.render = initPieces({
-  S, tr, fill, save, say, land, once, when, ask: slashAsk,
+  S, tr, fill, save, say, land, once, when, ask: slashAsk, run: runPiece,
   setName: (v) => { S.name = cleanName(v); save(); renderMe(); },
   share: (title, text, url) => { void shareText(title, text, url, 'Link copied.'); },
 }).render;

@@ -1594,3 +1594,18 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-bn input { width: 100%; box-sizing: border-box; min-height: 48px; padding: 10px 14px; border: 1px solid var(--line2); border-radius: 14px; background: #fff; color: var(--fg); font: 500 1rem/1.4 var(--kd); }
 .k-bn input:focus-visible { outline: 2px solid var(--acc); outline-offset: 1px; }
 #kBLink { align-self: stretch; justify-content: center; }
+/* A beat (a piece's step of kind beat): three rows of 8 steps, and the AI step (a prompt, a button, what came back). */
+.k-bo.beat { gap: 12px; }
+.k-beat { display: flex; flex-direction: column; gap: 10px; }
+.k-beat-row { display: grid; grid-template-columns: 4.5rem repeat(8, minmax(0, 1fr)); gap: 5px; align-items: center; }
+.k-bt { min-height: 40px; padding: 0; border: 1.5px solid var(--line2); border-radius: 10px; background: #fff; cursor: pointer; transition: background-color .12s, transform .12s; }
+.k-bt[aria-pressed="true"] { background: var(--fg); border-color: var(--fg); }
+.k-bt.now { box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 55%, transparent); }
+.k-bt:active { transform: scale(.92); }
+.k-bt:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+.k-beat-play { align-self: flex-start; }
+.k-run { display: flex; flex-direction: column; gap: 10px; } .k-run[hidden] { display: none; }
+.k-run-p, .k-run-r { margin: 0; padding: 12px 14px; border: 1px solid var(--line2); border-radius: 14px; background: #fff; white-space: pre-wrap; overflow-wrap: anywhere; font: 500 0.9375rem/1.5 var(--kd); }
+.k-run-o { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; } .k-run-o[hidden] { display: none; }
+.k-run .k-ask-btn { align-self: flex-start; } .k-run .k-sk { align-self: flex-start; }
+#kBFile { align-self: stretch; justify-content: center; }

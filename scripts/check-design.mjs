@@ -97,13 +97,13 @@ const pics = [...readFileSync('src/scripts/missions.ts', 'utf8').matchAll(/\bimg
 assert.ok(pics.length >= 9, `missions.ts: expected the mission pictures, found ${pics.length}`);
 for (const p of pics) assert.ok(existsSync(`public${p}`), `missions.ts: picture ${p} is not in public/`);
 // Pieces (src/scripts/pieces.ts): the card on Projects, the full-screen steps and the finished page, and the list on Your page exist; the steps layer makes the page behind it inert like every other layer; app.ts saves, cleans and syncs the runs.
-for (const id of ['kBuild', 'kBBack', 'kBNum', 'kBS', 'kBProg', 'kBQ', 'kBO', 'kBTa', 'kBNext', 'kBAsk', 'kBC', 'kBR', 'kBRH', 'kBPiece', 'kBName', 'kBNameL', 'kBSave', 'kBLink', 'kBLinkN', 'kBDone', 'kBHow', 'kPiece', 'kPcGo', 'kPcMore', 'kPieces', 'kPieceL']) assert.ok(page.includes(`id="${id}"`), `index.astro: pieces need #${id}`);
+for (const id of ['kBuild', 'kBBack', 'kBNum', 'kBS', 'kBProg', 'kBQ', 'kBO', 'kBTa', 'kBNext', 'kBAsk', 'kBC', 'kBR', 'kBRH', 'kBPiece', 'kBName', 'kBNameL', 'kBSave', 'kBFile', 'kBRun', 'kBLink', 'kBLinkN', 'kBDone', 'kBHow', 'kPiece', 'kPcGo', 'kPcMore', 'kPieces', 'kPieceL']) assert.ok(page.includes(`id="${id}"`), `index.astro: pieces need #${id}`);
 assert.ok(/'kSheet', 'kBuild', 'kFirst'/.test(appSrc), 'app.ts: the pieces layer (kBuild) is one of LAYERS, so the page behind it is inert');
 assert.ok(/builds: cleanRuns\(s\.builds\)/.test(appSrc) && /mergeAnswers\(S\.builds, r\.builds, S\.gone, r\.gone\)/.test(appSrc) && /initPieces\(\{\s*S,/.test(appSrc), 'app.ts: runs are cleaned on load, merged on sync and the screens wired');
 const sharePage = readFileSync('src/pages/p.astro', 'utf8');
 assert.ok(['pubSheet', 'pubHow', 'pubHowB', 'pubNote', 'pubCta'].every((id) => sharePage.includes(`id="${id}"`)) && /name="robots" content="noindex"/.test(sharePage) && sharePage.includes("import '../scripts/public-page'"), 'p.astro: the share-link page needs its parts, noindex and its script');
 // Older phones: the app must start on iOS Safari 15 (no Object.hasOwn, structuredClone, toSorted, findLast, Object.groupBy before 15.4-17), or it stops on the launch screen.
-for (const f of ['src/scripts/app.ts', 'src/scripts/play.ts', 'src/scripts/voice.ts', 'src/scripts/make.ts', 'src/scripts/pieces.ts', 'src/scripts/pieces-ui.ts', 'src/scripts/piece-view.ts', 'src/scripts/public-page.ts']) {
+for (const f of ['src/scripts/app.ts', 'src/scripts/play.ts', 'src/scripts/voice.ts', 'src/scripts/make.ts', 'src/scripts/pieces.ts', 'src/scripts/pieces-ui.ts', 'src/scripts/piece-types.ts', 'src/scripts/piece-kit.ts', 'src/scripts/piece-brand.ts', 'src/scripts/public-page.ts']) {
   const old = readFileSync(f, 'utf8').match(/Object\.hasOwn\(|structuredClone\(|\.toSorted\(|\.toReversed\(|\.findLast(Index)?\(|Object\.groupBy\(|Promise\.withResolvers\(/g);
   assert.ok(!old, `${f} uses ${old} which older iPhones do not have: use an older equivalent`);
 }
