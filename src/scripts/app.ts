@@ -31,7 +31,7 @@ import { inTime, clampCount, cleanAi, cleanName } from './valid';
 import { canMake, countMake, makeBody, makesLeft, parseMake, type MakeBody, type MakeResult, type Pair as QaPair } from './make';
 import { attachMic, listenButton, refreshVoice, stopSpeaking, voice } from './voice';
 import { slash, type Mood, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX } from './slash';
-import { cleanRuns, type Run } from './pieces';
+import { PIECE_AT, cleanRuns, type Run } from './pieces';
 import { initPieces, type RunReply } from './pieces-ui';
 
 type Again = 'yes' | 'maybe' | 'no';
@@ -152,7 +152,8 @@ const demoState = (): State => {
   try { real = JSON.parse(localStorage.getItem('kern:v1') || '{}') || {}; } catch { /* no real profile to read */ }
   const lang: Lang = isLang(real.lang) ? real.lang : fresh().lang, text = real.text;
   const it = lang === 'it', answers = sampleAnswers(it, Date.now());
-  return sanitize({ v: 1, name: 'Giulia', field: 'Design', fields: ['Design', 'Writing', 'Video'], onboarded: true, stones: answers.reduce((s, a) => s + 50 + (a.r ? 20 : 0) + (a.x || 0), 0), answers, msgs: [{ who: 'ai', t: OPEN }, ...sampleChat(it)], mine: sampleMine(it), dared: true, lang, theme: 'light', text, guess: 'Saved. This sharpens your Slash card.' }) || fresh(); // guess: the reply to "A first guess" (That feels right), not a sentence of its own
+  const made = Date.now() - 2 * 864e5, builds = [{ f: 'Design', i: PIECE_AT, at: made, done: made + 9 * 6e4, s: ['plant', 'friendly,cosy,local', 'tomato,cream,espresso', 'leaf', it ? 'Caffè, piante, Rosa.' : 'Coffee, plants, Rosa.'] }]; // one finished piece (the brand sheet) on Your page
+  return sanitize({ v: 1, name: 'Giulia', field: 'Design', fields: ['Design', 'Writing', 'Video'], onboarded: true, stones: answers.reduce((s, a) => s + 50 + (a.r ? 20 : 0) + (a.x || 0), 0), answers, msgs: [{ who: 'ai', t: OPEN }, ...sampleChat(it)], mine: sampleMine(it), builds, dared: true, lang, theme: 'light', text, guess: 'Saved. This sharpens your Slash card.' }) || fresh(); // guess: the reply to "A first guess" (That feels right), not a sentence of its own
 };
 let recovered = ''; // set when a saved trail could not be read in full at start-up: the notice to show once the app is up
 let seen: string | null = null; // the trail as storage held it when this page last read or wrote it (absorb)
@@ -731,7 +732,7 @@ const markTrend = () => trendCards.forEach(({ f, i, mins, st }) => {
   const word = S.answers.some((a) => a.f === f && a.i === i) ? 'Done' : S.drafts[`${f}.${i}`] ? 'Draft' : '';
   st.textContent = `~${mins} min${word ? ` · ${tr(word)}` : ''}`; // the same short form as the rows of the list, then Done or Draft
 });
-const piecesUi = { render: () => {} }; // the card on Projects and the list on Your page: replaced by initPieces() once the screens are wired, below
+const piecesUi = { render: () => {}, open: () => {} }; // the card on Projects and the list on Your page, and opening a piece: replaced by initPieces() once the screens are wired, below
 const renderHome = () => {
   renderStat(); renderStages(); markTrend(); piecesUi.render();
   renderFields(); renderAbout(); renderFurther(); renderCoopIn();
@@ -1898,7 +1899,7 @@ const saveFirst = () => {
   track('answer', st.f, st.i);
   const kept = save();
   setD($('kF3Ttl'), tr(FIELDS[st.f].m[st.i][1]));
-  showFirst(3); land($('kF3H'));
+  piecesUi.render(); showFirst(3); land($('kF3H')); // the first run offers the piece of this field
   makeF.sync(); // the first version with AI is offered when the idea is long enough
   if (!kept) say(UNSAVED);
 };
@@ -1945,6 +1946,7 @@ kF2Ask.addEventListener('click', async () => {
   await slashAsk(kF2C, { title: FIELDS[st.f].m[st.i][1], brief: x.brief }, st.f, kF2Ta.value.trim(), () => firstAt === 2 && firstStep === step);
   hold(kF2Ask, false);
 });
+$('kF3Piece').addEventListener('click', once(() => { kFirst.classList.remove('on'); syncInert(); applyField(false); goTab('missions'); piecesUi.open(); }));
 $('kF3Go').addEventListener('click', once(() => {
   kFirst.classList.remove('on'); syncInert();
   applyField(false); goTab('yourkern'); land(kScr.querySelector<HTMLElement>('#k-yourkern h4')!);
@@ -2472,11 +2474,11 @@ const runPiece = async (prompt: string): Promise<RunReply> => {
   const reply = await postCoach({ mode: 'run', lang: S.lang, field: 'Prompting', prompt });
   return reply ? { ok: true, text: reply } : { ok: false, why: 'offline' };
 };
-piecesUi.render = initPieces({
+Object.assign(piecesUi, initPieces({
   S, tr, fill, save, say, land, once, when, ask: slashAsk, run: runPiece,
   setName: (v) => { S.name = cleanName(v); save(); renderMe(); },
   share: (title, text, url) => { void shareText(title, text, url, 'Link copied.'); },
-}).render;
+}));
 
 // Escape closes the top layer even when focus has dropped to the page (after a swap, or a button that disappeared).
 document.addEventListener('keydown', (e) => {

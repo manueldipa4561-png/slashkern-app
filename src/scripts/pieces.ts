@@ -77,6 +77,8 @@ export const PL = {
   skip: t2('Skip this step', 'Salta questo passo'),
   made: t2('What the AI made', 'Cosa ha creato l’AI'),
   prompt: t2('Your prompt', 'Il tuo prompt'),
+  warm: t2('Warm-ups · 2 to 5 min each', 'Riscaldamento · da 2 a 5 min ciascuno'),
+  first: t2('Make your first piece', 'Fai il tuo primo pezzo'),
 };
 
 // A stored or synced run is untrusted input: keep only well-formed values, and only the steps whose answers are valid in a row (done needs all of them).

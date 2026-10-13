@@ -1609,3 +1609,14 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-run-o { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; } .k-run-o[hidden] { display: none; }
 .k-run .k-ask-btn { align-self: flex-start; } .k-run .k-sk { align-self: flex-start; }
 #kBFile { align-self: stretch; justify-content: center; }
+/* The piece is the main thing to make; the short projects below it are warm-ups (index.astro: the card first, then a label over the next project). */
+:root.light .k-scr .k-card.k-piece { gap: 8px; padding: 22px 20px 20px; border: 0; border-radius: 28px; color: #fff; background: radial-gradient(60% 60% at 100% 0%, rgba(255, 255, 255, .16), transparent 70%), linear-gradient(160deg, #3552FF, #2D4BFF 55%, #2038C9); box-shadow: 0 18px 36px -18px rgba(45, 75, 255, .8); }
+:root.light .k-scr .k-card.k-piece:hover { border-color: transparent; }
+:root.light .k-scr .k-piece .k-l, :root.light .k-scr .k-piece h5, :root.light .k-scr .k-piece p { color: #fff; }
+:root.light .k-scr .k-piece .k-l { opacity: .9; }
+.k-piece h5 { font-size: 1.625rem; line-height: 1.08; }
+.k-piece p { max-width: 30ch; }
+:root.light .k-scr .k-piece .k-go { background: #fff; color: #0E1B3D; }
+:root.light .k-scr .k-piece .k-sk { color: #fff; }
+:root.light .k-scr .k-piece :focus-visible { outline-color: #fff; }
+.k-wu { margin: 6px 2px -4px; } .k-wu[hidden] { display: none; }

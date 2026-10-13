@@ -232,11 +232,20 @@ export function initPieces(ctx: Ctx) {
   });
 
   // ── the card on Projects, and the list on Your page ──
+  // A finished piece shows as a small copy of its own page (the page itself, scaled down and not interactive); one in progress shows the numbered dot.
+  const thumb = (q: Piece, r: Run) => {
+    const v = r.done ? kindOf(q).view(r, tr) : null;
+    if (!v) { const dot = el('i', 'k-mdot'); dot.setAttribute('aria-hidden', 'true'); return dot; }
+    const box = el('span', 'k-pc-thumb'), page = kindOf(q).dom(v, '', t);
+    box.setAttribute('aria-hidden', 'true'); box.inert = true; page.removeAttribute('aria-label'); box.append(page);
+    return box;
+  };
   const card = $('kPiece'), go = $('kPcGo'), more = $('kPcMore'), list = $('kPieces'), listEl = $('kPieceL');
   const render = () => {
     const p = pieceFor(S.field), run = p && latestRun(S.builds, p);
-    card.hidden = !p;
+    card.hidden = !p; $('kWarmL').hidden = $('kF3Piece').hidden = !p; // the short projects are warm-ups once there is a piece to make; the first run offers the piece
     if (p) {
+      put($('kWarmL'), tr(PL.warm)); put($('kF3Piece'), tr(PL.first));
       const done = !!run?.done;
       put($('kPcL'), tr(PL.card)); put($('kPcT'), tr(p.title)); put($('kPcP'), tr(p.blurb));
       put($('kPcM'), done ? fill(PL.madeOn, { d: ctx.when(run!.done!) }) : run ? fill(PL.progress, { k: run.s.length, n: p.steps.length }) : fill(PL.meta, { n: p.steps.length, m: p.mins }));
@@ -249,8 +258,8 @@ export function initPieces(ctx: Ctx) {
     const rows = el('div', 'k-mlist');
     for (const r of runs) {
       const q = pieceOf(r); if (!q) continue;
-      const b = el('button', 'k-mrow' + (r.done ? ' done' : '')), dot = el('i', 'k-mdot'), span = el('span'), chev = el('em', '', '›');
-      b.type = 'button'; dot.setAttribute('aria-hidden', 'true'); chev.setAttribute('aria-hidden', 'true');
+      const b = el('button', 'k-mrow k-pcrow' + (r.done ? ' done' : '')), dot = thumb(q, r), span = el('span'), chev = el('em', '', '›');
+      b.type = 'button'; chev.setAttribute('aria-hidden', 'true');
       span.append(el('b', '', tr(q.title)), el('small', '', r.done ? fill(PL.madeOn, { d: ctx.when(r.done) }) : fill(PL.going, { k: r.s.length, n: q.steps.length })));
       b.append(dot, span, chev); b.addEventListener('click', () => openRun(q, r)); rows.append(b);
     }
@@ -258,5 +267,5 @@ export function initPieces(ctx: Ctx) {
   };
   go.addEventListener('click', () => { const p = pieceFor(S.field); if (p) openRun(p, latestRun(S.builds, p)); });
   more.addEventListener('click', () => { const p = pieceFor(S.field); if (p) openRun(p); });
-  return { render };
+  return { render, open: () => { const p = pieceFor(S.field); if (p) openRun(p, latestRun(S.builds, p)); } };
 }

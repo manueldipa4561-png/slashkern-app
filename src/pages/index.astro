@@ -298,6 +298,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
           <h4 id="kF3H" tabindex="-1">Saved to your page</h4>
           <p id="kF3P">Your first project is on your page. Companies join soon. Early creators are shown first.</p>
           <div class="k-make-host" id="kMakeF" hidden></div>
+          <button type="button" class="k-ask-btn" id="kF3Piece" hidden></button>
           <button type="button" class="k-go" id="kF3Go">See my page</button>
         </section>
       </div>
@@ -389,6 +390,14 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               <div class="k-btnrow"><button type="button" class="k-go" id="kCoSend">Send back</button><button type="button" class="k-sk" id="kCoSelf">Do the project yourself</button><button type="button" class="k-sk" id="kCoNo">Not now</button></div>
             </div>
             <div class="k-card k-dare" id="kDare" hidden><div class="k-l">A friend dared you</div><h5 id="kDareT"></h5><button type="button" class="k-go" id="kDareGo">Answer the dare</button></div>
+            <div class="k-card k-piece" id="kPiece" hidden>
+              <div class="k-l" id="kPcL"></div>
+              <h5 id="kPcT"></h5>
+              <p id="kPcP"></p>
+              <div class="k-l" id="kPcM"></div>
+              <div class="k-btnrow"><button type="button" class="k-go" id="kPcGo"></button><button type="button" class="k-sk" id="kPcMore" hidden></button></div>
+            </div>
+            <div class="k-l k-wu" id="kWarmL" hidden></div>
             <div class="k-card k-main" id="kNext"><div class="k-stg"><b aria-hidden="true">1</b><span class="k-l">Make</span></div><span class="k-nxic" id="kNxIc" aria-hidden="true"></span><div class="k-l" id="kNxL">Your next step</div><div class="k-path k-nx-path" id="kNxPath" aria-hidden="true"></div><h5 id="kNxT">Fix what already exists</h5><p id="kNxP">Make a real startup's onboarding screen clearer. The opposite of starting from a blank page.</p><div class="k-meta" id="kNxM"></div><div class="k-boost-chip" id="kNxB" hidden></div><button type="button" class="k-btn" id="kAdd">Start project</button><button type="button" class="k-sk" id="kAdd2" hidden></button></div>
             <div class="k-card"><div class="k-l" id="kMsL">Your 3 projects</div>
               <div class="k-mlist">
@@ -397,13 +406,6 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
                 <button type="button" class="k-mrow" id="kMR2"><i class="k-mdot" aria-hidden="true"></i><span><b>Work with a partner</b><small></small></span><em aria-hidden="true">›</em></button>
               </div>
               <button type="button" class="k-sk k-peek" id="kPeek" hidden></button>
-            </div>
-            <div class="k-card k-piece" id="kPiece" hidden>
-              <div class="k-l" id="kPcL"></div>
-              <h5 id="kPcT"></h5>
-              <p id="kPcP"></p>
-              <div class="k-l" id="kPcM"></div>
-              <div class="k-btnrow"><button type="button" class="k-go" id="kPcGo"></button><button type="button" class="k-sk" id="kPcMore" hidden></button></div>
             </div>
             <div class="k-card k-trend" id="kTrend">
               <h5 id="kTrendH">Trending now</h5>
