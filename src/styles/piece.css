@@ -1,3 +1,9 @@
+@import './piece-writing.css';
+@import './piece-code.css';
+@import './piece-video.css';
+@import './piece-selling.css';
+@import './piece-music.css';
+@import './piece-prompting.css';
 /* A finished piece as a page (piece-view.ts renderBrand): in the person's own colours, shown in the app (index.astro) and on the page a share link opens (p.astro). Sizes in rem, so the text size setting scales them. */
 .k-pc { --kd: 'Geist Variable', system-ui, sans-serif; --mono: ui-monospace, 'SF Mono', Consolas, Menlo, monospace; --pc-bg: #FBF8F2; --pc-ink: #14181F; --pc-acc: #D8452B; --pc-on-acc: #fff; display: flex; flex-direction: column; gap: 22px; padding: 22px 20px 16px; border-radius: 22px; background: var(--pc-bg); color: var(--pc-ink); box-shadow: 0 0 0 1px rgba(14, 27, 61, .1), 0 24px 44px -28px rgba(14, 27, 61, .6); }
 .k-pc p, .k-pc ul, .k-pc blockquote { margin: 0; }

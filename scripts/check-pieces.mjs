@@ -9,7 +9,7 @@ const { text } = buildSync({ stdin: { contents: entry, resolveDir: process.cwd()
 const { PIECES, KINDS, PIECE_AT, FIELDS, IT, CLASHES, cleanRun, cleanRuns, stepOk, latestRun, wordsIn, initials, pieceOf, mergeAnswers, akey, pieceLink, readPieceLink, LINK_MAX, BEAT_MIN } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 
 const strings = (v) => (typeof v === 'string' ? [v] : Array.isArray(v) ? v.flatMap(strings) : v && typeof v === 'object' ? Object.values(v).flatMap(strings) : []);
-assert.deepEqual(CLASHES, [], 'the same English text has two different Italian versions');
+assert.deepEqual(CLASHES, [], `the same English text has two different Italian versions (reuse the Italian that is already there): ${CLASHES.map((k) => `"${k}" is also "${IT[k]}"`).join(' | ')}`);
 assert.ok(PIECES.length >= 1, 'pieces.ts: no pieces');
 assert.equal(KINDS.length, PIECES.length);
 assert.equal(new Set(PIECES.map((p) => p.n)).size, PIECES.length, 'pieces.ts: two pieces share a number n');
