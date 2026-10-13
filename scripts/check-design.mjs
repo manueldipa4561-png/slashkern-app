@@ -25,7 +25,7 @@ for (const [name, body] of Object.entries(ICONS)) {
   assert.equal((body.match(/</g) || []).length, (body.match(/>/g) || []).length, `icons.ts: ${name} has unbalanced tags`);
   assert.ok(name.endsWith('-on') || /class="(b[ps]?|gb|pd)"/.test(body), `icons.ts: ${name} has no accent (a bead or an accent body)`); // -on: the filled tab-bar versions, one solid shape
 }
-for (const k of ['Text size', 'Small', 'Default', 'Large', 'Larger', 'Done.', 'What to expect', 'A day in it', 'People like', 'People find hard', 'Try the next project', 'Take it further', 'Three steps outside the app', 'Ask', 'Make', 'Notice', 'Send feedback', 'Terms']) assert.ok(IT[k], `i18n.ts: no Italian for "${k}"`);
+for (const k of ['Text size', 'Small', 'Default', 'Large', 'Larger', 'Done.', 'What to expect', 'A typical day', 'People like', 'People find hard', 'Try the next project', 'Take it further', 'Three steps outside the app', 'Ask', 'Make', 'Notice', 'Send feedback', 'Terms']) assert.ok(IT[k], `i18n.ts: no Italian for "${k}"`);
 
 // What to expect + Take it further: every field has all of it, in both languages, and none of the words the brand never uses.
 const BANNED = /lavor/i; // the same list as BANNED in netlify/functions/coach.mts (2026-10-11: only the Italian "lavor-" family stays banned, the job-world words are allowed now)
@@ -60,7 +60,7 @@ assert.ok(/<div class="k-logo"><span class="k-lgw" set:html=\{MARK\} \/><span>sl
 assert.ok(/class="k-fs k-f0"[^]*?set:html=\{MARK_REV\}/.test(page) && /class="k-kt"><span class="k-lgw" set:html=\{MARK_REV\}/.test(page), 'index.astro: the navy welcome screen and the Slash card show the reversed mark');
 assert.ok(!page.includes('M7 29A25 25 0 0 1 57 29Z') && !/>\s*kern\s*</.test(page) && !/kern<i>\.<\/i>/.test(page) && !page.includes('mark.webp'), 'index.astro: no slit disc, no "kern" wordmark left');
 assert.match(readFileSync('public/manifest.webmanifest', 'utf8'), /"name": "slashkern",\s*"short_name": "slashkern"[\s\S]*"background_color": "#0E1B3D"[\s\S]*"theme_color": "#0E1B3D"/, 'manifest: slashkern, navy background and theme colour');
-assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v32'/, 'sw.js: bump CACHE with every visual change');
+assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v33'/, 'sw.js: bump CACHE with every visual change');
 // The icons: the favicon is the pointer on ultramarine, and favicon.ico carries favicon-32.png.
 assert.ok(readFileSync('public/favicon.svg', 'utf8').includes(body) && readFileSync('public/favicon.svg', 'utf8').includes('#0050F0'), 'favicon.svg: the slashkern pointer on the electric blue icon tile');
 { const ico = readFileSync('public/favicon.ico'), png = readFileSync('public/icons/favicon-32.png'); assert.ok(ico.readUInt16LE(2) === 1 && ico.subarray(ico.length - png.length).equals(png), 'favicon.ico embeds public/icons/favicon-32.png'); }
@@ -87,7 +87,7 @@ const voiceSrc = readFileSync('src/scripts/voice.ts', 'utf8'), appTs = readFileS
 assert.ok(/SpeechRecognition/.test(voiceSrc) && /webkitSpeechRecognition/.test(voiceSrc) && /speechSynthesis/.test(voiceSrc) && /interimResults = true/.test(voiceSrc) && !/continuous = true/.test(voiceSrc), 'voice.ts: feature-detected dictation with interim results, one utterance at a time');
 assert.ok(['en-GB', 'it-IT', 'de-DE', 'fr-FR', 'nl-NL', 'sv-SE'].every((t) => voiceSrc.includes(`'${t}'`)), 'voice.ts: a language tag for each app language');
 assert.ok(/ai: cleanAi\(a\.ai\)/.test(appTs) && /a\.ai = true/.test(appTs) && /tr\(AI_TAG\)/.test(appTs), 'app.ts: the AI mark is kept, saved and shown');
-assert.ok(page.includes('slashkern never records or stores audio.'), 'index.astro: the voice privacy sheet'); const privacy = readFileSync('src/pages/privacy.astro', 'utf8'); for (const t of ['Voice and the AI first version', 'Voce e prima versione con l’AI', 'Stimme und die erste Version mit KI', 'La voix et la première version avec l’IA']) assert.ok(privacy.includes(t), `privacy.astro: missing "${t}"`);
+assert.ok(page.includes('slashkern never records or stores audio.'), 'index.astro: the voice privacy sheet'); const privacy = readFileSync('src/pages/privacy.astro', 'utf8'); for (const t of ['Voice and the first version with AI', 'Voce e prima versione con l’AI', 'Stimme und die erste Version mit KI', 'La voix et la première version avec l’IA']) assert.ok(privacy.includes(t), `privacy.astro: missing "${t}"`);
 assert.ok(existsSync('src/pages/terms.astro'), 'terms.astro: the Terms page is missing');
 // Mission pictures: every img / imgIt path in missions.ts must be a file in public/.
 // A mission opens full screen with a bar of three segments (read, answer, reflect) that app.ts keeps up to date and CSS fills.

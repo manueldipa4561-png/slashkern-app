@@ -864,6 +864,8 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 #kSheet[data-mode="edit"] .k-prog, #kSheet[data-mode="relic"] .k-prog { display: none; }
 #kSheet.drop .k-prog b { --p: 1 !important; }
 .k-scr.demo #kSheet::before { top: max(34px, calc(env(safe-area-inset-top) + 30px)); }
+/* A bottom sheet leaves the header in view under its scrim: the tag moves left of the avatar (38px + 8px gap + 4px), where the header's own Demo marker sits (hidden while a sheet is open), so it never covers the avatar. It keeps the top above: a tall sheet on a short phone starts just below it */
+.k-scr.demo .k-sheet:not(#kSheet)::before, .k-scr.demo #kSheet.drop::before { right: calc(max(20px, env(safe-area-inset-right)) + 50px); }
 @media (prefers-reduced-motion: reduce) { .k-prog b { transition: none; } }
 .k-card[hidden] { display: none; } /* .k-card sets display: flex, which beats the browser's own [hidden]: without this the co-op, compare and further cards showed up empty */
 .k-tile.sel .k-ti { background: var(--acc); color: var(--on); --bead: var(--on); }
@@ -1468,6 +1470,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 /* Your page: the early-access line, the projects that fill it */
 .k-pane .k-early { margin: 12px 0 0; padding: 10px 14px; border-radius: 14px; background: var(--surf); border: 1px solid var(--line); color: var(--fg); font: 600 0.875rem/1.4 var(--kd); }
 #kPages .k-an { border-top: 1px solid var(--line); }
+#kPages .k-an:last-child { padding-bottom: 0; } /* the card's own padding closes the list: no empty band under the last Edit / Delete */
 @media (prefers-reduced-motion: reduce) { .k-fbar i { transition: none; } .k-proj { transition: none; } }
 
 /* Voice and the AI first version (v10). The microphone sits in the corner of a text box (44px), pulses while it listens and is hidden when the browser cannot listen or the microphone is refused (a one-line tip takes its place).
@@ -1496,12 +1499,19 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-make-out textarea { width: 100%; box-sizing: border-box; min-height: 168px; padding: 12px 14px; padding-right: 56px; border: 1px solid var(--line2); border-radius: 14px; background: #fff; color: var(--fg); font: 500 1rem/1.45 var(--kd); resize: vertical; }
 .k-make-out .k-btnrow { align-items: stretch; }
 .k-make-host > .k-make-go { align-self: stretch; }
-.k-pj-c .k-cat::after, .k-fprice .k-cat::after { content: ' ·'; }
+.k-pj-c .k-cat::after, .k-fprice .k-cat::after { content: '·'; margin-left: 8px; } /* the same 8px as the row's gap on both sides of the dot */
 .k-make-host > .k-make-go { justify-content: center; text-align: center; }
 .k-msg .k-listen { display: flex; width: fit-content; margin: 8px 0 0; }
 /* Trending now: a shelf of cards that scrolls sideways, the next card peeking in. The card, the tag and the chips reuse the first-run project cards (.k-proj) and the small pill (.k-lk). */
 .k-trend h5 { margin: 0; }
 .k-shelf { display: flex; gap: 10px; margin: 0 -18px; padding: 2px 18px 6px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 18px; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: var(--line2) transparent; }
+/* The shelf runs to the card's edges, so its scrollbar would too and touch the card's border: where the browser allows it (Chrome, Safari), the bar is inset to the content */
+@supports selector(::-webkit-scrollbar) {
+  .k-shelf { scrollbar-width: auto; scrollbar-color: auto; }
+  .k-shelf::-webkit-scrollbar { height: 4px; }
+  .k-shelf::-webkit-scrollbar-thumb { border-radius: 4px; background: var(--line2); }
+  .k-shelf::-webkit-scrollbar-track { margin-inline: 18px; }
+}
 .k-shelf .k-proj { flex: 0 0 min(78%, 17rem); width: auto; justify-content: flex-start; gap: 6px; padding: 14px; background: #fff; scroll-snap-align: start; }
 .k-shelf .k-lk { margin: 0; }
 .k-shelf .k-pj-l { flex: 1; }

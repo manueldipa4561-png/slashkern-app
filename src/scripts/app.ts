@@ -359,6 +359,8 @@ tabs.forEach((t) => t.addEventListener('click', () => {
   const swap = () => {
     kScr.querySelectorAll('.k-pane').forEach((p) => { p.classList.remove('leaving'); p.classList.toggle('on', p.id === wanted); });
     kScr.querySelector<HTMLElement>('.k-body')!.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    // the chat was drawn while its pane was hidden, where scrolling does nothing: open it on the latest message
+    if (wanted === 'k-copilot') { const log = $('kChat'); log.scrollTo({ top: log.scrollHeight, behavior: 'instant' as ScrollBehavior }); }
   };
   moveInd(t, true);
   if (still || !cur || cur.id === next || vtBusy) return swap();

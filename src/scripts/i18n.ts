@@ -17,7 +17,7 @@ export const IT: Record<string, string> = {
         'You': 'Tu',
         'Co-op': 'Co-op',
         'What to expect': 'Cosa aspettarsi',
-        'A day in it': 'Una giornata tipo',
+        'A typical day': 'Una giornata tipo',
         'People like': 'Cosa piace',
         'People find hard': 'Cosa è difficile',
         'Take it further': 'Vai oltre',

@@ -1,6 +1,5 @@
 ---
-import '@fontsource-variable/inter-tight';
-import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/geist';
 ---
 <!doctype html>
 <html lang="en">
@@ -16,10 +15,10 @@ import '@fontsource-variable/bricolage-grotesque';
     <style>
       :root { color-scheme: dark; --bg: #0E1B3D; --fg: #EEF2FF; --acc: #7C93FF; --dim: #A9B4D0; }
       @media (prefers-color-scheme: light) { :root { color-scheme: light; --bg: #F5F7FF; --fg: #0E1B3D; --acc: #2D4BFF; --dim: #5A6478; } }
-      body { margin: 0; background: var(--bg); color: var(--fg); font: 400 1rem/1.6 'Inter Tight Variable', system-ui, sans-serif; }
+      body { margin: 0; background: var(--bg); color: var(--fg); font: 400 1rem/1.6 'Geist Variable', system-ui, sans-serif; }
       main { max-width: 640px; margin: 0 auto; padding: 48px 20px 80px; }
-      h1 { font: 800 2.5rem/1 'Bricolage Grotesque Variable', sans-serif; letter-spacing: -.04em; margin: 0 0 8px; }
-      h2 { font: 800 1.25rem/1.2 'Bricolage Grotesque Variable', sans-serif; letter-spacing: -.02em; margin: 32px 0 6px; }
+      h1 { font: 800 2.5rem/1 'Geist Variable', system-ui, sans-serif; letter-spacing: -.04em; margin: 0 0 8px; overflow-wrap: break-word; hyphens: auto; }
+      h2 { font: 800 1.25rem/1.2 'Geist Variable', system-ui, sans-serif; letter-spacing: -.02em; margin: 32px 0 6px; }
       small { color: var(--dim); } a { color: var(--acc); }
       .top a, .foot a { display: inline-block; padding: 10px 6px; margin: -10px -6px; } /* 44px tap areas without moving the links */
       .foot { margin-top: 32px; }
@@ -41,12 +40,12 @@ import '@fontsource-variable/bricolage-grotesque';
         <tr><th scope="row">On your phone</th><td>Your answers, drafts, reflections, your Slash card and settings. Nobody else sees them.</td></tr>
         <tr><th scope="row">What leaves your phone</th><td>What you write to Slash, and a prompt you choose to try on the AI, goes to our AI provider (Anthropic) to get a reply; slashkern doesn’t keep it. Things you share yourself. Your account copy, if you make an account (Supabase, EU). Usage counts, only if you say yes.</td></tr>
         <tr><th scope="row">Delete it</th><td>Settings › Delete my data removes everything on this phone, your Slash card included. Delete my account also removes your account copy, if you have one.</td></tr>
-        <tr><th scope="row">What a company sees</th><td>Nothing today. Later, only an answer you choose to send for one brand project, never your email; off by default, and saying no changes nothing.</td></tr>
+        <tr><th scope="row">What a company sees</th><td>Nothing today. Later, only an answer you choose to send for one brand project, never your email. It is off by default, and saying no changes nothing.</td></tr>
         <tr><th scope="row">How your card is made</th><td>From your own taps after each project. No AI scores you.</td></tr>
       </table>
       <h2>What it is</h2>
       <p>slashkern is a free app to find your passion by testing different paths. You try short projects in seven fields (design, writing, code, video, selling online, music and prompting with AI), say in 20 seconds how each one felt, and see which path clicks. No account needed.</p>
-      <p>Seven creative and digital paths, for now. Your Slash card comes from your own taps after each project. No AI scores you.</p>
+      <p>Seven creative and digital paths, for now.</p>
       <h2>Who makes it</h2>
       <p>slashkern is made by Manuel Di Paolo, in Italy. Write to <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> for anything: a question, feedback, or your data.</p>
       <h2>For parents</h2>
@@ -75,7 +74,7 @@ import '@fontsource-variable/bricolage-grotesque';
         </table>
         <h2>Cos’è</h2>
         <p>slashkern è un’app gratuita per trovare la tua passione provando strade diverse. Fai brevi progetti in sette campi (design, scrittura, codice, video, vendita online, musica e prompting con l’AI), dici in 20 secondi com’è andata e scopri quale strada ti prende. Non serve un account.</p>
-        <p>Sette strade creative e digitali, per ora. La tua Slash card nasce dai tuoi tocchi dopo ogni progetto. Nessuna AI ti dà un voto.</p>
+        <p>Sette strade creative e digitali, per ora.</p>
         <h2>Chi la fa</h2>
         <p>slashkern è fatta da Manuel Di Paolo, in Italia. Scrivi a <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> per qualsiasi cosa: una domanda, un feedback o i tuoi dati.</p>
         <h2>Per i genitori</h2>
@@ -105,7 +104,7 @@ import '@fontsource-variable/bricolage-grotesque';
         </table>
         <h2>Was es ist</h2>
         <p>slashkern ist eine kostenlose App, mit der du deine Leidenschaft findest, indem du verschiedene Wege ausprobierst. Du machst kurze Projekte in sieben Bereichen (Design, Schreiben, Code, Video, Online-Verkauf, Musik und Prompting mit KI), sagst in 20 Sekunden, wie sich jedes angefühlt hat, und siehst, welcher Weg zu dir passt. Kein Konto nötig.</p>
-        <p>Sieben kreative und digitale Wege, vorerst. Deine Slash card entsteht aus dem, was du nach jedem Projekt selbst antippst. Keine KI bewertet dich.</p>
+        <p>Sieben kreative und digitale Wege, vorerst.</p>
         <h2>Wer es macht</h2>
         <p>slashkern wird von Manuel Di Paolo in Italien gemacht. Schreib an <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> für alles: eine Frage, Feedback oder deine Daten.</p>
         <h2>Für Eltern</h2>
@@ -135,7 +134,7 @@ import '@fontsource-variable/bricolage-grotesque';
         </table>
         <h2>Ce que c’est</h2>
         <p>slashkern est une app gratuite pour trouver ta passion en testant différents chemins. Tu essaies de petits projets dans sept domaines (design, écriture, code, vidéo, vente en ligne, musique et prompting avec l’IA), tu dis en 20 secondes ce que tu as ressenti pour chacun, et tu vois quel chemin te parle. Pas besoin de compte.</p>
-        <p>Sept chemins créatifs et numériques, pour l’instant. Ta Slash card vient de ce que tu touches toi-même après chaque projet. Aucune IA ne te note.</p>
+        <p>Sept chemins créatifs et numériques, pour l’instant.</p>
         <h2>Qui le fait</h2>
         <p>slashkern est fait par Manuel Di Paolo, en Italie. Écris à <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> pour tout : une question, un retour ou tes données.</p>
         <h2>Pour les parents</h2>
@@ -165,7 +164,7 @@ import '@fontsource-variable/bricolage-grotesque';
         </table>
         <h2>Wat het is</h2>
         <p>slashkern is een gratis app om je passie te vinden door verschillende richtingen uit te proberen. Je doet korte projecten in zeven richtingen (design, schrijven, code, video, online verkopen, muziek en AI-prompts), zegt in 20 seconden hoe elk project voelde, en ziet welke richting bij je past. Geen account nodig.</p>
-        <p>Zeven creatieve en digitale richtingen, voorlopig. Je Slash-kaart ontstaat uit wat je zelf aantikt na elk project. Geen AI geeft je een cijfer.</p>
+        <p>Zeven creatieve en digitale richtingen, voorlopig.</p>
         <h2>Wie het maakt</h2>
         <p>slashkern wordt gemaakt door Manuel Di Paolo, in Italië. Schrijf naar <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> voor alles: een vraag, feedback of je gegevens.</p>
         <h2>Voor ouders</h2>
@@ -195,7 +194,7 @@ import '@fontsource-variable/bricolage-grotesque';
         </table>
         <h2>Vad det är</h2>
         <p>slashkern är en gratis app för att hitta din passion genom att testa olika vägar. Du gör korta projekt inom sju inriktningar (design, skrivande, kod, video, onlineförsäljning, musik och AI-promptar), säger på 20 sekunder hur varje projekt kändes och ser vilken väg som passar dig. Inget konto behövs.</p>
-        <p>Sju kreativa och digitala vägar, tills vidare. Ditt Slash-kort skapas av det du själv trycker på efter varje projekt. Ingen AI betygsätter dig.</p>
+        <p>Sju kreativa och digitala vägar, tills vidare.</p>
         <h2>Vem som gör det</h2>
         <p>slashkern görs av Manuel Di Paolo, i Italien. Skriv till <a href="mailto:manuel@trykern.it">manuel@trykern.it</a> om vad som helst: en fråga, feedback eller dina data.</p>
         <h2>För föräldrar</h2>
