@@ -40,21 +40,21 @@
       "sizes": "780x1688",
       "type": "image/webp",
       "form_factor": "narrow",
-      "label": "Pick a short project and see what to make next"
+      "label": "Pick a piece or a short project to make next"
     },
     {
       "src": "/screenshots/mission.webp",
       "sizes": "780x1688",
       "type": "image/webp",
       "form_factor": "narrow",
-      "label": "Make it one step at a time, with Slash asking the questions"
+      "label": "Make it one step at a time, with Slash to help"
     },
     {
-      "src": "/screenshots/your-page.webp",
+      "src": "/screenshots/kerncard.webp",
       "sizes": "780x1688",
       "type": "image/webp",
       "form_factor": "narrow",
-      "label": "Keep what you finish on your own page"
+      "label": "Keep what you finish on your KernCard"
     }
   ]
 }
