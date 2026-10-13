@@ -155,7 +155,7 @@
       .k-tabs button { flex: 1; background: none; border: 0; color: var(--dim); font-weight: 800; font-size: 0.8438rem; letter-spacing: -.01em; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; padding: 6px 0; }
       .k-tabs button::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: transparent; }
       .k-tabs button.on { color: var(--fg); } .k-tabs button.on::before { background: var(--acc); } .k-tabs button.on span { color: var(--acc); }
-      /* launch loader: the mark settles in on a soft blue glow, then the name slides in */
+      /* launch loader: the mark settles in (no glow), then the name slides in */
       .k-load { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; background: var(--bg); transition: opacity .5s; }
       .k-load.off { opacity: 0; pointer-events: none; }
       .k-ic { position: relative; width: 108px; height: 108px; opacity: 0; transform: scale(.8); }
@@ -1351,10 +1351,9 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 :root.light .k-scr .k-dr-stage::before { display: none; }
 :root.light .k-scr .k-dr-art .k-done-i { color: var(--fg); --bead: var(--track); }
 
-/* Launch screen and the first screens: the page colour, the mark and the name in navy; the mark settles in on a soft blue glow */
+/* Launch screen and the first screens: the page colour, the mark and the name in navy; the mark settles in, no glow */
 :root.light .k-scr .k-load, :root.light .k-scr .k-start { background: var(--bg); }
 :root.light .k-scr .k-ic .k-lg { filter: none; }
-.k-ic::before { content: ''; position: absolute; inset: -70%; border-radius: 50%; pointer-events: none; background: radial-gradient(closest-side, rgba(45, 75, 255, .2), rgba(45, 75, 255, 0)); }
 .k-lock { display: flex; align-items: center; gap: 14px; color: var(--fg); }
 .k-lock .k-ic { width: 64px; height: 64px; }
 .k-lock .k-wm { font-size: 2.75rem; opacity: 0; transform: translateX(-8px); } /* "slashkern" is nine letters: it fits a 320px screen beside the mark */

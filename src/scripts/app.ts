@@ -1124,7 +1124,7 @@ const setRfNote = () => setT($('kRfN'), user ? 'Shared without your name with th
   : 'Stays on this device.');
 // Practice brief (missions.ts): scenario, material to work on, tick-off steps with a progress bar
 // (none ticked for you), and after submitting a self-check.
-const NOTE_DEFAULT = 'It stays on this device unless you ask the assistant.';
+const NOTE_DEFAULT = 'It stays on this device unless you ask Slash.';
 const kShX = $('kShX'), kShH = $('kShH'), kShP = $('kShP'), kSaved = $('kSaved'), kXSteps = $('kXSteps'), kRfBar = $('kRfBar'), kRfBI = $('kRfBI');
 const setX = (el: Element, en: string) => { (el as HTMLElement).dataset.en = en; el.textContent = tr(en); }; // textContent: briefs contain code like <button>
 const tick = (host: HTMLElement, en: string, on: boolean, cls: string, change?: () => void) => {
@@ -2379,9 +2379,9 @@ const MK = {
     offline: t2('You are offline. Your own project is saved.', 'Sei offline. Il tuo progetto è salvato.'),
     rate: t2('Too many tries in a minute. Wait a little, then try again.', 'Troppi tentativi in un minuto. Aspetta un po’ e riprova.'),
     day: t2('That is enough first versions for today. Your own project is saved.', 'Per oggi bastano le prime versioni. Il tuo progetto è salvato.'),
-    down: t2('The AI assistant is not available right now. Your own project is saved.', 'L’assistente AI non è disponibile in questo momento. Il tuo progetto è salvato.'),
+    down: t2('Slash is not available right now. Your own project is saved.', 'Slash non è disponibile in questo momento. Il tuo progetto è salvato.'),
     short: t2('Write a little more first: the AI needs at least 20 characters of your own idea.', 'Scrivi ancora un po’: l’AI ha bisogno di almeno 20 caratteri della tua idea.'),
-    unusable: t2('The AI assistant could not make a first version from this. Your own project is saved.', 'L’assistente AI non è riuscito a creare una prima versione da questo. Il tuo progetto è salvato.'),
+    unusable: t2('Slash could not make a first version from this. Your own project is saved.', 'Slash non è riuscito a creare una prima versione da questo. Il tuo progetto è salvato.'),
   },
 };
 const makeRaw = () => { try { return localStorage.getItem(MAKES); } catch { return null; } };

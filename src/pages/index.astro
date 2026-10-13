@@ -22,7 +22,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>slashkern · Make something companies can hire you for</title>
-    <meta name="description" content="Make short projects with an AI assistant that asks one question at a time, keep them on your own page and let companies find them. Early access, free, no account." />
+    <meta name="description" content="Make short projects with Slash, an AI that asks one question at a time, keep them on your own page and let companies find them. Early access, free, no account." />
     <meta name="theme-color" content="#F5F7FF" />
     <script is:inline src="/theme-init.js"></script>
     <link rel="preload" as="font" type="font/woff2" href={geistFont} crossorigin />
@@ -36,7 +36,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
     <meta name="apple-mobile-web-app-title" content="slashkern" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="slashkern" />
-    <meta property="og:description" content="Make short projects with an AI assistant that asks one question at a time, keep them on your own page and let companies find them. Early access, free, no account." />
+    <meta property="og:description" content="Make short projects with Slash, an AI that asks one question at a time, keep them on your own page and let companies find them. Early access, free, no account." />
     <meta property="og:image" content={`${site}/og.jpg`} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -81,7 +81,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               <label class="k-l" for="kTa">Your answer</label>
               <textarea id="kTa" rows="4" maxlength="2000" aria-describedby="kLen"></textarea>
               <p class="k-rf-note" id="kLen">2–3 lines is enough.</p>
-              <p class="k-rf-note" id="kSaved" aria-live="polite">It stays on this device unless you ask the assistant.</p>
+              <p class="k-rf-note" id="kSaved" aria-live="polite">It stays on this device unless you ask Slash.</p>
               <div class="k-x" id="kRun" hidden>
                 <div class="k-xbtns"><button type="button" class="k-chipb" id="kRunB" aria-describedby="kRunN">Try your prompt on the AI</button></div>
                 <p class="k-l k-s" id="kRunN">Sends only your prompt to the AI. Nothing is saved.</p>
@@ -90,8 +90,8 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               <div class="k-sh-btns"><button type="button" class="k-go" id="kSub">Submit answer</button><button type="button" class="k-sk" id="kCancel">Not now</button></div>
             </div>
             <div class="k-x" id="kShH">
-              <p class="k-l k-s" id="kXDemo" hidden>Demo: the question you ask the assistant, with your draft, is sent to the AI to get a reply. We do not store it.</p>
-              <div class="k-xbtns" id="kXBtns"><button type="button" class="k-chipb" id="kXHint">Need a hint?</button><button type="button" class="k-chipb k-ai-btn" id="kXAsk">Ask the assistant</button><button type="button" class="k-chipb" id="kXEasy">Make it easier</button><button type="button" class="k-chipb" id="kXHard" aria-expanded="false" aria-controls="kXHardT">Make it harder</button></div>
+              <p class="k-l k-s" id="kXDemo" hidden>Demo: the question you ask Slash, with your draft, is sent to the AI to get a reply. We do not store it.</p>
+              <div class="k-xbtns" id="kXBtns"><button type="button" class="k-chipb" id="kXHint">Need a hint?</button><button type="button" class="k-chipb k-ai-btn" id="kXAsk">Ask Slash</button><button type="button" class="k-chipb" id="kXEasy">Make it easier</button><button type="button" class="k-chipb" id="kXHard" aria-expanded="false" aria-controls="kXHardT">Make it harder</button></div>
               <p class="k-msg k-hard" id="kXHardT" hidden></p>
               <div id="kXHints" aria-live="polite"></div>
             </div>
@@ -240,7 +240,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
           <button type="submit" class="k-go" id="kLog">Start</button>
           <button type="button" class="k-sk" id="kForgot" hidden>Forgot password?</button>
           <button type="button" class="k-sk" id="kGuest" hidden>Continue without an account</button>
-          <p class="k-l" id="kNoteLocal">No account needed. Your answers stay on this device. What you write to the assistant goes to our AI provider to get a reply. <a href="/privacy/#keep">What we keep</a></p>
+          <p class="k-l" id="kNoteLocal">No account needed. Your answers stay on this device. What you write to Slash goes to our AI provider to get a reply. <a href="/privacy/#keep">What we keep</a></p>
           <p class="k-l" id="kNoteCloud" hidden>Your answers are saved to your account and synced across your devices. <a href="/privacy/">Privacy</a></p>
         </form>
       </div>
@@ -255,7 +255,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
         <section class="k-fs k-f0" id="kF0">
           <div class="k-brandrow"><span class="k-mark" set:html={MARK_REV} /><span class="k-wm">slashkern</span></div>
           <h4 id="kF0H">Make something companies can hire you for.</h4>
-          <p class="k-sub">Short projects. No experience needed. An AI assistant that helps you make it.</p>
+          <p class="k-sub">Short projects. No experience needed. Slash, an AI that helps you make it.</p>
           <button type="button" class="k-go k-accb" id="kF0Go">Start</button>
         </section>
 
@@ -264,7 +264,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
           <p class="k-l k-s" id="kF1P">Free practice projects.</p>
           <div class="k-fscroll" id="kF1S">
           <div class="k-projs" id="kF1L" role="group" aria-labelledby="kF1H"></div>
-          <p class="k-l k-s" id="kF1Note">No account needed. Your answers stay on this device. What you write to the assistant goes to our AI provider to get a reply. <a href="/privacy/#keep">What we keep</a></p>
+          <p class="k-l k-s" id="kF1Note">No account needed. Your answers stay on this device. What you write to Slash goes to our AI provider to get a reply. <a href="/privacy/#keep">What we keep</a></p>
           </div>
           <div class="k-ffoot">
             <label class="k-check" id="kF1Age"><input type="checkbox" id="kFirstAge" aria-describedby="kFirstAgeWhy" /><span>I am 18 or older</span></label>
@@ -288,7 +288,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
             <p class="k-fbrief" id="kF2B"></p>
             <div id="kF2M"></div>
           </details>
-          <button type="button" class="k-lnk" id="kF2Ask" aria-expanded="false" aria-controls="kF2C">Ask the assistant</button>
+          <button type="button" class="k-lnk" id="kF2Ask" aria-expanded="false" aria-controls="kF2C">Ask Slash</button>
           <div class="k-fcoach" id="kF2C" aria-live="polite" hidden></div>
         </section>
 
@@ -314,7 +314,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
           <p class="k-l k-s" id="kAgeWhy" hidden>slashkern is for 18+ for now, because it is built for adults and keeps your answers.</p>
           <button type="button" class="k-go" id="kGo" aria-describedby="kGoWhy">Save interests</button>
           <p class="k-l k-s" id="kGoWhy" aria-live="polite" hidden></p>
-          <p class="k-l k-s" id="kS2Note" hidden>No account needed. Your answers stay on this device. What you write to the assistant goes to our AI provider to get a reply. <a href="/privacy/#keep">What we keep</a></p>
+          <p class="k-l k-s" id="kS2Note" hidden>No account needed. Your answers stay on this device. What you write to Slash goes to our AI provider to get a reply. <a href="/privacy/#keep">What we keep</a></p>
           <button type="button" class="k-sk" id="kPickX" hidden>Not now</button>
         </div>
       </div>
@@ -379,7 +379,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               <div class="k-fnd-r"><p class="k-l">What is public?</p><p>You decide. Nothing is shared until you choose.</p></div>
               <p class="k-fnd-n">Nobody is paying yet: this is early access.</p>
             </div>
-            <div class="k-card k-stat" id="kStat" hidden><div class="k-l">Help improve slashkern</div><p>Count my progress, without my name? We only see which projects you open and finish, when you come back, and whether you use Share or the assistant. Never your name, your answers or your email.</p><div class="k-btnrow"><button type="button" class="k-ask-btn" id="kStY">Yes, count me in</button><button type="button" class="k-ask-btn" id="kStN">No thanks</button></div><div><a class="k-l" href="/privacy/">What is counted?</a></div></div>
+            <div class="k-card k-stat" id="kStat" hidden><div class="k-l">Help improve slashkern</div><p>Count my progress, without my name? We only see which projects you open and finish, when you come back, and whether you use Share or Slash. Never your name, your answers or your email.</p><div class="k-btnrow"><button type="button" class="k-ask-btn" id="kStY">Yes, count me in</button><button type="button" class="k-ask-btn" id="kStN">No thanks</button></div><div><a class="k-l" href="/privacy/">What is counted?</a></div></div>
             <div class="k-card k-habit k-cut" id="kHabit">
               <div class="k-l k-finds-h"><span>Daily habit · tiny on purpose</span><span id="kHbN"></span></div>
               <div id="kHbSet">
@@ -400,7 +400,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               </div>
             </div>
             <div class="k-card k-best k-cut"><div class="k-l">Coming with partner projects</div><h5>Anonymous review</h5><p>Reviewers rank answers by quality, not likes. The best ones get seen by the company behind the project.</p><button type="button" class="k-win" id="kWin">See what a win feels like</button></div>
-            <div class="k-card k-aic"><span class="k-ci" aria-hidden="true" set:html={icon('copilot')} /><div class="k-l">Stuck?</div><p>The assistant asks the questions that get you moving. It never gives you the answer.</p><button type="button" class="k-ask-btn" id="kToAi">Open the assistant</button></div>
+            <div class="k-card k-aic"><span class="k-ci" aria-hidden="true" set:html={icon('copilot')} /><div class="k-l">Stuck?</div><p>Slash asks the questions that get you moving. It never gives you the answer.</p><button type="button" class="k-ask-btn" id="kToAi">Open Slash</button></div>
           </section>
 
           <section class="k-pane" id="k-yourkern">
@@ -448,7 +448,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
           </section>
 
           <section class="k-pane" id="k-copilot">
-            <div class="k-hd"><div class="k-l">Assistant · Slash</div><h4>Your idea.<br>My <b>questions.</b></h4></div>
+            <div class="k-hd"><div class="k-l">Slash · AI</div><h4>Your idea.<br>My <b>questions.</b></h4></div>
             <div class="k-ait"><span class="k-slash-av k-slash-lg" aria-hidden="true" set:html={slash('neutral', true)} /><div class="k-l" id="kAiLbl">You are talking to an AI · live when online</div></div>
             <p class="k-l" id="kAiDemo" hidden>Demo: what you type here is sent to the AI to get a reply. We do not store it.</p>
             <p class="k-l k-s" id="kAiNote">What you write here goes to our AI provider to get a reply. slashkern doesn't keep it.</p>
@@ -458,7 +458,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               <div class="k-comp"><input id="kIn" type="text" maxlength="140" autocomplete="off" aria-label="Your idea" /><button type="button" class="k-send" id="kSend" aria-label="Send">↑</button></div>
               <div class="k-chips" id="kEx"><span role="button" tabindex="0">Use an example</span><span role="button" tabindex="0">Start over</span><span role="button" tabindex="0">I’m stuck</span><span role="button" tabindex="0">Make it smaller</span></div>
             </div>
-            <div class="k-card k-cut"><div class="k-l">Do it twice</div><p>Make it alone first. Then with the assistant. Compare the two.</p></div>
+            <div class="k-card k-cut"><div class="k-l">Do it twice</div><p>Make it alone first. Then with Slash. Compare the two.</p></div>
             <div class="k-card"><div class="k-l">The rules</div><p>It asks. It never answers.</p><p>Your idea always comes first.</p><p>If it gets heavy, it stops and points you to a person.</p><button type="button" class="k-lnk" id="kHelpA" data-k-help aria-expanded="false" aria-controls="kHelpAT">Need to talk to someone now?</button><p id="kHelpAT" hidden></p></div>
           </section>
         </div>
@@ -466,7 +466,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
         <nav class="k-tabs" aria-label="slashkern">
           <button type="button" class="on" data-k-tab="missions"><span class="ti" aria-hidden="true"><svg class="k-ti-i" viewBox="0 0 24 24" focusable="false"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></span><span class="tn tt">Projects</span></button>
           <button type="button" data-k-tab="yourkern"><span class="ti" aria-hidden="true"><svg class="k-ti-i" viewBox="0 0 24 24" focusable="false"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10.5A.5.5 0 0 1 6.5 20V4a.5.5 0 0 1 .5-.5z"/><path d="M9.5 12h5M9.5 15.5h5"/></svg></span><span class="tn tt">Your page</span></button>
-          <button type="button" data-k-tab="copilot"><span class="ti" aria-hidden="true"><svg class="k-ti-i" viewBox="0 0 24 24" focusable="false"><path d="M5 5.5h14a1 1 0 0 1 1 1V15a1 1 0 0 1-1 1h-7l-4 3.5V16H5a1 1 0 0 1-1-1V6.5a1 1 0 0 1 1-1z"/></svg></span><span class="tn tt">Assistant</span></button>
+          <button type="button" data-k-tab="copilot"><span class="ti" aria-hidden="true"><svg class="k-ti-i" viewBox="0 0 24 24" focusable="false"><path d="M5 5.5h14a1 1 0 0 1 1 1V15a1 1 0 0 1-1 1h-7l-4 3.5V16H5a1 1 0 0 1-1-1V6.5a1 1 0 0 1 1-1z"/></svg></span><span class="tn tt">Slash</span></button>
         </nav>
       </div>
     </main>

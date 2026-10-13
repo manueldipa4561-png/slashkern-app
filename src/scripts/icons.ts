@@ -10,5 +10,5 @@ export const ICONS: Record<string, string> = {
 export const FIELD_PICS = ['Design', 'Writing', 'Code', 'Video', 'Selling', 'Music', 'Prompting', 'yourkern', 'copilot', 'missions'];
 export const picFile = (name: string) => (name === 'copilot' ? 'ai' : name.toLowerCase()); // Slash's picture is ai.webp
 export const icon = (name: string, cls = 'k-i') => FIELD_PICS.includes(name)
-  ? `<img class="k-fp" src="/img/f/${picFile(name)}.webp" width="192" height="192" alt="" aria-hidden="true">`
+  ? `<img class="k-fp" src="/img/f/${picFile(name)}.webp?v=slash1" width="192" height="192" alt="" aria-hidden="true">`
   : `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${ICONS[name] ?? ''}</svg>`;
