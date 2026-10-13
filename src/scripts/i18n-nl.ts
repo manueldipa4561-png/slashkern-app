@@ -1,6 +1,7 @@
 // Dutch for every English string of the app (keys exactly as in IT), like i18n-de.ts. NL_GEN was translated from the same list as German and French:
 // the IT keys of the modules plus the sentences app.ts registers itself with t2(). CRISIS_NL is hand-written with checked helplines (sources in netlify/functions/coach.mts).
 // Added 2026-10-12. A native Dutch reader should still go over these before they go live.
+import { PIECES_NL } from './i18n-pieces';
 const NL_GEN: Record<string, string> = {
   "Finish it with a friend": "Maak het samen af",
   "The link carries your answer, so it is only as private as the chat you send it to.": "De link bevat je antwoord, dus hij is maar zo privé als de chat waarin je hem stuurt.",
@@ -2799,4 +2800,4 @@ const NL_GEN: Record<string, string> = {
 const CRISIS_NL: Record<string, string> = {
   "This sounds heavy, so I'm pausing the project. Please talk to someone you trust or a local helpline: in the UK and Ireland, Samaritans answer free, day or night, on 116 123. If you are in danger, call 112 (999 in the UK).": "Dit klinkt zwaar, dus ik zet het project op pauze. Praat met iemand die je vertrouwt of met een hulplijn: in Nederland kun je dag en nacht gratis en anoniem bellen met 113 Zelfmoordpreventie op 113 of 0800-0113, of chatten via 113.nl. In België kun je dag en nacht gratis de Zelfmoordlijn bellen op 1813. Ben je in gevaar, bel dan 112.",
 };
-export const NL: Record<string, string> = Object.assign(Object.create(null) as Record<string, string>, NL_GEN, CRISIS_NL);
+export const NL: Record<string, string> = Object.assign(Object.create(null) as Record<string, string>, NL_GEN, CRISIS_NL, PIECES_NL);

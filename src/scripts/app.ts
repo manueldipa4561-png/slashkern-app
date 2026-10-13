@@ -27,10 +27,12 @@ import { SAMPLE_ANSWERS, SAMPLE_IDEA, sampleAnswers, sampleChat, sampleMine, swa
 import * as cloud from './cloud';
 import * as stats from './stats';
 import { akey, ver, stamp, mergeAnswers, type Tomb } from './sync';
-import { inTime, clampCount, cleanAi } from './valid';
+import { inTime, clampCount, cleanAi, cleanName } from './valid';
 import { canMake, countMake, makeBody, makesLeft, parseMake, type MakeBody, type MakeResult, type Pair as QaPair } from './make';
 import { attachMic, listenButton, refreshVoice, stopSpeaking, voice } from './voice';
 import { slash, type Mood, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX } from './slash';
+import { cleanRuns, type Run } from './pieces';
+import { initPieces } from './pieces-ui';
 
 type Again = 'yes' | 'maybe' | 'no';
 type Refl = { e?: Feel; again?: Again; hard?: string; tip?: string; sid?: number }; // sid: the tip's shared sign, if published
@@ -39,7 +41,7 @@ type Msg = { who: 'ai' | 'me'; t: string; typing?: boolean; p?: string }; // p: 
 type Theme = 'light'; // light only since the palette B restyle: the dark theme is retired (a saved "dark" or "system" becomes light)
 type Lang = 'en' | 'it' | 'de' | 'fr' | 'nl' | 'sv';
 type Habit = { t: string; c: string; l: [number, string][] }; // t: the tiny habit, c: the cue (after I...), l: [day number, relic id found that day or ''] per day done
-type State = { v: 1; name: string; adult: boolean; field: string; fields: string[]; onboarded: boolean; stones: number; answers: Answer[]; drafts: Record<string, string>; msgs: Msg[]; mine: string[]; lang: Lang; theme: Theme; text: number; guess: string; saves: number; badges: string[]; dared: boolean; gone: Tomb[]; habit: Habit; easy: boolean; coops: CoopRec[] }; // text: the text size step in Settings (0 small, 1 default, 2 large, 3 larger)
+type State = { v: 1; name: string; adult: boolean; field: string; fields: string[]; onboarded: boolean; stones: number; answers: Answer[]; drafts: Record<string, string>; msgs: Msg[]; mine: string[]; lang: Lang; theme: Theme; text: number; guess: string; saves: number; badges: string[]; dared: boolean; gone: Tomb[]; habit: Habit; easy: boolean; coops: CoopRec[]; builds: Run[] }; // text: the text size step in Settings (0 small, 1 default, 2 large, 3 larger); builds: the pieces in progress or made (pieces.ts)
 
 // Demo profile (open /?demo, switch off with /?demo=off): a lived-in trail to show slashkern in a minute. It has its own storage key,
 // never syncs, never publishes a sign and is never counted, so it cannot touch real data.
@@ -81,10 +83,8 @@ const LANGS: Lang[] = ['en', 'it', 'de', 'fr', 'nl', 'sv'];
 const isLang = (v: unknown): v is Lang => LANGS.includes(v as Lang);
 // First run: the first language the browser asks for that slashkern speaks (de-AT, fr-CH... count), else English.
 const firstLang = (): Lang => (navigator.languages?.length ? navigator.languages : [navigator.language]).map((l) => l.slice(0, 2).toLowerCase()).find(isLang) ?? 'en';
-const fresh = (): State => ({ v: 1, name: '', adult: false, field: 'Video', fields: [], onboarded: false, stones: 0, answers: [], drafts: {}, msgs: [], mine: [], lang: firstLang(), theme: 'light', text: 1, guess: '', saves: 0, badges: [], dared: false, gone: [], habit: { t: '', c: '', l: [] }, easy: false, coops: [] });
+const fresh = (): State => ({ v: 1, name: '', adult: false, field: 'Video', fields: [], onboarded: false, stones: 0, answers: [], drafts: {}, msgs: [], mine: [], lang: firstLang(), theme: 'light', text: 1, guess: '', saves: 0, badges: [], dared: false, gone: [], habit: { t: '', c: '', l: [] }, easy: false, coops: [], builds: [] });
 const str = (v: unknown, max: number) => (typeof v === 'string' ? v.slice(0, max) : '');
-// A name is cut by whole characters (never half an emoji) and holds no text-direction controls (U+202A-202E, U+2066-2069): they flip the text around them and leave the avatar empty.
-const cleanName = (v: unknown) => (typeof v === 'string' ? [...v.replace(/[\u202A-\u202E\u2066-\u2069]/g, '')].slice(0, 40).join('') : '');
 const cleanR = (r: unknown): Refl | undefined => {
   if (!r || typeof r !== 'object') return undefined;
   const o = r as Record<string, unknown>, out: Refl = {};
@@ -141,6 +141,7 @@ const sanitize = (s: any): State | null => { // eslint-disable-line @typescript-
       habit: cleanHabit(s.habit),
       easy: !!s.easy,
       coops: cleanCoops(s.coops),
+      builds: cleanRuns(s.builds),
       gone: Array.isArray(s.gone) ? s.gone.filter((g: unknown) => Array.isArray(g) && typeof g[0] === 'string' && g[0].length < 40 && inTime(g[1])).map((g: Tomb): Tomb => [g[0], g[1]]).slice(-200) : [],
     };
   } catch { return null; }
@@ -213,6 +214,7 @@ const mergeIn = (raw: unknown) => {
   const r = sanitize(raw); if (!r) return;
   const m = mergeAnswers(S.answers, r.answers, S.gone, r.gone);
   S.answers = m.answers; S.gone = m.gone;
+  const mb = mergeAnswers(S.builds, r.builds, S.gone, r.gone); S.builds = mb.answers; S.gone = mb.gone; // pieces sync like answers: newest wins, a delete sticks (a run's i starts at PIECE_AT, so its key never meets an answer's)
   S.stones = S.answers.reduce((s, a) => s + worth(a), 0); // stones are exactly what the merged answers earned
   if (!S.name) S.name = r.name;
   if (r.adult) S.adult = true;
@@ -251,6 +253,7 @@ const setD = (el: Element, text: string) => { (el as HTMLElement).dataset.en = '
 const pressed = (attr: string, val: string) => document.querySelectorAll<HTMLElement>(`[data-k-${attr}]`).forEach((b) => b.setAttribute('aria-pressed', String(b.getAttribute(`data-k-${attr}`) === val)));
 const F = () => FIELDS[S.field] || FIELDS.Design;
 const day = (t: number) => new Date(t).toLocaleDateString(LOCALE[S.lang], { day: 'numeric', month: 'short' });
+const when = (t: number, time = false) => new Date(t).toLocaleString(LOCALE[S.lang], time ? { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' } : { day: 'numeric', month: 'short' });
 // Rounds, counters and the Slash card's guess look at the core projects only (index 0 to TREND_FROM - 1); the Trending ones (trending.ts) sit after them and stand apart.
 const doneIn = (f: string) => new Set(S.answers.filter((a) => a.f === f && a.i < TREND_FROM).map((a) => a.i));
 const doneSet = () => doneIn(S.field);
@@ -390,7 +393,7 @@ new ResizeObserver(() => moveInd(onTab(), false)).observe(nav);
 const kSheet = $('kSheet'), kSet = $('kSet'), kFld = $('kFld'), kMic = $('kMicS');
 // Whatever layer is on top (sheet, reward, login, onboarding) makes everything behind it inert:
 // no Tab, clicks or screen reader reaching the page under a dialog.
-const LAYERS = ['kReward', 'kMicS', 'kPwS', 'kSet', 'kFld', 'kSheet', 'kFirst', 'kStart', 'kLogin'].map((id) => $(id)); // top first
+const LAYERS = ['kReward', 'kMicS', 'kPwS', 'kSet', 'kFld', 'kSheet', 'kBuild', 'kFirst', 'kStart', 'kLogin'].map((id) => $(id)); // top first
 const topLayer = () => LAYERS.find((l) => !l.hidden && (!l.classList.contains('k-start') || l.classList.contains('on')));
 const syncInert = () => {
   const top = topLayer();
@@ -728,8 +731,9 @@ const markTrend = () => trendCards.forEach(({ f, i, mins, st }) => {
   const word = S.answers.some((a) => a.f === f && a.i === i) ? 'Done' : S.drafts[`${f}.${i}`] ? 'Draft' : '';
   st.textContent = `~${mins} min${word ? ` · ${tr(word)}` : ''}`; // the same short form as the rows of the list, then Done or Draft
 });
+const piecesUi = { render: () => {} }; // the card on Projects and the list on Your page: replaced by initPieces() once the screens are wired, below
 const renderHome = () => {
-  renderStat(); renderStages(); markTrend();
+  renderStat(); renderStages(); markTrend(); piecesUi.render();
   renderFields(); renderAbout(); renderFurther(); renderCoopIn();
   const f = F(), b = base(), round = b / PER_ROUND, done = winDone(), next = [0, 1, 2].find((k) => !done.has(k));
   // fresh: a round was just finished and the next one is not started. Celebrate the Slash card first, then offer the new missions.
@@ -1004,9 +1008,9 @@ async function postCoach(body: object): Promise<string | null> {
     return typeof j?.reply === 'string' && j.reply.trim() ? j.reply.trim() : null;
   } catch { lastWhy = ''; return null; } finally { clearTimeout(to); }
 }
-async function askAI(extra?: { mission?: { title: string; brief: string }; messages?: { who: string; t: string }[] }): Promise<string | null> {
+async function askAI(extra?: { mission?: { title: string; brief: string }; messages?: { who: string; t: string }[]; field?: string }): Promise<string | null> {
   // The demo asks the live assistant too (it is what is shown to people); the AI tab says so in the demo (#kAiDemo) and the function stores nothing.
-  const reply = await postCoach({ lang: S.lang, field: extra?.mission ? cur.f : S.field, versions: extra ? 0 : S.mine.length, mission: extra?.mission, messages: extra?.messages ?? S.msgs.filter((m) => !m.typing).slice(-12).map((m) => ({ who: m.who, t: said(m) })) });
+  const reply = await postCoach({ lang: S.lang, field: extra?.field ?? (extra?.mission ? cur.f : S.field), versions: extra ? 0 : S.mine.length, mission: extra?.mission, messages: extra?.messages ?? S.msgs.filter((m) => !m.typing).slice(-12).map((m) => ({ who: m.who, t: said(m) })) });
   return reply && reply.slice(0, 500);
 }
 const scripted = (v: string) => {
@@ -1921,18 +1925,24 @@ $('kFBack').addEventListener('click', () => {
   showFirst(firstAt - 1); land($(FIRST_HEADS[firstAt]));
 });
 // The live assistant, behind a small link: it reads the brief and the draft and asks one question (never the answer). Offline it falls back to the scripted questions, as in the mission sheet.
+// One question from Slash about a draft, shown in `box` (the first run, a piece's step): the live assistant, or the scripted questions offline. Returns whether a question was shown.
+async function slashAsk(box: HTMLElement, mission: { title: string; brief: string }, field: string, draft: string, here: () => boolean): Promise<boolean> {
+  const d = draft.slice(0, 400);
+  if (HEAVY.test(d)) { box.replaceChildren(pauseRow(tr(HEAVY_REPLY))); box.hidden = false; return false; } // heavy words: nothing is sent, the project pauses
+  const { row, p } = waitingRow(); box.replaceChildren(row); box.hidden = false;
+  const reply = await askAI({ mission, field, messages: [{ who: 'me', t: d ? `My answer so far: ${d}` : 'I am about to start this mission. Help me begin.' }] });
+  if (!here()) return false; // moved on meanwhile
+  p.classList.remove('k-wait'); p.textContent = '';
+  setLive(!!reply, lastWhy);
+  p.textContent = reply ?? (d.length >= 10 ? echo(d) + tr(pick(Q_MORE[0])) : tr(pick(Q_STUCK)));
+  addListen(p, p.textContent); unlight(row);
+  return true;
+}
 kF2Ask.addEventListener('click', async () => {
   const st = starter(), x = st && MX[st.f]?.[st.i]; if (!st || !x || held(kF2Ask)) return;
   hold(kF2Ask, true); kF2Ask.setAttribute('aria-expanded', 'true'); track('ask_ai', st.f, st.i);
-  const draft = kF2Ta.value.trim().slice(0, 400), box = kF2C;
-  if (HEAVY.test(draft)) { box.replaceChildren(pauseRow(tr(HEAVY_REPLY))); box.hidden = false; hold(kF2Ask, false); return; } // heavy words: nothing is sent, the mission pauses
-  const { row, p } = waitingRow(); box.replaceChildren(row); box.hidden = false;
-  const step = firstStep, reply = await askAI({ mission: { title: FIELDS[st.f].m[st.i][1], brief: x.brief }, messages: [{ who: 'me', t: draft ? `My answer so far: ${draft}` : 'I am about to start this mission. Help me begin.' }] });
-  if (firstAt !== 2 || firstStep !== step) return; // moved on meanwhile
-  p.classList.remove('k-wait'); p.textContent = '';
-  setLive(!!reply, lastWhy);
-  p.textContent = reply ?? (draft.length >= 10 ? echo(draft) + tr(pick(Q_MORE[0])) : tr(pick(Q_STUCK)));
-  addListen(p, p.textContent); unlight(row);
+  const step = firstStep;
+  await slashAsk(kF2C, { title: FIELDS[st.f].m[st.i][1], brief: x.brief }, st.f, kF2Ta.value.trim(), () => firstAt === 2 && firstStep === step);
   hold(kF2Ask, false);
 });
 $('kF3Go').addEventListener('click', once(() => {
@@ -2451,6 +2461,13 @@ const makeF = makePanel($('kMakeF'), {
   idea: () => firstAns.map((a) => a.trim()).filter(Boolean).join('\n'), qa: () => firstSteps().map((q, k) => ({ q: tr(q), a: (firstAns[k] ?? '').trim() })), // the questions of the first run and what was written to each
   answer: () => (lastAns && S.answers.includes(lastAns) ? lastAns : undefined),
 });
+
+// Pieces (pieces.ts): five small steps that end in one page to show. The screens are pieces-ui.ts; Slash's question in a step is the same one the first run uses (slashAsk).
+piecesUi.render = initPieces({
+  S, tr, fill, save, say, land, once, when, ask: slashAsk,
+  setName: (v) => { S.name = cleanName(v); save(); renderMe(); },
+  share: (title, text, url) => { void shareText(title, text, url, 'Link copied.'); },
+}).render;
 
 // Escape closes the top layer even when focus has dropped to the page (after a swap, or a button that disappeared).
 document.addEventListener('keydown', (e) => {

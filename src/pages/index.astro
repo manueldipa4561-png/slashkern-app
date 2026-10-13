@@ -1,6 +1,7 @@
 ---
 import '@fontsource-variable/geist';
 import '../styles/app.css';
+import '../styles/piece.css';
 import { icon } from '../scripts/icons';
 import { slash } from '../scripts/slash';
 import { readFileSync } from 'node:fs';
@@ -301,6 +302,45 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
         </section>
       </div>
 
+      <div class="k-start k-first k-build" id="kBuild" role="dialog" aria-modal="true" aria-labelledby="kBQ">
+        <div class="k-fh">
+          <button type="button" class="k-fback" id="kBBack" aria-label="Back"><svg class="k-i" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <span class="k-l k-fn" id="kBNum"></span>
+        </div>
+
+        <section class="k-fs" id="kBS" hidden>
+          <div class="k-prog k-fprog" id="kBProg" role="progressbar" aria-label="Project progress" aria-valuemin="1" aria-valuenow="1"></div>
+          <h5 id="kBT"></h5>
+          <h4 class="k-fq" id="kBQ" tabindex="-1"></h4>
+          <p class="k-l k-s" id="kBH"></p>
+          <div class="k-bo" id="kBO" role="group" aria-labelledby="kBQ"></div>
+          <label class="k-sr k-l" for="kBTa">Your answer</label>
+          <textarea id="kBTa" rows="2" maxlength="40"></textarea>
+          <p class="k-l k-s" id="kBN" aria-live="polite"></p>
+          <button type="button" class="k-go" id="kBNext"></button>
+          <details class="k-brief" id="kBD">
+            <summary>See the brief</summary>
+            <p class="k-fbrief" id="kBB"></p>
+          </details>
+          <button type="button" class="k-lnk" id="kBAsk" aria-expanded="false" aria-controls="kBC">Ask Slash</button>
+          <div class="k-fcoach" id="kBC" aria-live="polite" hidden></div>
+        </section>
+
+        <section class="k-fs" id="kBR" hidden>
+          <h4 id="kBRH" tabindex="-1"></h4>
+          <div id="kBPiece"></div>
+          <div class="k-bn"><label class="k-l" for="kBName" id="kBNameL"></label><input id="kBName" type="text" maxlength="40" autocomplete="off" /></div>
+          <button type="button" class="k-go" id="kBSave"></button>
+          <button type="button" class="k-ask-btn" id="kBLink"></button>
+          <p class="k-l k-s" id="kBLinkN"></p>
+          <button type="button" class="k-sk" id="kBDone"></button>
+          <details class="k-brief" id="kBHow">
+            <summary></summary>
+            <div id="kBHowB"></div>
+          </details>
+        </section>
+      </div>
+
       <div class="k-start" id="kStart" role="dialog" aria-modal="true" aria-labelledby="kS2H">
         <div id="kS2" class="k-sp">
           <div class="k-l" id="kS2K">Your interests</div>
@@ -356,6 +396,13 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               </div>
               <button type="button" class="k-sk k-peek" id="kPeek" hidden></button>
             </div>
+            <div class="k-card k-piece" id="kPiece" hidden>
+              <div class="k-l" id="kPcL"></div>
+              <h5 id="kPcT"></h5>
+              <p id="kPcP"></p>
+              <div class="k-l" id="kPcM"></div>
+              <div class="k-btnrow"><button type="button" class="k-go" id="kPcGo"></button><button type="button" class="k-sk" id="kPcMore" hidden></button></div>
+            </div>
             <div class="k-card k-trend" id="kTrend">
               <h5 id="kTrendH">Trending now</h5>
               <p class="k-l k-s">Seen Aug to Oct 2026. Trends move fast.</p>
@@ -405,6 +452,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
 
           <section class="k-pane" id="k-yourkern">
             <div><div class="k-l">Your page</div><h4>Your <b>page.</b></h4><p class="k-l k-s k-yk-why" id="kYkWhy">Your page keeps the projects you finish. Your Slash card is built from them and from your reflections.</p><p class="k-early">Early access: companies join soon. Early creators are shown first.</p></div>
+            <div class="k-card" id="kPieces" hidden><div class="k-l" id="kPieceH"></div><div id="kPieceL"></div></div>
             <div class="k-card" id="kPages"><div class="k-l">Your projects</div><div id="kAns"></div></div>
             <div class="k-card k-kcard" id="kSlashCard"><div class="k-l">Your Slash card</div><div class="k-kc">
                 <div class="k-kc-top"><div class="k-kt"><span class="k-lgw" set:html={MARK_REV} /><span>slashke<span class="k-rn">r</span>n</span></div><span class="k-l" id="kCardF">Writing</span></div>

@@ -1,6 +1,7 @@
 // French for every English string of the app (keys exactly as in IT). FR_GEN is generated from the translators' files; CRISIS_FR is hand-written with checked helplines.
 // APP_FR is hand-written too: the sentences app.ts registers itself with t2(), which the translators' list (the IT keys of the other modules) does not have.
 import { FR_TREND } from './i18n-trending';
+import { PIECES_FR } from './i18n-pieces';
 const FR_GEN: Record<string, string> = {
   "Finish it with a friend": "Finis-le à deux",
   "The link carries your answer, so it is only as private as the chat you send it to.": "Le lien contient ta réponse, donc il n'est pas plus privé que le chat où tu l'envoies.",
@@ -2627,4 +2628,4 @@ const APP_FR: Record<string, string> = {
 const CRISIS_FR: Record<string, string> = {
   "This sounds heavy, so I'm pausing the project. Please talk to someone you trust or a local helpline: in the UK and Ireland, Samaritans answer free, day or night, on 116 123. If you are in danger, call 112 (999 in the UK).": "Ça a l’air lourd, alors je mets le projet en pause. Parle à quelqu’un en qui tu as confiance ou appelle une ligne d’écoute : en France, le 3114 répond gratuitement, 24 h/24 et 7 j/7 ; en Belgique, le Centre de Prévention du Suicide au 0800 32 123, gratuit, 24 h/24 ; en Suisse, La Main Tendue au 143, jour et nuit. Si tu es en danger, appelle le 112.",
 };
-export const FR: Record<string, string> = Object.assign(Object.create(null) as Record<string, string>, FR_GEN, APP_FR, CRISIS_FR, FR_TREND);
+export const FR: Record<string, string> = Object.assign(Object.create(null) as Record<string, string>, FR_GEN, APP_FR, CRISIS_FR, FR_TREND, PIECES_FR);

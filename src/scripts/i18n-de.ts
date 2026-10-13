@@ -1,6 +1,7 @@
 // German for every English string of the app (keys exactly as in IT). DE_GEN is generated from the translators' files; CRISIS_DE is hand-written with checked helplines.
 // APP_DE is hand-written too: the sentences app.ts registers itself with t2(), which the translators' list (the IT keys of the other modules) does not have.
 import { DE_TREND } from './i18n-trending';
+import { PIECES_DE } from './i18n-pieces';
 const DE_GEN: Record<string, string> = {
   "Finish it with a friend": "Zu zweit fertig machen",
   "The link carries your answer, so it is only as private as the chat you send it to.": "Der Link enthält deine Antwort, also ist er nur so privat wie der Chat, in den du ihn schickst.",
@@ -2627,4 +2628,4 @@ const APP_DE: Record<string, string> = {
 const CRISIS_DE: Record<string, string> = {
   "This sounds heavy, so I'm pausing the project. Please talk to someone you trust or a local helpline: in the UK and Ireland, Samaritans answer free, day or night, on 116 123. If you are in danger, call 112 (999 in the UK).": "Das klingt schwer, deshalb pausiere ich das Projekt. Bitte sprich mit jemandem, dem du vertraust, oder ruf eine Beratungsstelle an: In Deutschland erreichst du die TelefonSeelsorge kostenlos und rund um die Uhr unter 0800 111 0 111, 0800 111 0 222 oder 116 123, in Österreich unter 142. In der Schweiz hilft die Dargebotene Hand Tag und Nacht unter 143. Wenn du in Gefahr bist, ruf die 112 an.",
 };
-export const DE: Record<string, string> = Object.assign(Object.create(null) as Record<string, string>, DE_GEN, APP_DE, CRISIS_DE, DE_TREND);
+export const DE: Record<string, string> = Object.assign(Object.create(null) as Record<string, string>, DE_GEN, APP_DE, CRISIS_DE, DE_TREND, PIECES_DE);

@@ -1,6 +1,7 @@
 // Swedish for every English string of the app (keys exactly as in IT), like i18n-de.ts. SV_GEN was translated from the same list as German and French:
 // the IT keys of the modules plus the sentences app.ts registers itself with t2(). CRISIS_SV is hand-written with checked helplines (sources in netlify/functions/coach.mts).
 // Added 2026-10-12. A native Swedish reader should still go over these before they go live.
+import { PIECES_SV } from './i18n-pieces';
 const SV_GEN: Record<string, string> = {
   "Finish it with a friend": "Gör klart det tillsammans",
   "The link carries your answer, so it is only as private as the chat you send it to.": "Länken innehåller ditt svar, så den är bara så privat som chatten du skickar den till.",
@@ -2799,4 +2800,4 @@ const SV_GEN: Record<string, string> = {
 const CRISIS_SV: Record<string, string> = {
   "This sounds heavy, so I'm pausing the project. Please talk to someone you trust or a local helpline: in the UK and Ireland, Samaritans answer free, day or night, on 116 123. If you are in danger, call 112 (999 in the UK).": "Det här låter tungt, så jag pausar projektet. Prata med någon du litar på eller med en stödlinje: Mind Självmordslinjen svarar dygnet runt på 90101, och du kan också chatta på mind.se. Ring 1177 för sjukvårdsrådgivning dygnet runt. Om du är i fara, ring 112.",
 };
-export const SV: Record<string, string> = Object.assign(Object.create(null) as Record<string, string>, SV_GEN, CRISIS_SV);
+export const SV: Record<string, string> = Object.assign(Object.create(null) as Record<string, string>, SV_GEN, CRISIS_SV, PIECES_SV);
