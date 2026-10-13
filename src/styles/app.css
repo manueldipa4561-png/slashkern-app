@@ -1188,6 +1188,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 :root.light .k-scr::before, :root.light .k-scr::after { display: none; } /* no aurora, no film grain */
 :root.light .k-scr :focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 :root.light .k-scr .k-main :focus-visible, :root.light .k-scr .k-kc :focus-visible, :root.light .k-first.black :focus-visible { outline-color: #fff; } /* navy on a navy block would vanish */
+:root.light .k-scr [tabindex="-1"]:focus-visible { outline: none; } /* a heading that takes focus after a screen swap is not a control: no ring (it drew a white box round "Da zero al prodotto." on the welcome screen) */
 :root.light .k-scr a:not(.k-ask-btn) { color: var(--acct); }
 :root.light .k-scr .k-check input { accent-color: var(--fg); }
 :root.light .k-scr .k-nojs, .k-nojs { background: var(--fg); color: #fff; }
