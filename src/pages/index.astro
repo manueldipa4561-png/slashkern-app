@@ -7,7 +7,7 @@ import { slash } from '../scripts/slash';
 import { readFileSync } from 'node:fs';
 import geistFont from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
 // The in-app mark: the slashkern pointer (public/brand/mark.svg: navy body, ice eyes) on light grounds, and its reversed version (mark-rev.svg: cream body, navy eyes) on the navy blocks
-// (the welcome screen, the Slash card). One drawing for the header, the launch screen, the first screens and the login. The wordmark is the lowercase "slashkern" beside it, in the UI font.
+// (the welcome screen, the kerncard). One drawing for the header, the launch screen, the first screens and the login. The wordmark is the lowercase "slashkern" beside it, in the UI font.
 const MARK = '<img class="k-lg" src="/brand/mark.svg" width="235" height="271" alt="" />';
 const MARK_REV = '<img class="k-lg" src="/brand/mark-rev.svg" width="235" height="271" alt="" />';
 // Inlined so iOS can read it without a login cookie (it fetches the icon itself, which a password-protected site answers with 401).
@@ -455,10 +455,10 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
           </section>
 
           <section class="k-pane" id="k-yourkern">
-            <div><div class="k-l">Your page</div><h4>Your <b>page.</b></h4><p class="k-l k-s k-yk-why" id="kYkWhy">Your page keeps the projects you finish. Your Slash card is built from them and from your reflections.</p><p class="k-early">Early access: companies join soon. Early creators are shown first.</p></div>
+            <div><div class="k-l">Your page</div><h4>Your <b>page.</b></h4><p class="k-l k-s k-yk-why" id="kYkWhy">Your page keeps the projects you finish. Your kerncard is built from them and from your reflections.</p><p class="k-early">Early access: companies join soon. Early creators are shown first.</p></div>
             <div class="k-card" id="kPieces" hidden><div class="k-l" id="kPieceH"></div><div id="kPieceL"></div></div>
             <div class="k-card" id="kPages"><div class="k-l">Your projects</div><div id="kAns"></div></div>
-            <div class="k-card k-kcard" id="kSlashCard"><div class="k-l">Your Slash card</div><div class="k-kc">
+            <div class="k-card k-kcard" id="kSlashCard"><div class="k-l">Your kerncard</div><div class="k-kc">
                 <div class="k-kc-top"><div class="k-kt"><span class="k-lgw" set:html={MARK_REV} /><span>slashke<span class="k-rn">r</span>n</span></div><span class="k-l" id="kCardF">Writing</span></div>
                 <div class="k-kc-path" id="kCardP" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
                 <span class="k-l k-kc-n" id="kCardN">3 of 6 projects</span>
@@ -495,7 +495,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               <div class="k-st" role="listitem"><h5 id="kTr0">Fix what already exists</h5><p>Not started</p></div>
               <div class="k-st" role="listitem"><h5 id="kTr1">Rewrite a confusing email</h5><p>Not started</p></div>
               <div class="k-st" role="listitem"><h5 id="kTr2">Work with a partner</h5><p>Not started</p></div>
-              <div class="k-st" id="kTrK" role="listitem"><h5>Your Slash card</h5><p>Ready when your 3 projects are done</p></div>
+              <div class="k-st" id="kTrK" role="listitem"><h5>Your kerncard</h5><p>Ready when your 3 projects are done</p></div>
             </div>
           </section>
 

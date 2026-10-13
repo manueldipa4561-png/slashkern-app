@@ -1,6 +1,6 @@
 // slashkern app logic. State lives in this browser (localStorage key kern:v1); with an account it also syncs (cloud.ts).
 //
-//  profile ──> field ──> mission ──> answer ──> reflection ──> signals ──> Slash card ──> share
+//  profile ──> field ──> mission ──> answer ──> reflection ──> signals ──> kerncard ──> share
 //                           ^            │ (draft autosaved)      │
 //                           └────────────┴── slashkern / Trail ◄───┘
 import { EN, IT, t2 } from './i18n';
@@ -159,7 +159,7 @@ const demoState = (): State => {
   const lang: Lang = isLang(real.lang) ? real.lang : fresh().lang, text = real.text;
   const it = lang === 'it', answers = sampleAnswers(it, Date.now());
   const made = Date.now() - 2 * 864e5, builds = [{ f: 'Design', i: PIECE_AT, at: made, done: made + 9 * 6e4, s: ['plant', 'friendly,cosy,local', 'tomato,cream,espresso', 'leaf', it ? 'Caffè, piante, Rosa.' : 'Coffee, plants, Rosa.'] }, ...PIECES.filter((p) => p.f !== 'Design').map((p, k) => samplePiece(p, made - (k + 1) * 36e5, it))]; // a finished piece in every field on Your page: the brand sheet by hand, the others from their first options and example lines
-  return sanitize({ v: 1, name: 'Giulia', field: 'Design', fields: ['Design', 'Writing', 'Video'], onboarded: true, stones: answers.reduce((s, a) => s + 50 + (a.r ? 20 : 0) + (a.x || 0), 0), answers, msgs: [{ who: 'ai', t: OPEN }, ...sampleChat(it)], mine: sampleMine(it), builds, dared: true, lang, theme: 'light', text, guess: 'Saved. This sharpens your Slash card.' }) || fresh(); // guess: the reply to "A first guess" (That feels right), not a sentence of its own
+  return sanitize({ v: 1, name: 'Giulia', field: 'Design', fields: ['Design', 'Writing', 'Video'], onboarded: true, stones: answers.reduce((s, a) => s + 50 + (a.r ? 20 : 0) + (a.x || 0), 0), answers, msgs: [{ who: 'ai', t: OPEN }, ...sampleChat(it)], mine: sampleMine(it), builds, dared: true, lang, theme: 'light', text, guess: 'Saved. This sharpens your kerncard.' }) || fresh(); // guess: the reply to "A first guess" (That feels right), not a sentence of its own
 };
 let recovered = ''; // set when a saved trail could not be read in full at start-up: the notice to show once the app is up
 let seen: string | null = null; // the trail as storage held it when this page last read or wrote it (absorb)
@@ -261,7 +261,7 @@ const pressed = (attr: string, val: string) => document.querySelectorAll<HTMLEle
 const F = () => FIELDS[S.field] || FIELDS.Design;
 const day = (t: number) => new Date(t).toLocaleDateString(LOCALE[S.lang], { day: 'numeric', month: 'short' });
 const when = (t: number, time = false) => new Date(t).toLocaleString(LOCALE[S.lang], time ? { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' } : { day: 'numeric', month: 'short' });
-// Rounds, counters and the Slash card's guess look at the core projects only (index 0 to TREND_FROM - 1); the Trending ones (trending.ts) sit after them and stand apart.
+// Rounds, counters and the kerncard's guess look at the core projects only (index 0 to TREND_FROM - 1); the Trending ones (trending.ts) sit after them and stand apart.
 const doneIn = (f: string) => new Set(S.answers.filter((a) => a.f === f && a.i < TREND_FROM).map((a) => a.i));
 const doneSet = () => doneIn(S.field);
 const kindOf = (a: { i: number }) => (a.i < TREND_FROM ? a.i % PER_ROUND : -1); // improve / start from zero / partner; a trending project has none
@@ -502,7 +502,7 @@ const readSignals = () => {
 };
 const ready = (sg: ReturnType<typeof readSignals>) => !!sg && sg.n === 3; // a reflection on each of the three kinds
 const chips = (box: HTMLElement, list: string[]) => { box.innerHTML = ''; list.forEach((t) => { const s = document.createElement('span'); s.textContent = t; box.appendChild(s); }); };
-// Slash card: a line you wrote, the field as a path, and the pattern once all three kinds of mission have a reflection.
+// kerncard: a line you wrote, the field as a path, and the pattern once all three kinds of mission have a reflection.
 // Before that it shows your latest answer and how many reflections are left. With no answer in the field yet, it is a labelled example.
 const KIND_ME = [t2('I get into it when I improve what already exists.', 'Mi appassiono quando miglioro ciò che esiste già.'), t2('I get into it when I start from zero.', 'Mi appassiono quando parto da zero.'), t2('I get into it when I work with someone.', 'Mi appassiono quando collaboro con qualcuno.')]; // first person, for the image you share
 const CARD_EX = { f: 'Writing', n: '3 of 6 projects', q: 'Almost stayed home. Bag strap snapped on the bus. Lifted 40 kg anyway.', m: 'Rewrite a caption so friends reply · Time flew', h: 'So far, you get into it when you start from zero.' };
@@ -535,7 +535,7 @@ const cardData = () => {
   const fit = lit ? fitOf(best) : '';
   return {
     sg, a, lit, fit, done: doneIn(f), all: total(f), refl: mine.filter((x) => x.r?.e).length,
-    src: a ? `${tr(FIELDS[a.f].m[a.i][1])}${a.r?.e ? ' · ' + tr(FEEL_EN[a.r.e]) : ''}${a.ai ? ' · ' + tr(AI_TAG) : ''}` : '', // the Slash card and the shared image say so when the line was made with AI help
+    src: a ? `${tr(FIELDS[a.f].m[a.i][1])}${a.r?.e ? ' · ' + tr(FEEL_EN[a.r.e]) : ''}${a.ai ? ' · ' + tr(AI_TAG) : ''}` : '', // the kerncard and the shared image say so when the line was made with AI help
     you: best < 0 ? ''
       : !lit ? tr(t2('So far, no kind of project made time fly for you. That counts too.', 'Finora nessun tipo di progetto ti ha fatto volare il tempo. Anche questo conta.'))
       : fill(t2('So far, you get into it when you {k}.', 'Finora ti appassioni quando {k}.'), { k: tr(KIND_EN[best]) }),
@@ -653,7 +653,7 @@ const openAbout = () => {
   $('kFlI').innerHTML = icon(S.field);
   setD($('kFlT'), tr(S.field)); setD($('kFlD'), tr(info.day));
   listOf('kFlL', info.like); listOf('kFlH', info.hard);
-  setT($('kFlGo'), kAdd.dataset.kAns === 'card' ? 'See your Slash card' : 'Try the next project'); // a finished round has no next mission: the button leads where kAdd leads
+  setT($('kFlGo'), kAdd.dataset.kAns === 'card' ? 'See your kerncard' : 'Try the next project'); // a finished round has no next mission: the button leads where kAdd leads
   openSheetEl(kFld, $('kFlGo'));
 };
 $('kAbout').addEventListener('click', openAbout);
@@ -704,7 +704,7 @@ kStatSet.addEventListener('click', async () => {
   say((await stats.turnOff()) ? 'Usage counts are off. What was counted is deleted.' : "Counts are off. We couldn't reach the server to delete the earlier ones: they expire after 12 months.");
   renderStat();
 });
-// A round was just finished and the next one is not started: Home celebrates the Slash card first, and the pill and the Trail say the same.
+// A round was just finished and the next one is not started: Home celebrates the kerncard first, and the pill and the Trail say the same.
 const roundJustDone = () => { const b = base(), d = winDone(); return b > 0 && ![0, 1, 2].some((k) => d.has(k) || S.drafts[`${S.field}.${b + k}`]); };
 // The word for a mission's state, the same on Home and in the Trail.
 const stateWord = (done: boolean, next: boolean, draft: boolean) => (done ? 'Done' : next ? 'Up next' : draft ? 'Draft' : 'Not started');
@@ -745,7 +745,7 @@ const renderHome = () => {
   renderStat(); renderStages(); markTrend(); piecesUi.render();
   renderFields(); renderAbout(); renderFurther(); renderCoopIn();
   const f = F(), b = base(), round = b / PER_ROUND, done = winDone(), next = [0, 1, 2].find((k) => !done.has(k));
-  // fresh: a round was just finished and the next one is not started. Celebrate the Slash card first, then offer the new missions.
+  // fresh: a round was just finished and the next one is not started. Celebrate the kerncard first, then offer the new missions.
   const fresh = roundJustDone();
   setD($('kHi'), S.name ? `${tr('Hi')} ${S.name}` : ''); $('kHi').hidden = !S.name; // no name is asked any more: no bare "Hi"
   setD($('kPathN'), tr(S.field)); // one path on Home: the category's name (Short videos, Posters and logos...)
@@ -755,9 +755,9 @@ const renderHome = () => {
   if (next === undefined || fresh) {
     if (fresh) setD($('kNxL'), fill(t2('Round {n} complete', 'Round {n} completato'), { n: round }));
     else setD($('kNxL'), fill(t2('Your {n} projects are done', 'I tuoi {n} progetti sono fatti'), { n: total() }));
-    setT($('kNxT'), 'Your Slash card is ready.');
+    setT($('kNxT'), 'Your kerncard is ready.');
     setT($('kNxP'), fresh ? 'See what your answers say about you, or keep going with 3 new projects.' : 'See what your answers say about you, and share it.');
-    setT(kAdd, 'See your Slash card'); kAdd.dataset.kAns = 'card';
+    setT(kAdd, 'See your kerncard'); kAdd.dataset.kAns = 'card';
     if (fresh) { setD(kAdd2, fill(t2('Start round {n}', 'Inizia il round {n}'), { n: round + 1 })); kAdd2.dataset.kAns = String(b); }
   } else {
     const m = f.m[b + next];
@@ -765,7 +765,7 @@ const renderHome = () => {
     setT($('kNxT'), m[1]); setT($('kNxP'), m[2]);
     setT(kAdd, S.drafts[`${S.field}.${b + next}`] ? 'Continue your draft' : 'Start project'); kAdd.dataset.kAns = String(b + next);
   }
-  const finished = next === undefined || fresh; // the card is about the Slash card now, so no time chip
+  const finished = next === undefined || fresh; // the card is about the kerncard now, so no time chip
   $('kNxPath').innerHTML = pathOf(S.field, finished ? -1 : b + (next ?? 0), 'nx');
   const mins = finished ? 0 : MX[S.field]?.[b + (next ?? 0)]?.mins;
   $('kNxM').innerHTML = mins ? `<span class="k-l">${aboutMins(mins)}</span>` : ''; // no price anywhere: nobody is paying yet
@@ -807,7 +807,7 @@ const renderSteps = () => {
 const renderProgress = () => {
   renderSteps();
   const kc = $('kTrK');
-  const ready = doneSet().size >= PER_ROUND; // the Slash card unlocks with round 1 and sharpens with every round after
+  const ready = doneSet().size >= PER_ROUND; // the kerncard unlocks with round 1 and sharpens with every round after
   kc.className = 'k-st' + (ready ? ' now' : '');
   setT(kc.querySelector('p')!, ready ? 'Ready to share' : 'Ready when your 3 projects are done');
   const box = $('kAns');
@@ -1449,7 +1449,7 @@ function showDrop(d: Drop, side: number, withNext = false) {
 function offerNext() {
   if (cur.i >= TREND_FROM) return; // a Trending project stands apart: the button after it just says Keep going
   const nx = nextSpot(S.field, S.fields.filter((f) => FIELDS[f]), doneIn, total()), m = nx && FIELDS[nx.f].m[nx.i];
-  // Finishing a round lands on Home, where the Slash card is the payoff: never chain out of a completed round.
+  // Finishing a round lands on Home, where the kerncard is the payoff: never chain out of a completed round.
   const start = Math.floor(cur.i / PER_ROUND) * PER_ROUND, d = doneIn(cur.f);
   if (!nx || !m || [0, 1, 2].every((k) => d.has(start + k))) return;
   const mins = MX[nx.f]?.[nx.i]?.mins;
@@ -1642,7 +1642,7 @@ kWin.addEventListener('click', () => {
 $('kRwOk').addEventListener('click', closeWin);
 kRw.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); closeWin(); } });
 
-// The Slash card's "That feels right / Not really": saved with the kind it is about, and the card says what it changed (renderCard).
+// The kerncard's "That feels right / Not really": saved with the kind it is about, and the card says what it changed (renderCard).
 const fb = $('kFb');
 kScr.querySelectorAll<HTMLElement>('#kCardAsk [data-k-fit]').forEach((b) => b.addEventListener('click', () => {
   const sg = readSignals();
@@ -2042,7 +2042,7 @@ const shareText = async (title: string, text: string, url: string | undefined, c
   }
   if (await copy(url ? `${text} ${url}` : text)) say(copied); else say(url || text.slice(0, 120));
 };
-// Slash card as a 1080x1920 story image, with what the card shows: your answer line, the field as a path, the pattern once it is
+// kerncard as a 1080x1920 story image, with what the card shows: your answer line, the field as a path, the pattern once it is
 // ready (never after "Not really"), then the navy block with the line and the address. White page, navy text, the ultramarine accent on the done segments.
 const STORY_W = 1080, STORY_H = 1920, STORY_X = 96, ACCENT = '#2D4BFF', INK = '#0E1B3D', ICE = '#DCE6FF', WHITE = '#FFFFFF', DIMB = '#5A6478', TRACKB = '#DFE5F4', BLOCK_Y = 1432;
 const cardImage = async (): Promise<Blob | null> => {
@@ -2117,14 +2117,14 @@ let cardBusy = false; // one tap, one download
 const shareCard = async () => { if (cardBusy) return; cardBusy = true; try { await shareCardNow(); } finally { window.setTimeout(() => { cardBusy = false; }, 900); } };
 const shareCardNow = async () => {
   const blob = await cardImage(), c = cardData();
-  const text = c.me ? tr('My Slash card so far: {s}').replace('{s}', c.me) : tr('Testing {f} on slashkern.').replace('{f}', tr(S.field));
+  const text = c.me ? tr('My kerncard so far: {s}').replace('{s}', c.me) : tr('Testing {f} on slashkern.').replace('{f}', tr(S.field));
   if (!blob) return shareText('slashkern', text, `${location.origin}/`, 'Link copied.');
-  const file = new File([blob], 'my-slash-card.png', { type: 'image/png' });
+  const file = new File([blob], 'my-kerncard.png', { type: 'image/png' });
   if (navigator.canShare?.({ files: [file] })) {
     try { await navigator.share({ files: [file], title: 'slashkern', text }); return; }
     catch (e) { if ((e as DOMException).name === 'AbortError') return; }
   }
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'my-slash-card.png'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'my-kerncard.png'; a.click();
   window.setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   say('Card saved as an image.');
 };
@@ -2383,7 +2383,7 @@ const addListen = (p: HTMLElement, text: string) => { const b = listenButton(tex
 attachMic(kTa, 'inside'); attachMic(kF2Ta, 'inside'); attachMic($<HTMLTextAreaElement>('kCoTa'), 'inside'); attachMic(inEl, 'after', inEl.closest('.k-comp') ?? undefined);
 
 // "Make a first version with AI" (make.ts, mode 'make' of the coach function): at the end of a project, only when the person asks, from the idea they wrote. The assistant itself keeps asking questions only.
-// The result is theirs to edit, it carries the chip "Made with AI help", and "Use this as my project" saves it with ai: true (shown on Your page, the Slash card and the trail text, never hidden).
+// The result is theirs to edit, it carries the chip "Made with AI help", and "Use this as my project" saves it with ai: true (shown on Your page, the kerncard and the trail text, never hidden).
 const MK = {
   go: t2('Make a first version with AI', 'Crea una prima versione con l’AI'),
   busy: t2('Making it…', 'La sto creando…'),

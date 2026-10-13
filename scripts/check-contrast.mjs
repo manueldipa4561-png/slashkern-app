@@ -30,7 +30,7 @@ const text = [
   ['accent text on the page', T.acct, T.bg], ['accent text on the surface', T.acct, T.surf], ['accent text on its 9% tint (assistant bubble)', T.acct, mix(T.acct, WHITE, 0.09)],
   ['white on ultramarine (selected chip, segment, tick, mic)', T.on, T.acc], ['navy on the 34% accent tile', T.fg, mix(T.acc, WHITE, 0.34)], ['navy on the 30% accent project card', T.fg, mix(T.acc, WHITE, 0.3)],
   ['navy on the 7% accent tint (strong answer)', T.fg, mix(T.acct, WHITE, 0.07)], ['navy on the 9% assistant bubble', T.fg, mix(T.acct, WHITE, 0.09)],
-  ['white on navy (navy pill, welcome, Slash card, Home card)', WHITE, T.fg], ['white 90% on navy (Home card text)', mix(WHITE, T.fg, 0.9), T.fg], ['white 80% on navy (Slash card notes)', mix(WHITE, T.fg, 0.8), T.fg],
+  ['white on navy (navy pill, welcome, kerncard, Home card)', WHITE, T.fg], ['white 90% on navy (Home card text)', mix(WHITE, T.fg, 0.9), T.fg], ['white 80% on navy (kerncard notes)', mix(WHITE, T.fg, 0.8), T.fg],
   ['white 76% on navy (Home card labels)', mix(WHITE, T.fg, 0.76), T.fg], ['white 72% on navy (first-run counter)', mix(WHITE, T.fg, 0.72), T.fg], ['white 62% on navy (struck-through guess)', mix(WHITE, T.fg, 0.62), T.fg],
   ['navy on the light accent inside a navy block (the Start buttons)', T.fg, T.accd], ['error red on the page', DANGER, T.bg], ['error red on the surface', DANGER, T.surf],
 ];

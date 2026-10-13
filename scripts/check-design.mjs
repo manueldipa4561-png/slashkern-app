@@ -58,10 +58,10 @@ const markSvg = readFileSync('public/brand/mark.svg', 'utf8'), body = markSvg.ma
 assert.ok(body && readFileSync('public/brand/mark-rev.svg', 'utf8').includes(body), 'public/brand: mark.svg (navy body) and mark-rev.svg (the same body, reversed)');
 assert.ok(page.includes(`const MARK = '<img class="k-lg" src="/brand/mark.svg"`) && page.includes(`const MARK_REV = '<img class="k-lg" src="/brand/mark-rev.svg"`), 'index.astro: MARK and MARK_REV are the two brand images');
 assert.ok(/<div class="k-logo"><span class="k-lgw" set:html=\{MARK\} \/><span>slashke<span class="k-rn">r<\/span>n<\/span><\/div>/.test(page), 'index.astro: the header is the mark and "slashkern" (r and n spaced)');
-assert.ok(/class="k-fs k-f0"[^]*?set:html=\{MARK_REV\}/.test(page) && /class="k-kt"><span class="k-lgw" set:html=\{MARK_REV\}/.test(page), 'index.astro: the navy welcome screen and the Slash card show the reversed mark');
+assert.ok(/class="k-fs k-f0"[^]*?set:html=\{MARK_REV\}/.test(page) && /class="k-kt"><span class="k-lgw" set:html=\{MARK_REV\}/.test(page), 'index.astro: the navy welcome screen and the kerncard show the reversed mark');
 assert.ok(!page.includes('M7 29A25 25 0 0 1 57 29Z') && !/>\s*kern\s*</.test(page) && !/kern<i>\.<\/i>/.test(page) && !page.includes('mark.webp'), 'index.astro: no slit disc, no "kern" wordmark left');
 assert.match(readFileSync('public/manifest.webmanifest', 'utf8'), /"name": "slashkern",\s*"short_name": "slashkern"[\s\S]*"background_color": "#0E1B3D"[\s\S]*"theme_color": "#0E1B3D"/, 'manifest: slashkern, navy background and theme colour');
-assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v33'/, 'sw.js: bump CACHE with every visual change');
+assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v34'/, 'sw.js: bump CACHE with every visual change');
 // The icons: the favicon is the pointer on ultramarine, and favicon.ico carries favicon-32.png.
 assert.ok(readFileSync('public/favicon.svg', 'utf8').includes(body) && readFileSync('public/favicon.svg', 'utf8').includes('#0050F0'), 'favicon.svg: the slashkern pointer on the electric blue icon tile');
 { const ico = readFileSync('public/favicon.ico'), png = readFileSync('public/icons/favicon-32.png'); assert.ok(ico.readUInt16LE(2) === 1 && ico.subarray(ico.length - png.length).equals(png), 'favicon.ico embeds public/icons/favicon-32.png'); }
