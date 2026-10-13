@@ -16,7 +16,7 @@ Every part of the page is something the person picked or wrote. Slash only asks 
 
 ## What the person gets
 
-- **The page**, on screen, in the app (Your page lists each finished piece as a small copy of itself).
+- **The page**, on screen, in the app (the KernCard tab lists each finished piece as a small copy of itself).
 - **A picture to save and post** (1080 px wide, 1350 to 2400 px tall): "Save as image".
 - **A share link** for a CV or a message: `/p/#…`. The piece rides in the part after the `#`, so it never reaches a server; the page it opens (`src/pages/p.astro`, `src/scripts/public-page.ts`) is read-only, needs no account, and says it was shared by link and not checked. A link is read like stored data: untrusted, cleaned by `cleanRun`, finished pieces only. The longest run any piece allows (every line and AI answer at its limit, in emoji) still fits `LINK_MAX`; `scripts/check-pieces.mjs` tests it.
 - **A name on the page** (optional), and **how it was made**: when it was started and finished, that no AI wrote any of it (or what the AI wrote), and how many questions Slash asked.
@@ -32,7 +32,7 @@ Accounts, handles and pages that companies can browse are not built yet (the bac
 | `src/scripts/piece-kit.ts` | DOM helpers, `Draw` (the canvas picture; `footer` takes a second line of the byline as a note) and `playBeat` (a tiny drum machine) |
 | `src/scripts/piece-<name>.ts` | one piece: data, `view` (pure), `dom` (the page), `img` (the picture), optionally `file` and `prompt` |
 | `src/scripts/pieces.ts` | the registry (`PIECES`, `kindOf`), `pageOf` and `picOf` (a page and a picture with the practice-project line), the words around every piece (`PL`), `cleanRun`, share links |
-| `src/scripts/pieces-ui.ts` | the screens: the card on Projects, the steps, the finished page, the list on Your page |
+| `src/scripts/pieces-ui.ts` | the screens: the card on Projects, the steps, the finished page, the list on the KernCard tab |
 | `src/styles/piece.css`, `piece-<name>.css` | the pages (shared by the app and the share page) |
 | `src/scripts/i18n-piece-<name>.ts` | German, French, Dutch and Swedish for one piece; `i18n-pieces.ts` merges them |
 | `scripts/check-pieces.mjs`, `check-piece-<name>.mjs` | tests: generic over every piece, and one piece's own |

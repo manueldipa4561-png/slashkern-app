@@ -7,7 +7,7 @@ import { slash } from '../scripts/slash';
 import { readFileSync } from 'node:fs';
 import geistFont from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
 // The in-app mark: the slashkern pointer (public/brand/mark.svg: navy body, ice eyes) on light grounds, and its reversed version (mark-rev.svg: cream body, navy eyes) on the navy blocks
-// (the welcome screen, the kerncard). One drawing for the header, the launch screen, the first screens and the login. The wordmark is the lowercase "slashkern" beside it, in the UI font.
+// (the welcome screen, the KernCard). One drawing for the header, the launch screen, the first screens and the login. The wordmark is the lowercase "slashkern" beside it, in the UI font.
 const MARK = '<img class="k-lg" src="/brand/mark.svg" width="235" height="271" alt="" />';
 const MARK_REV = '<img class="k-lg" src="/brand/mark-rev.svg" width="235" height="271" alt="" />';
 // Inlined so iOS can read it without a login cookie (it fetches the icon itself, which a password-protected site answers with 401).
@@ -22,8 +22,8 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>slashkern · Make something companies can hire you for</title>
-    <meta name="description" content="Make short projects with Slash, an AI that asks one question at a time, keep them on your own page and let companies find them. Early access, free, no account." />
+    <title>slashkern · From zero to product</title>
+    <meta name="description" content="From zero to product. Make short projects with Slash, an AI that helps you, and keep them on your own page. Early access, free, no account." />
     <meta name="theme-color" content="#F5F7FF" />
     <script is:inline src="/theme-init.js"></script>
     <link rel="preload" as="font" type="font/woff2" href={geistFont} crossorigin />
@@ -37,11 +37,11 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
     <meta name="apple-mobile-web-app-title" content="slashkern" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="slashkern" />
-    <meta property="og:description" content="Make short projects with Slash, an AI that asks one question at a time, keep them on your own page and let companies find them. Early access, free, no account." />
+    <meta property="og:description" content="From zero to product. Make short projects with Slash, an AI that helps you, and keep them on your own page. Early access, free, no account." />
     <meta property="og:image" content={`${site}/og.jpg`} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Don't guess your passion. Test it." />
+    <meta property="og:image:alt" content="slashkern. From zero to product. Short projects, an AI assistant, your own page. Early access." />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
@@ -255,8 +255,8 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
 
         <section class="k-fs k-f0" id="kF0">
           <div class="k-brandrow"><span class="k-mark" set:html={MARK_REV} /><span class="k-wm">slashke<span class="k-rn">r</span>n</span></div>
-          <h4 id="kF0H">Make something companies can hire you for.</h4>
-          <p class="k-sub">Short projects. No experience needed. Slash, an AI that helps you make it.</p>
+          <h4 id="kF0H">From zero to product.</h4>
+          <p class="k-sub">Short projects. Slash, an AI that helps you make it.</p>
           <button type="button" class="k-go k-accb" id="kF0Go">Start</button>
         </section>
 
@@ -294,12 +294,12 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
         </section>
 
         <section class="k-fs" id="kF3" hidden>
-          <div class="k-saved" id="kF3Card"><span class="k-okdisc" aria-hidden="true" set:html={icon('done', 'k-i k-done-i')} /><div><div class="k-l" id="kF3Pg">Your page</div><b id="kF3Ttl"></b></div></div>
-          <h4 id="kF3H" tabindex="-1">Saved to your page</h4>
-          <p id="kF3P">Your first project is on your page. Companies join soon. Early creators are shown first.</p>
+          <div class="k-saved" id="kF3Card"><span class="k-okdisc" aria-hidden="true" set:html={icon('done', 'k-i k-done-i')} /><div><div class="k-l" id="kF3Pg">KernCard</div><b id="kF3Ttl"></b></div></div>
+          <h4 id="kF3H" tabindex="-1">Saved to your KernCard</h4>
+          <p id="kF3P">Your first project is on your KernCard. Companies are not on slashkern yet.</p>
           <div class="k-make-host" id="kMakeF" hidden></div>
           <button type="button" class="k-ask-btn" id="kF3Piece" hidden></button>
-          <button type="button" class="k-go" id="kF3Go">See my page</button>
+          <button type="button" class="k-go" id="kF3Go">See my KernCard</button>
         </section>
       </div>
 
@@ -414,9 +414,9 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
             </div>
             <div class="k-card k-stage" id="kKeep">
               <div class="k-stg"><b aria-hidden="true">2</b><span class="k-l">Keep</span></div>
-              <p class="k-stl">Your page fills itself with finished projects.</p>
-              <p class="k-l k-s" id="kKeepN">Nothing on your page yet.</p>
-              <button type="button" class="k-ask-btn" id="kToPage">See my page</button>
+              <p class="k-stl">Your KernCard fills itself with finished projects.</p>
+              <p class="k-l k-s" id="kKeepN">Nothing on your KernCard yet.</p>
+              <button type="button" class="k-ask-btn" id="kToPage">See my KernCard</button>
             </div>
             <div class="k-card k-stage k-lockd" id="kFound">
               <div class="k-stg"><b aria-hidden="true">3</b><span class="k-l">Get found</span><span class="k-lk" id="kFoundS">Locked</span></div>
@@ -455,10 +455,10 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
           </section>
 
           <section class="k-pane" id="k-yourkern">
-            <div><div class="k-l">Your page</div><h4>Your <b>page.</b></h4><p class="k-l k-s k-yk-why" id="kYkWhy">Your page keeps the projects you finish. Your kerncard is built from them and from your reflections.</p><p class="k-early">Early access: companies join soon. Early creators are shown first.</p></div>
+            <div><div class="k-l">KernCard</div><h4>Your <b>KernCard.</b></h4><p class="k-l k-s k-yk-why" id="kYkWhy">Your KernCard keeps the projects you finish and is built from them and from your reflections.</p><p class="k-early">Early access: companies are not on slashkern yet.</p></div>
             <div class="k-card" id="kPieces" hidden><div class="k-l" id="kPieceH"></div><div id="kPieceL"></div></div>
             <div class="k-card" id="kPages"><div class="k-l">Your projects</div><div id="kAns"></div></div>
-            <div class="k-card k-kcard" id="kSlashCard"><div class="k-l">Your kerncard</div><div class="k-kc">
+            <div class="k-card k-kcard" id="kSlashCard"><div class="k-l">Your KernCard</div><div class="k-kc">
                 <div class="k-kc-top"><div class="k-kt"><span class="k-lgw" set:html={MARK_REV} /><span>slashke<span class="k-rn">r</span>n</span></div><span class="k-l" id="kCardF">Writing</span></div>
                 <div class="k-kc-path" id="kCardP" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
                 <span class="k-l k-kc-n" id="kCardN">3 of 6 projects</span>
@@ -495,7 +495,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               <div class="k-st" role="listitem"><h5 id="kTr0">Fix what already exists</h5><p>Not started</p></div>
               <div class="k-st" role="listitem"><h5 id="kTr1">Rewrite a confusing email</h5><p>Not started</p></div>
               <div class="k-st" role="listitem"><h5 id="kTr2">Work with a partner</h5><p>Not started</p></div>
-              <div class="k-st" id="kTrK" role="listitem"><h5>Your kerncard</h5><p>Ready when your 3 projects are done</p></div>
+              <div class="k-st" id="kTrK" role="listitem"><h5>Your KernCard</h5><p>Ready when your 3 projects are done</p></div>
             </div>
           </section>
 
@@ -506,7 +506,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
             <p class="k-l k-s" id="kAiNote">What you write here goes to our AI provider to get a reply. slashkern doesn't keep it.</p>
             <div class="k-card k-chat">
               <div class="k-log" id="kChat"></div><div class="k-sr" id="kSr" role="status" aria-live="polite"></div>
-              <div class="k-cmp" id="kCmp" hidden><div class="k-l">Version 1</div><p id="kV1"></p><div class="k-l">Version 3</div><p id="kV3"></p><button type="button" class="k-ask-btn" id="kSaveV">Save to your page</button></div>
+              <div class="k-cmp" id="kCmp" hidden><div class="k-l">Version 1</div><p id="kV1"></p><div class="k-l">Version 3</div><p id="kV3"></p><button type="button" class="k-ask-btn" id="kSaveV">Save to your KernCard</button></div>
               <div class="k-comp"><input id="kIn" type="text" maxlength="140" autocomplete="off" aria-label="Your idea" /><button type="button" class="k-send" id="kSend" aria-label="Send">↑</button></div>
               <div class="k-chips" id="kEx"><span role="button" tabindex="0">Use an example</span><span role="button" tabindex="0">Start over</span><span role="button" tabindex="0">I’m stuck</span><span role="button" tabindex="0">Make it smaller</span></div>
             </div>
@@ -517,7 +517,7 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
         <div class="k-toast" id="kToast" role="status" aria-live="polite"><span id="kToastT"></span><button type="button" id="kToastB" hidden>Undo</button></div>
         <nav class="k-tabs" aria-label="slashkern">
           <button type="button" class="on" data-k-tab="missions"><span class="ti" aria-hidden="true"><svg class="k-ti-i" viewBox="0 0 24 24" focusable="false"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg></span><span class="tn tt">Projects</span></button>
-          <button type="button" data-k-tab="yourkern"><span class="ti" aria-hidden="true"><svg class="k-ti-i" viewBox="0 0 24 24" focusable="false"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10.5A.5.5 0 0 1 6.5 20V4a.5.5 0 0 1 .5-.5z"/><path d="M9.5 12h5M9.5 15.5h5"/></svg></span><span class="tn tt">Your page</span></button>
+          <button type="button" data-k-tab="yourkern"><span class="ti" aria-hidden="true"><svg class="k-ti-i" viewBox="0 0 24 24" focusable="false"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10.5A.5.5 0 0 1 6.5 20V4a.5.5 0 0 1 .5-.5z"/><path d="M9.5 12h5M9.5 15.5h5"/></svg></span><span class="tn tt">KernCard</span></button>
           <button type="button" data-k-tab="copilot"><span class="ti" aria-hidden="true"><svg class="k-ti-i" viewBox="0 0 24 24" focusable="false"><path d="M5 5.5h14a1 1 0 0 1 1 1V15a1 1 0 0 1-1 1h-7l-4 3.5V16H5a1 1 0 0 1-1-1V6.5a1 1 0 0 1 1-1z"/></svg></span><span class="tn tt">Slash</span></button>
         </nav>
       </div>

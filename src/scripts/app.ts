@@ -1,6 +1,6 @@
 // slashkern app logic. State lives in this browser (localStorage key kern:v1); with an account it also syncs (cloud.ts).
 //
-//  profile ──> field ──> mission ──> answer ──> reflection ──> signals ──> kerncard ──> share
+//  profile ──> field ──> mission ──> answer ──> reflection ──> signals ──> KernCard ──> share
 //                           ^            │ (draft autosaved)      │
 //                           └────────────┴── slashkern / Trail ◄───┘
 import { EN, IT, t2 } from './i18n';
@@ -158,8 +158,8 @@ const demoState = (): State => {
   try { real = JSON.parse(localStorage.getItem('kern:v1') || '{}') || {}; } catch { /* no real profile to read */ }
   const lang: Lang = isLang(real.lang) ? real.lang : fresh().lang, text = real.text;
   const it = lang === 'it', answers = sampleAnswers(it, Date.now());
-  const made = Date.now() - 2 * 864e5, builds = [{ f: 'Design', i: PIECE_AT, at: made, done: made + 9 * 6e4, s: ['plant', 'friendly,cosy,local', 'tomato,cream,espresso', 'leaf', it ? 'Caffè, piante, Rosa.' : 'Coffee, plants, Rosa.'] }, ...PIECES.filter((p) => p.f !== 'Design').map((p, k) => samplePiece(p, made - (k + 1) * 36e5, it))]; // a finished piece in every field on Your page: the brand sheet by hand, the others from their first options and example lines
-  return sanitize({ v: 1, name: 'Giulia', field: 'Design', fields: ['Design', 'Writing', 'Video'], onboarded: true, stones: answers.reduce((s, a) => s + 50 + (a.r ? 20 : 0) + (a.x || 0), 0), answers, msgs: [{ who: 'ai', t: OPEN }, ...sampleChat(it)], mine: sampleMine(it), builds, dared: true, lang, theme: 'light', text, guess: 'Saved. This sharpens your kerncard.' }) || fresh(); // guess: the reply to "A first guess" (That feels right), not a sentence of its own
+  const made = Date.now() - 2 * 864e5, builds = [{ f: 'Design', i: PIECE_AT, at: made, done: made + 9 * 6e4, s: ['plant', 'friendly,cosy,local', 'tomato,cream,espresso', 'leaf', it ? 'Caffè, piante, Rosa.' : 'Coffee, plants, Rosa.'] }, ...PIECES.filter((p) => p.f !== 'Design').map((p, k) => samplePiece(p, made - (k + 1) * 36e5, it))]; // a finished piece in every field on the KernCard tab: the brand sheet by hand, the others from their first options and example lines
+  return sanitize({ v: 1, name: 'Giulia', field: 'Design', fields: ['Design', 'Writing', 'Video'], onboarded: true, stones: answers.reduce((s, a) => s + 50 + (a.r ? 20 : 0) + (a.x || 0), 0), answers, msgs: [{ who: 'ai', t: OPEN }, ...sampleChat(it)], mine: sampleMine(it), builds, dared: true, lang, theme: 'light', text, guess: 'Saved. This sharpens your KernCard.' }) || fresh(); // guess: the reply to "A first guess" (That feels right), not a sentence of its own
 };
 let recovered = ''; // set when a saved trail could not be read in full at start-up: the notice to show once the app is up
 let seen: string | null = null; // the trail as storage held it when this page last read or wrote it (absorb)
@@ -261,7 +261,7 @@ const pressed = (attr: string, val: string) => document.querySelectorAll<HTMLEle
 const F = () => FIELDS[S.field] || FIELDS.Design;
 const day = (t: number) => new Date(t).toLocaleDateString(LOCALE[S.lang], { day: 'numeric', month: 'short' });
 const when = (t: number, time = false) => new Date(t).toLocaleString(LOCALE[S.lang], time ? { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' } : { day: 'numeric', month: 'short' });
-// Rounds, counters and the kerncard's guess look at the core projects only (index 0 to TREND_FROM - 1); the Trending ones (trending.ts) sit after them and stand apart.
+// Rounds, counters and the KernCard's guess look at the core projects only (index 0 to TREND_FROM - 1); the Trending ones (trending.ts) sit after them and stand apart.
 const doneIn = (f: string) => new Set(S.answers.filter((a) => a.f === f && a.i < TREND_FROM).map((a) => a.i));
 const doneSet = () => doneIn(S.field);
 const kindOf = (a: { i: number }) => (a.i < TREND_FROM ? a.i % PER_ROUND : -1); // improve / start from zero / partner; a trending project has none
@@ -502,7 +502,7 @@ const readSignals = () => {
 };
 const ready = (sg: ReturnType<typeof readSignals>) => !!sg && sg.n === 3; // a reflection on each of the three kinds
 const chips = (box: HTMLElement, list: string[]) => { box.innerHTML = ''; list.forEach((t) => { const s = document.createElement('span'); s.textContent = t; box.appendChild(s); }); };
-// kerncard: a line you wrote, the field as a path, and the pattern once all three kinds of mission have a reflection.
+// KernCard: a line you wrote, the field as a path, and the pattern once all three kinds of mission have a reflection.
 // Before that it shows your latest answer and how many reflections are left. With no answer in the field yet, it is a labelled example.
 const KIND_ME = [t2('I get into it when I improve what already exists.', 'Mi appassiono quando miglioro ciò che esiste già.'), t2('I get into it when I start from zero.', 'Mi appassiono quando parto da zero.'), t2('I get into it when I work with someone.', 'Mi appassiono quando collaboro con qualcuno.')]; // first person, for the image you share
 const CARD_EX = { f: 'Writing', n: '3 of 6 projects', q: 'Almost stayed home. Bag strap snapped on the bus. Lifted 40 kg anyway.', m: 'Rewrite a caption so friends reply · Time flew', h: 'So far, you get into it when you start from zero.' };
@@ -535,7 +535,7 @@ const cardData = () => {
   const fit = lit ? fitOf(best) : '';
   return {
     sg, a, lit, fit, done: doneIn(f), all: total(f), refl: mine.filter((x) => x.r?.e).length,
-    src: a ? `${tr(FIELDS[a.f].m[a.i][1])}${a.r?.e ? ' · ' + tr(FEEL_EN[a.r.e]) : ''}${a.ai ? ' · ' + tr(AI_TAG) : ''}` : '', // the kerncard and the shared image say so when the line was made with AI help
+    src: a ? `${tr(FIELDS[a.f].m[a.i][1])}${a.r?.e ? ' · ' + tr(FEEL_EN[a.r.e]) : ''}${a.ai ? ' · ' + tr(AI_TAG) : ''}` : '', // the KernCard and the shared image say so when the line was made with AI help
     you: best < 0 ? ''
       : !lit ? tr(t2('So far, no kind of project made time fly for you. That counts too.', 'Finora nessun tipo di progetto ti ha fatto volare il tempo. Anche questo conta.'))
       : fill(t2('So far, you get into it when you {k}.', 'Finora ti appassioni quando {k}.'), { k: tr(KIND_EN[best]) }),
@@ -653,7 +653,7 @@ const openAbout = () => {
   $('kFlI').innerHTML = icon(S.field);
   setD($('kFlT'), tr(S.field)); setD($('kFlD'), tr(info.day));
   listOf('kFlL', info.like); listOf('kFlH', info.hard);
-  setT($('kFlGo'), kAdd.dataset.kAns === 'card' ? 'See your kerncard' : 'Try the next project'); // a finished round has no next mission: the button leads where kAdd leads
+  setT($('kFlGo'), kAdd.dataset.kAns === 'card' ? 'See your KernCard' : 'Try the next project'); // a finished round has no next mission: the button leads where kAdd leads
   openSheetEl(kFld, $('kFlGo'));
 };
 $('kAbout').addEventListener('click', openAbout);
@@ -704,17 +704,17 @@ kStatSet.addEventListener('click', async () => {
   say((await stats.turnOff()) ? 'Usage counts are off. What was counted is deleted.' : "Counts are off. We couldn't reach the server to delete the earlier ones: they expire after 12 months.");
   renderStat();
 });
-// A round was just finished and the next one is not started: Home celebrates the kerncard first, and the pill and the Trail say the same.
+// A round was just finished and the next one is not started: Home celebrates the KernCard first, and the pill and the Trail say the same.
 const roundJustDone = () => { const b = base(), d = winDone(); return b > 0 && ![0, 1, 2].some((k) => d.has(k) || S.drafts[`${S.field}.${b + k}`]); };
 // The word for a mission's state, the same on Home and in the Trail.
 const stateWord = (done: boolean, next: boolean, draft: boolean) => (done ? 'Done' : next ? 'Up next' : draft ? 'Draft' : 'Not started');
 // The field as a path, one segment per mission, the same on Home and on the done screen (app.css splits it into its two rounds). `mark` gets `cls`.
 const pathOf = (f: string, mark: number, cls: string) => { const d = doneIn(f); return Array.from({ length: total(f) }, (_, i) => `<i class="${d.has(i) ? 'on' : ''}${i === mark ? ` ${cls}` : ''}"></i>`).join(''); };
-// The three stages of the path: Make is the card above, Keep says what is on the page, Get found waits for FOUND_AT finished projects. Nothing here talks about money earned.
+// The three stages of the path: Make is the card above, Keep says what is on your KernCard, Get found waits for FOUND_AT finished projects. Nothing here talks about money earned.
 const finishedCount = () => new Set(S.answers.map((a) => `${a.f}.${a.i}`)).size;
 const renderStages = () => {
   const n = finishedCount(), open = n >= FOUND_AT;
-  if (n) setD($('kKeepN'), fill(n === 1 ? t2('1 project is on your page.', '1 progetto è nella tua pagina.') : t2('{n} projects are on your page.', '{n} progetti sono nella tua pagina.'), { n })); else setT($('kKeepN'), 'Nothing on your page yet.');
+  if (n) setD($('kKeepN'), fill(n === 1 ? t2('1 project is on your KernCard.', '1 progetto è nella tua KernCard.') : t2('{n} projects are on your KernCard.', '{n} progetti sono nella tua KernCard.'), { n })); else setT($('kKeepN'), 'Nothing on your KernCard yet.');
   $('kFound').classList.toggle('k-lockd', !open);
   setT($('kFoundS'), open ? 'Ready' : 'Locked');
   $('kFoundB').style.width = `${Math.min(100, (100 * n) / FOUND_AT)}%`;
@@ -740,12 +740,12 @@ const markTrend = () => trendCards.forEach(({ f, i, mins, st }) => {
   const word = S.answers.some((a) => a.f === f && a.i === i) ? 'Done' : S.drafts[`${f}.${i}`] ? 'Draft' : '';
   st.textContent = `~${mins} min${word ? ` · ${tr(word)}` : ''}`; // the same short form as the rows of the list, then Done or Draft
 });
-const piecesUi = { render: () => {}, open: () => {} }; // the card on Projects and the list on Your page, and opening a piece: replaced by initPieces() once the screens are wired, below
+const piecesUi = { render: () => {}, open: () => {} }; // the card on Projects and the list on the KernCard tab, and opening a piece: replaced by initPieces() once the screens are wired, below
 const renderHome = () => {
   renderStat(); renderStages(); markTrend(); piecesUi.render();
   renderFields(); renderAbout(); renderFurther(); renderCoopIn();
   const f = F(), b = base(), round = b / PER_ROUND, done = winDone(), next = [0, 1, 2].find((k) => !done.has(k));
-  // fresh: a round was just finished and the next one is not started. Celebrate the kerncard first, then offer the new missions.
+  // fresh: a round was just finished and the next one is not started. Celebrate the KernCard first, then offer the new missions.
   const fresh = roundJustDone();
   setD($('kHi'), S.name ? `${tr('Hi')} ${S.name}` : ''); $('kHi').hidden = !S.name; // no name is asked any more: no bare "Hi"
   setD($('kPathN'), tr(S.field)); // one path on Home: the category's name (Short videos, Posters and logos...)
@@ -755,9 +755,9 @@ const renderHome = () => {
   if (next === undefined || fresh) {
     if (fresh) setD($('kNxL'), fill(t2('Round {n} complete', 'Round {n} completato'), { n: round }));
     else setD($('kNxL'), fill(t2('Your {n} projects are done', 'I tuoi {n} progetti sono fatti'), { n: total() }));
-    setT($('kNxT'), 'Your kerncard is ready.');
+    setT($('kNxT'), 'Your KernCard is ready.');
     setT($('kNxP'), fresh ? 'See what your answers say about you, or keep going with 3 new projects.' : 'See what your answers say about you, and share it.');
-    setT(kAdd, 'See your kerncard'); kAdd.dataset.kAns = 'card';
+    setT(kAdd, 'See your KernCard'); kAdd.dataset.kAns = 'card';
     if (fresh) { setD(kAdd2, fill(t2('Start round {n}', 'Inizia il round {n}'), { n: round + 1 })); kAdd2.dataset.kAns = String(b); }
   } else {
     const m = f.m[b + next];
@@ -765,7 +765,7 @@ const renderHome = () => {
     setT($('kNxT'), m[1]); setT($('kNxP'), m[2]);
     setT(kAdd, S.drafts[`${S.field}.${b + next}`] ? 'Continue your draft' : 'Start project'); kAdd.dataset.kAns = String(b + next);
   }
-  const finished = next === undefined || fresh; // the card is about the kerncard now, so no time chip
+  const finished = next === undefined || fresh; // the card is about the KernCard now, so no time chip
   $('kNxPath').innerHTML = pathOf(S.field, finished ? -1 : b + (next ?? 0), 'nx');
   const mins = finished ? 0 : MX[S.field]?.[b + (next ?? 0)]?.mins;
   $('kNxM').innerHTML = mins ? `<span class="k-l">${aboutMins(mins)}</span>` : ''; // no price anywhere: nobody is paying yet
@@ -807,12 +807,12 @@ const renderSteps = () => {
 const renderProgress = () => {
   renderSteps();
   const kc = $('kTrK');
-  const ready = doneSet().size >= PER_ROUND; // the kerncard unlocks with round 1 and sharpens with every round after
+  const ready = doneSet().size >= PER_ROUND; // the KernCard unlocks with round 1 and sharpens with every round after
   kc.className = 'k-st' + (ready ? ' now' : '');
   setT(kc.querySelector('p')!, ready ? 'Ready to share' : 'Ready when your 3 projects are done');
   const box = $('kAns');
   box.innerHTML = '';
-  if (!S.answers.length) { const p = document.createElement('p'); p.textContent = tr(t2('Nothing here yet. Finish a project and it lands on your page.', 'Qui non c’è ancora niente. Finisci un progetto e arriva nella tua pagina.')); box.appendChild(p); }
+  if (!S.answers.length) { const p = document.createElement('p'); p.textContent = tr(t2('Nothing here yet. Finish a project and it lands on your KernCard.', 'Qui non c’è ancora niente. Finisci un progetto e arriva nella tua KernCard.')); box.appendChild(p); }
   S.answers.slice(-5).reverse().forEach((a, k) => {
     const idx = S.answers.length - 1 - k;
     const row = document.createElement('div'); row.className = 'k-an';
@@ -1028,7 +1028,7 @@ const scripted = (v: string) => {
   S.mine.push(v);
   if (S.mine.length < 3) return aiSay(pick([F().qs[S.mine.length - 1], ...Q_MORE[S.mine.length - 1]]), echo(v));
   if (S.mine.length === 3) return aiSay('You wrote it 3 times and each version changed. That is your evidence. Compare the first and the last.');
-  aiSay(t2('Save it to your page, or start over with a new idea.', 'Salvala nella tua pagina, oppure ricomincia con una nuova idea.'));
+  aiSay(t2('Save it to your KernCard, or start over with a new idea.', 'Salvala nella tua KernCard, oppure ricomincia con una nuova idea.'));
 };
 const sendChat = () => {
   const v = inEl.value.trim(); if (!v || busy) return;
@@ -1055,7 +1055,7 @@ document.querySelectorAll<HTMLElement>('#kEx span').forEach((c, i) => {
   c.addEventListener('click', go);
   c.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
 });
-$('kSaveV').addEventListener('click', () => { S.saves++; say(save() ? t2('Saved to your page. Every version counts as evidence.', 'Salvato nella tua pagina. Ogni versione conta come prova.') : UNSAVED); });
+$('kSaveV').addEventListener('click', () => { S.saves++; say(save() ? t2('Saved to your KernCard. Every version counts as evidence.', 'Salvato nella tua KernCard. Ogni versione conta come prova.') : UNSAVED); });
 $('kToAi').addEventListener('click', () => goTab('copilot'));
 // Helplines any time (Settings and Slash): the pause text with the checked numbers, minus its first sentence ("...so I'm pausing the project";
 // check-heavy.mjs keeps the numbers out of it). It is in the app itself, so it works offline; setLang refills it.
@@ -1449,7 +1449,7 @@ function showDrop(d: Drop, side: number, withNext = false) {
 function offerNext() {
   if (cur.i >= TREND_FROM) return; // a Trending project stands apart: the button after it just says Keep going
   const nx = nextSpot(S.field, S.fields.filter((f) => FIELDS[f]), doneIn, total()), m = nx && FIELDS[nx.f].m[nx.i];
-  // Finishing a round lands on Home, where the kerncard is the payoff: never chain out of a completed round.
+  // Finishing a round lands on Home, where the KernCard is the payoff: never chain out of a completed round.
   const start = Math.floor(cur.i / PER_ROUND) * PER_ROUND, d = doneIn(cur.f);
   if (!nx || !m || [0, 1, 2].every((k) => d.has(start + k))) return;
   const mins = MX[nx.f]?.[nx.i]?.mins;
@@ -1642,7 +1642,7 @@ kWin.addEventListener('click', () => {
 $('kRwOk').addEventListener('click', closeWin);
 kRw.addEventListener('keydown', (e) => { if (e.key === 'Escape') { e.preventDefault(); closeWin(); } });
 
-// The kerncard's "That feels right / Not really": saved with the kind it is about, and the card says what it changed (renderCard).
+// The KernCard's "That feels right / Not really": saved with the kind it is about, and the card says what it changed (renderCard).
 const fb = $('kFb');
 kScr.querySelectorAll<HTMLElement>('#kCardAsk [data-k-fit]').forEach((b) => b.addEventListener('click', () => {
   const sg = readSignals();
@@ -1813,7 +1813,7 @@ $('kPwF').addEventListener('submit', async (e) => {
   catch (err) { setT(er, cloud.why(err)); er.hidden = false; }
 });
 $('kPickX').addEventListener('click', closePicker);
-// First visit: loader > the four first-run screens (openFirst) > Your page. A name or an account is optional, later (Settings). The picker above is only for adding paths.
+// First visit: loader > the four first-run screens (openFirst) > the KernCard tab. A name or an account is optional, later (Settings). The picker above is only for adding paths.
 const pop = () => { // the field's object drops into the mission card
   if (still) return;
   const o = $('kNxIc');
@@ -1823,7 +1823,7 @@ const landHome = () => land(kScr.querySelector<HTMLElement>('#k-missions h4')!);
 const arrive = () => { goTab('missions'); pop(); landHome(); };
 
 // First run (v10): four screens with one action each and no tabs behind them. 1 welcome, 2 pick one example project (and tick 18+), 3 the project one question at a time,
-// 4 saved to your page. A starter (projects.ts) points at an existing mission, so its brief, material and three steps are the mission's own; the answers join into one saved answer.
+// 4 saved to your KernCard. A starter (projects.ts) points at an existing mission, so its brief, material and three steps are the mission's own; the answers join into one saved answer.
 // Nothing here says or implies money was earned: the prices are examples and nobody is paying yet.
 const kFirst = $('kFirst'), kFirstAge = $<HTMLInputElement>('kFirstAge'), kF1Go = $<HTMLButtonElement>('kF1Go'), kF2Ta = $<HTMLTextAreaElement>('kF2Ta'), kF2C = $('kF2C'), kF2Ask = $('kF2Ask');
 const FIRST_IDS = ['kF0', 'kF1', 'kF2', 'kF3'], FIRST_HEADS = ['kF0H', 'kF1H', 'kF2Q', 'kF3H']; // the screens, and the heading each one is named by
@@ -1883,7 +1883,7 @@ const renderStep = () => {
   $('kFProg').setAttribute('aria-valuetext', $('kF2L').textContent ?? '');
   setD($('kF2Q'), tr(steps[firstStep] ?? ''));
   kF2Ta.value = firstAns[firstStep] ?? ''; kF2Ta.placeholder = tr('Write it your way.');
-  setT($('kF2Next'), last ? 'Save to my page' : 'Next');
+  setT($('kF2Next'), last ? 'Save to my KernCard' : 'Next');
   $<HTMLDetailsElement>('kF2D').open = false; // the short brief and the material (the clip, the facts) are one tap away, below the answer box
   kF2C.hidden = true; kF2C.replaceChildren(); kF2Ask.setAttribute('aria-expanded', 'false'); hold(kF2Ask, false);
   land($('kF2Q'));
@@ -1959,7 +1959,7 @@ $('kF3Go').addEventListener('click', once(() => {
   kFirst.classList.remove('on'); syncInert();
   applyField(false); goTab('yourkern'); land(kScr.querySelector<HTMLElement>('#k-yourkern h4')!);
 }));
-// Home: "More paths" opens the field chips (switch path, add more), "See my page" is the Your page tab.
+// Home: "More paths" opens the field chips (switch path, add more), "See my KernCard" is the KernCard tab.
 $('kMore').addEventListener('click', () => { const box = $('kMoreBox'); box.hidden = !box.hidden; $('kMore').setAttribute('aria-expanded', String(!box.hidden)); });
 $('kToPage').addEventListener('click', () => goTab('yourkern'));
 const closeStart = () => {
@@ -2042,7 +2042,7 @@ const shareText = async (title: string, text: string, url: string | undefined, c
   }
   if (await copy(url ? `${text} ${url}` : text)) say(copied); else say(url || text.slice(0, 120));
 };
-// kerncard as a 1080x1920 story image, with what the card shows: your answer line, the field as a path, the pattern once it is
+// KernCard as a 1080x1920 story image, with what the card shows: your answer line, the field as a path, the pattern once it is
 // ready (never after "Not really"), then the navy block with the line and the address. White page, navy text, the ultramarine accent on the done segments.
 const STORY_W = 1080, STORY_H = 1920, STORY_X = 96, ACCENT = '#2D4BFF', INK = '#0E1B3D', ICE = '#DCE6FF', WHITE = '#FFFFFF', DIMB = '#5A6478', TRACKB = '#DFE5F4', BLOCK_Y = 1432;
 const cardImage = async (): Promise<Blob | null> => {
@@ -2108,7 +2108,7 @@ const cardImage = async (): Promise<Blob | null> => {
   }
   // The one navy block: the line and the address, above the strip a story covers with its reply bar.
   x.fillStyle = INK; pill(0, BLOCK_Y, STORY_W, STORY_H - BLOCK_Y, 0); x.fill();
-  const slogan = wrap(tr('Make something companies can hire you for.'), `800 72px ${D}`, 3); // up to three lines in every language
+  const slogan = wrap(tr('From zero to product.'), `800 72px ${D}`, 3); // up to three lines in every language
   slogan.forEach((l, k) => put(l, `800 72px ${D}`, WHITE, X, BLOCK_Y + 130 + k * 84));
   put(location.host, `700 36px ${B}`, '#A9B4D0', X, BLOCK_Y + 130 + slogan.length * 84 + 40);
   return new Promise((res) => cv.toBlob(res, 'image/png'));
@@ -2117,7 +2117,7 @@ let cardBusy = false; // one tap, one download
 const shareCard = async () => { if (cardBusy) return; cardBusy = true; try { await shareCardNow(); } finally { window.setTimeout(() => { cardBusy = false; }, 900); } };
 const shareCardNow = async () => {
   const blob = await cardImage(), c = cardData();
-  const text = c.me ? tr('My kerncard so far: {s}').replace('{s}', c.me) : tr('Testing {f} on slashkern.').replace('{f}', tr(S.field));
+  const text = c.me ? tr('My KernCard so far: {s}').replace('{s}', c.me) : tr('Testing {f} on slashkern.').replace('{f}', tr(S.field));
   if (!blob) return shareText('slashkern', text, `${location.origin}/`, 'Link copied.');
   const file = new File([blob], 'my-kerncard.png', { type: 'image/png' });
   if (navigator.canShare?.({ files: [file] })) {
@@ -2186,7 +2186,7 @@ function receiveCoopReply(c: Coop) { // someone answered my co-op: keep both hal
   if (res.status === 'stranger') { coopNote = tr(t2('This reply is not for one of your projects.', 'Questa risposta non è per un tuo progetto.')); return; }
   if (res.status === 'own') { coopNote = tr(t2('This is the reply you sent.', 'Questa è la risposta che hai mandato tu.')); return; }
   if (res.status !== 'same') { S.coops = res.coops; keepCoops(); save(); }
-  coopNote = fill(t2('{n} replied. It is on your page.', '{n} ha risposto. La trovi nella tua pagina.'), { n: who }); coopGo = true;
+  coopNote = fill(t2('{n} replied. It is on your KernCard.', '{n} ha risposto. La trovi nella tua KernCard.'), { n: who }); coopGo = true;
 }
 // The link stays in the address bar until the request is answered or dismissed, so a reload, "Open in Safari" from a chat app's browser or a bookmark still finds it.
 function dropCoopHash() { if (location.hash.startsWith('#coop=')) try { history.replaceState(null, '', location.pathname.replace(/^\/{2,}/, '/') + location.search); } catch { /* leave the address as it is */ } }
@@ -2293,7 +2293,7 @@ const setLang = (l: Lang) => {
   if (DEMO) rewriteSample(l === 'it'); // before the save: the stored demo follows the language too
   S.lang = l; save(); document.documentElement.lang = l;
   if (DEMO) kScr.style.setProperty('--demo-label', JSON.stringify(tr('Demo profile'))); // the tag over every sheet (app.css)
-  document.title = tr('slashkern · Make something companies can hire you for');
+  document.title = tr('slashkern · From zero to product');
   kDesc?.setAttribute('content', tr(descEn));
   kTxt.forEach((e) => { const en = e.dataset.en; if (!en) return; if (e.classList.contains('k-xb')) e.textContent = tr(en); else e.innerHTML = tr(en); });
   for (const page of ['privacy', 'terms', 'about']) document.querySelectorAll<HTMLAnchorElement>(`a[href^="/${page}/"]`).forEach((a) => { // after the texts above: they bring their own links back
@@ -2383,7 +2383,7 @@ const addListen = (p: HTMLElement, text: string) => { const b = listenButton(tex
 attachMic(kTa, 'inside'); attachMic(kF2Ta, 'inside'); attachMic($<HTMLTextAreaElement>('kCoTa'), 'inside'); attachMic(inEl, 'after', inEl.closest('.k-comp') ?? undefined);
 
 // "Make a first version with AI" (make.ts, mode 'make' of the coach function): at the end of a project, only when the person asks, from the idea they wrote. The assistant itself keeps asking questions only.
-// The result is theirs to edit, it carries the chip "Made with AI help", and "Use this as my project" saves it with ai: true (shown on Your page, the kerncard and the trail text, never hidden).
+// The result is theirs to edit, it carries the chip "Made with AI help", and "Use this as my project" saves it with ai: true (shown on the KernCard tab and card, and in the trail text, never hidden).
 const MK = {
   go: t2('Make a first version with AI', 'Crea una prima versione con l’AI'),
   busy: t2('Making it…', 'La sto creando…'),

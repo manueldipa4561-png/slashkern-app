@@ -58,18 +58,18 @@ const markSvg = readFileSync('public/brand/mark.svg', 'utf8'), body = markSvg.ma
 assert.ok(body && readFileSync('public/brand/mark-rev.svg', 'utf8').includes(body), 'public/brand: mark.svg (navy body) and mark-rev.svg (the same body, reversed)');
 assert.ok(page.includes(`const MARK = '<img class="k-lg" src="/brand/mark.svg"`) && page.includes(`const MARK_REV = '<img class="k-lg" src="/brand/mark-rev.svg"`), 'index.astro: MARK and MARK_REV are the two brand images');
 assert.ok(/<div class="k-logo"><span class="k-lgw" set:html=\{MARK\} \/><span>slashke<span class="k-rn">r<\/span>n<\/span><\/div>/.test(page), 'index.astro: the header is the mark and "slashkern" (r and n spaced)');
-assert.ok(/class="k-fs k-f0"[^]*?set:html=\{MARK_REV\}/.test(page) && /class="k-kt"><span class="k-lgw" set:html=\{MARK_REV\}/.test(page), 'index.astro: the navy welcome screen and the kerncard show the reversed mark');
+assert.ok(/class="k-fs k-f0"[^]*?set:html=\{MARK_REV\}/.test(page) && /class="k-kt"><span class="k-lgw" set:html=\{MARK_REV\}/.test(page), 'index.astro: the navy welcome screen and the KernCard show the reversed mark');
 assert.ok(!page.includes('M7 29A25 25 0 0 1 57 29Z') && !/>\s*kern\s*</.test(page) && !/kern<i>\.<\/i>/.test(page) && !page.includes('mark.webp'), 'index.astro: no slit disc, no "kern" wordmark left');
 assert.match(readFileSync('public/manifest.webmanifest', 'utf8'), /"name": "slashkern",\s*"short_name": "slashkern"[\s\S]*"background_color": "#0E1B3D"[\s\S]*"theme_color": "#0E1B3D"/, 'manifest: slashkern, navy background and theme colour');
-assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v34'/, 'sw.js: bump CACHE with every visual change');
+assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v35'/, 'sw.js: bump CACHE with every visual change');
 // The icons: the favicon is the pointer on ultramarine, and favicon.ico carries favicon-32.png.
 assert.ok(readFileSync('public/favicon.svg', 'utf8').includes(body) && readFileSync('public/favicon.svg', 'utf8').includes('#0050F0'), 'favicon.svg: the slashkern pointer on the electric blue icon tile');
 { const ico = readFileSync('public/favicon.ico'), png = readFileSync('public/icons/favicon-32.png'); assert.ok(ico.readUInt16LE(2) === 1 && ico.subarray(ico.length - png.length).equals(png), 'favicon.ico embeds public/icons/favicon-32.png'); }
 assert.equal((page.match(/data-k-tab="/g) || []).length, 3, 'index.astro: three sections');
-// v10: the tabs are Projects, Your page and Assistant (the ids and data-k-tab values stay), and the first run is four screens with no tab bar behind them.
-for (const [tab, label] of [['missions', 'Projects'], ['yourkern', 'Your page'], ['copilot', 'Slash']]) assert.match(page, new RegExp(`data-k-tab="${tab}"[^]*?<span class="tn tt">${label}</span>`), `index.astro: the ${tab} tab reads ${label}`);
+// v10: the tabs are Projects, KernCard and Assistant (the ids and data-k-tab values stay), and the first run is four screens with no tab bar behind them.
+for (const [tab, label] of [['missions', 'Projects'], ['yourkern', 'KernCard'], ['copilot', 'Slash']]) assert.match(page, new RegExp(`data-k-tab="${tab}"[^]*?<span class="tn tt">${label}</span>`), `index.astro: the ${tab} tab reads ${label}`);
 for (const id of ['kFirst', 'kF0', 'kF1', 'kF2', 'kF3', 'kF0Go', 'kF1Go', 'kF2Next', 'kF2Ask', 'kF3Go', 'kFirstAge']) assert.ok(page.includes(`id="${id}"`), `index.astro: first run needs #${id}`);
-for (const text of ['Make something companies can hire you for.', 'Pick one to try', 'Free practice projects.', 'Saved to your page', 'See my page', 'How companies will find you', 'When companies post briefs, you can apply. The company chooses who gets the project and pays them.', 'Nobody is paying yet: this is early access.']) assert.ok(page.includes(text), `index.astro: missing "${text}"`);
+for (const text of ['From zero to product.', 'Pick one to try', 'Free practice projects.', 'Saved to your KernCard', 'See my KernCard', 'How companies will find you', 'When companies post briefs, you can apply. The company chooses who gets the project and pays them.', 'Nobody is paying yet: this is early access.']) assert.ok(page.includes(text), `index.astro: missing "${text}"`);
 assert.ok(!/>\s*Learn\s*</.test(page) && !/\bLearn\b/.test(readFileSync('src/scripts/fieldinfo.ts', 'utf8').replace(/learn:/g, '')), 'no "Learn" promise on screen');
 // No money anywhere in the app (a brief pays one or a few creators, so a price on every project would suggest everyone earns it, and nobody is paying yet): no amount, no currency, no "paid".
 const moneySrc = ['src/pages/index.astro', 'src/scripts/projects.ts', 'src/scripts/app.ts', 'public/manifest.webmanifest'].map((f) => [f, readFileSync(f, 'utf8')]);
@@ -97,7 +97,7 @@ assert.ok(/id="kShClose"/.test(page) && /function renderProg\(\)/.test(readFileS
 const pics = [...readFileSync('src/scripts/missions.ts', 'utf8').matchAll(/\bimg(?:It)?: '(\/img\/m\/[^']+)'/g)].map((m) => m[1]);
 assert.ok(pics.length >= 9, `missions.ts: expected the mission pictures, found ${pics.length}`);
 for (const p of pics) assert.ok(existsSync(`public${p}`), `missions.ts: picture ${p} is not in public/`);
-// Pieces (src/scripts/pieces.ts): the card on Projects, the full-screen steps and the finished page, and the list on Your page exist; the steps layer makes the page behind it inert like every other layer; app.ts saves, cleans and syncs the runs.
+// Pieces (src/scripts/pieces.ts): the card on Projects, the full-screen steps and the finished page, and the list on the KernCard tab exist; the steps layer makes the page behind it inert like every other layer; app.ts saves, cleans and syncs the runs.
 for (const id of ['kBuild', 'kBBack', 'kBNum', 'kBS', 'kBProg', 'kBQ', 'kBO', 'kBTa', 'kBNext', 'kBAsk', 'kBC', 'kBR', 'kBRH', 'kBPiece', 'kBName', 'kBNameL', 'kBSave', 'kBFile', 'kBRun', 'kBLink', 'kBLinkN', 'kBDone', 'kBHow', 'kPiece', 'kPcGo', 'kPcMore', 'kPieces', 'kPieceL']) assert.ok(page.includes(`id="${id}"`), `index.astro: pieces need #${id}`);
 assert.ok(/'kSheet', 'kBuild', 'kFirst'/.test(appSrc), 'app.ts: the pieces layer (kBuild) is one of LAYERS, so the page behind it is inert');
 assert.ok(/builds: cleanRuns\(s\.builds\)/.test(appSrc) && /mergeAnswers\(S\.builds, r\.builds, S\.gone, r\.gone\)/.test(appSrc) && /initPieces\(\{\s*S,/.test(appSrc), 'app.ts: runs are cleaned on load, merged on sync and the screens wired');

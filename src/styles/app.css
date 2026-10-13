@@ -384,7 +384,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-cal i.f { background: var(--acc); box-shadow: 0 0 10px color-mix(in srgb, var(--acc) 55%, transparent); }
 .k-cal i.t { outline: 1.5px solid var(--fg); outline-offset: 1.5px; }
 
-/* Trail: the kerncard as a dark collectible, in both themes */
+/* Trail: the KernCard as a dark collectible, in both themes */
 .k-kc { position: relative; overflow: hidden; min-height: 220px; justify-content: flex-end; border: 1px solid rgba(124,147,255,.35); border-radius: 22px; padding: 18px; color: var(--bone); background: radial-gradient(90% 70% at 100% 0%, rgba(124,147,255,.22), transparent 60%), linear-gradient(165deg, #1B2C5E, #0E1B3D); }
 .k-kc-img { position: absolute; right: 10px; top: 14px; width: 128px; height: 128px; filter: drop-shadow(0 14px 18px rgba(0,0,0,.45)); pointer-events: none; } /* the glass person (public/img/f/yourkern.webp), upright */
 .k-kc .k-kt { position: absolute; left: 18px; top: 16px; color: var(--bone); }
@@ -693,7 +693,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
   .k-main::before { background: none; }
 }
 
-/* kerncard: keep the headline clear of the stones, and below the "slashkern" wordmark however many lines it takes (same total height as before) */
+/* KernCard: keep the headline clear of the stones, and below the "slashkern" wordmark however many lines it takes (same total height as before) */
 .k-kc h5 { padding-right: 104px; }
 .k-kc { padding-top: 44px; min-height: 194px; }
 
@@ -723,7 +723,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 /* Fields and unselected chips: borders that can be seen (3:1) */
 .k-scr input, .k-scr textarea { border-color: color-mix(in srgb, var(--fg) 52%, transparent); }
 .k-chips span:not(.sel), .k-chipb { border-color: color-mix(in srgb, var(--fg) 45%, transparent); }
-.k-kc .k-chips span:not(.sel) { border-color: rgba(238,242,255,.25); } /* the kerncard is dark in both themes: its chips keep their light outline (a dark --fg border vanished on it) */
+.k-kc .k-chips span:not(.sel) { border-color: rgba(238,242,255,.25); } /* the KernCard is dark in both themes: its chips keep their light outline (a dark --fg border vanished on it) */
 /* Nothing animates under a full-screen layer that hides it */
 .k-scr:has(.k-start.on)::before, .k-scr:has(.k-start.on) .k-app *, .k-scr:has(.k-start.on) .k-app *::before, .k-scr:has(.k-start.on) .k-app *::after,
 .k-scr:has(#kLogin.on)::before, .k-scr:has(#kLogin.on) .k-app *, .k-scr:has(#kLogin.on) .k-app *::before, .k-scr:has(#kLogin.on) .k-app *::after,
@@ -834,7 +834,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-dr-n { font: 600 1.125rem 'Geist Variable', system-ui, sans-serif; color: var(--fg); }
 #kShD #kDrS { display: block; text-transform: none; letter-spacing: 0; font-size: 0.9375rem; font-weight: 500; color: var(--dim); }
 
-/* Your page: the kerncard leads, without a second frame around it */
+/* KernCard tab: the card leads, without a second frame around it */
 .k-scr .k-card.k-kcard { content-visibility: visible; padding: 0; border: 0; border-radius: 0; overflow: visible; background: none; box-shadow: none; gap: 10px; }
 .k-card p.k-l { font-size: 0.75rem; line-height: 1.4; } /* a small label that is a paragraph keeps the label size, not the body size */
 .k-scr.light .k-card.k-kcard { box-shadow: none; } /* beats the light theme's card shadow */
@@ -1054,7 +1054,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-pl-play { align-self: flex-start; gap: 6px; border-color: var(--acc); color: var(--acc); }
 @media (prefers-reduced-motion: reduce) { .k-pl-step i { transition: none; } .k-pl-step.now i { transform: none; } }
 #kPlayB { display: flex; flex-direction: column; gap: 18px; }
-/* v9: the kerncard shows something you made: a line from your answer, the field as a path of 6, then the pattern once it is ready. Dark in both themes. */
+/* v9: the KernCard shows something you made: a line from your answer, the field as a path of 6, then the pattern once it is ready. Dark in both themes. */
 .k-kc { padding: 18px 18px 16px; min-height: 0; justify-content: flex-start; gap: 0; }
 .k-kc-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 .k-kc .k-kt { position: static; }
@@ -1115,7 +1115,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-fchip.on[data-fa] { box-shadow: 0 0 0 2px var(--fa); }
 #kSheet[data-fa] .k-shbar { background: linear-gradient(color-mix(in srgb, var(--fa) 16%, var(--bg)), var(--bg)); }
 #kSheet[data-fa] #kShL::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--fa); vertical-align: 1px; }
-/* Your page's one-line explanation, and the no-contacts way to do the Ask step */
+/* The KernCard tab's one-line explanation, and the no-contacts way to do the Ask step */
 .k-scr .k-yk-why { margin-top: 10px; max-width: 40ch; }
 .k-fu small { display: block; margin-top: 4px; font-size: 0.875rem; line-height: 1.4; color: var(--dim); }
 /* Asked for less transparency: no glass blur, and solid scrims and bars */
@@ -1141,7 +1141,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
    Settings has no switch), so the dark rules above are dormant; their tokens are the navy dark set (bg #0E1B3D, text #EEF2FF, accent #7C93FF) in case it comes back.
    Tokens: page #F5F7FF (ice-tinted), surface #FFFFFF, navy #0E1B3D for text, muted #5A6478, line #C9D1E6, ONE accent: ultramarine #2D4BFF (white text on it, 5.9:1; as text 5.5:1 on the page).
    Cool greys only. Contrast is checked by scripts/check-contrast.mjs (npm test). The accent marks the selected state (chip, tile, project card, tab dot, segment), the progress fill and accent text.
-   Primary buttons are navy pills with white text. One navy block per screen at most: the welcome screen, the Home card, the kerncard. On navy the accent is the lighter --accd #7C93FF
+   Primary buttons are navy pills with white text. One navy block per screen at most: the welcome screen, the Home card, the KernCard. On navy the accent is the lighter --accd #7C93FF
    with navy text (6:1), so the one accent button there (Home: Start on the navy card; the welcome screen: Start) stands out.
    Geist for everything, heavy and tight in headings (the welcome line and the Home hero too). No shadows, no glass blur, no film grain, no aurora, no key-word marker. */
 .k-scr, .k-h { --kd: 'Geist Variable', system-ui, sans-serif; }
@@ -1166,10 +1166,10 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-mt b { font-size: 1.375rem; font-weight: 700; }
 .k-kt { font-weight: 800; }
 .k-fu b { font: 700 0.8125rem/1.3 var(--kd); letter-spacing: 0; text-transform: none; }
-.k-kc h5:not(.wait) { font: 700 1.5rem/1.15 var(--kd); letter-spacing: -.035em; } /* the kerncard's line: Geist, not serif */
+.k-kc h5:not(.wait) { font: 700 1.5rem/1.15 var(--kd); letter-spacing: -.035em; } /* the KernCard's line: Geist, not serif */
 :root.light .k-scr h4 b, :root.light .k-tag strong { color: inherit; background: none; padding: 0; } /* no marker behind a key word */
 
-/* The mark: the slashkern pointer, an image (public/brand/mark.svg on light grounds, mark-rev.svg on the navy blocks; index.astro MARK and MARK_REV). One drawing in the header, on the launch screen, the first screens, the login and the kerncard. The wordmark is the lowercase name in the UI font. */
+/* The mark: the slashkern pointer, an image (public/brand/mark.svg on light grounds, mark-rev.svg on the navy blocks; index.astro MARK and MARK_REV). One drawing in the header, on the launch screen, the first screens, the login and the KernCard. The wordmark is the lowercase name in the UI font. */
 .k-logo { font-weight: 800; letter-spacing: -.06em; }
 .k-lgw { display: inline-flex; flex: none; }
 .k-lg { display: block; flex: none; width: 28px; height: 28px; object-fit: contain; }
@@ -1178,7 +1178,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-wm { font: 800 2.25rem/1 var(--kd); letter-spacing: -.06em; }
 .k-brandrow { display: flex; align-items: center; gap: 12px; }
 .k-kt { display: inline-flex; align-items: center; gap: 9px; letter-spacing: -.05em; }
-.k-kt .k-lg, .k-kc .k-lg { width: 26px; height: 26px; } /* on the navy kerncard it is the reversed mark (cream) */
+.k-kt .k-lg, .k-kc .k-lg { width: 26px; height: 26px; } /* on the navy KernCard it is the reversed mark (cream) */
 @media (max-width: 359px) { .k-lg { width: 24px; height: 24px; } }
 
 /* Surfaces */
@@ -1204,7 +1204,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 :root.light .k-scr .k-card:hover { border-color: var(--line); }
 :root.light .k-scr .k-dare { border-color: var(--fg); }
 :root.light .k-scr .k-card.k-kcard { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
-:root.light .k-scr .k-kc { padding: 18px 18px 16px; border: 0; border-radius: 22px; color: #fff; background: var(--fg); box-shadow: none; } /* the one navy block of Your page */
+:root.light .k-scr .k-kc { padding: 18px 18px 16px; border: 0; border-radius: 22px; color: #fff; background: var(--fg); box-shadow: none; } /* the one navy block of the KernCard tab */
 :root.light .k-scr .k-kc .k-l { color: rgba(255, 255, 255, .74); }
 :root.light .k-scr .k-kc .k-kc-top .k-l { color: #fff; }
 :root.light .k-scr .k-kc .k-kc-m, :root.light .k-scr .k-kc .k-kc-l, :root.light .k-scr .k-kc h5.wait { color: rgba(255, 255, 255, .8); }
@@ -1467,7 +1467,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-fnd-r p:last-child { margin: 0; color: var(--dim); font: 500 0.9375rem/1.4 var(--kd); }
 .k-fnd .k-fnd-n { margin: 6px 0 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--fg); font: 600 0.875rem/1.45 var(--kd); }
 
-/* Your page: the early-access line, the projects that fill it */
+/* KernCard tab: the early-access line, the projects that fill it */
 .k-pane .k-early { margin: 12px 0 0; padding: 10px 14px; border-radius: 14px; background: var(--surf); border: 1px solid var(--line); color: var(--fg); font: 600 0.875rem/1.4 var(--kd); }
 #kPages .k-an { border-top: 1px solid var(--line); }
 #kPages .k-an:last-child { padding-bottom: 0; } /* the card's own padding closes the list: no empty band under the last Edit / Delete */
@@ -1570,7 +1570,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 /* Wordmark: a hair of space between r and n, so the tight "rn" never reads as "m" (slashkem) */
 .k-rn { letter-spacing: -.025em; }
 
-/* Pieces (pieces.ts): the card on Projects, the full-screen steps, the brand sheet in the person's own colours, and the list on Your page. */
+/* Pieces (pieces.ts): the card on Projects, the full-screen steps, the brand sheet in the person's own colours, and the list on the KernCard tab. */
 .k-piece[hidden], #kPieces[hidden] { display: none; }
 .k-piece .k-btnrow { align-items: center; margin-top: 2px; }
 .k-build { overflow-y: auto; overscroll-behavior: contain; }

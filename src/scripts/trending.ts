@@ -6,7 +6,7 @@ import type { Help } from './helps';
 // They are normal projects. Each one has the same three parts as every other project, in the same shapes: the label, title and blurb of fields.ts,
 // the MissionX of missions.ts (brief, material, 3 steps, 3 checks) and the Help of helps.ts (a worked example, 3 hint questions).
 // fields.ts, missions.ts and helps.ts append them after the 6 core projects of their category, from index TREND_FROM up, so the project sheet, drafts,
-// "Your page", edit and sync need no special case. Rounds, the kerncard's guess and the opt-in counts only look at the core projects (0 to 5).
+// the KernCard tab, edit and sync need no special case. Rounds, the KernCard's guess and the opt-in counts only look at the core projects (0 to 5).
 // Append only: a saved answer points at (category, index), so never reorder an entry or reuse its slot.
 // ponytail: no retire flag yet. When the first trend expires, add one, filter TRENDING with it and keep the entry here.
 export const TREND_FROM = 6;

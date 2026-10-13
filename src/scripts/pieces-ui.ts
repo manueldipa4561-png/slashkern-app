@@ -3,7 +3,7 @@ import { lookOf } from './piece-brand';
 import { canPlay, el, emOf, logoSvg, playBeat } from './piece-kit';
 import { akey, stamp, ver, type Tomb } from './sync';
 
-// The screens of a piece (data and drawing in piece-<name>.ts, listed in pieces.ts): a card on Projects, small steps full screen, the finished page, and the list on Your page.
+// The screens of a piece (data and drawing in piece-<name>.ts, listed in pieces.ts): a card on Projects, small steps full screen, the finished page, and the list on the KernCard tab.
 // A run is only saved once its first step is answered, so opening a piece and going back leaves nothing behind. app.ts hands in what this needs (Ctx) and calls render() when the
 // field, the language or the saved runs change. Text built here is set with put(): a language switch calls render() again, it never re-reads it.
 export type RunReply = { ok: true; text: string } | { ok: false; why: 'long' | 'pause' | 'day' | 'offline'; text?: string };
@@ -238,7 +238,7 @@ export function initPieces(ctx: Ctx) {
     askBtn.removeAttribute('aria-disabled');
   });
 
-  // ── the card on Projects, and the list on Your page ──
+  // ── the card on Projects, and the list on the KernCard tab ──
   // A finished piece shows as a small copy of its own page (the page itself, scaled down and not interactive); one in progress shows the numbered dot.
   const thumb = (q: Piece, r: Run) => {
     const v = r.done ? kindOf(q).view(r, tr) : null;
