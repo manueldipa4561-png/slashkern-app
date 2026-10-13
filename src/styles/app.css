@@ -842,10 +842,10 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 
 /* Onboarding: the app icon, then six glass tiles */
 .k-mark { width: 84px; height: 84px; margin: 0 0 4px; border-radius: 20px; }
-.k-ti { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 19px; background: color-mix(in srgb, var(--fg) 8%, transparent); transition: background .25s, color .25s; }
+.k-ti { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 19px; background: color-mix(in srgb, var(--fg) 8%, transparent); transition: background .25s, color .25s; }
 .k-ti .k-i { width: 32px; height: 32px; }
 .k-fp { display: block; object-fit: contain; } /* a field's icon is a picture of a glass object (icons.ts, public/img/f), not an SVG */
-.k-ti .k-fp { width: 58px; height: 58px; filter: none; }
+.k-ti .k-fp { width: 72px; height: 72px; filter: none; } /* the field pictures are small scenes with Slash: big enough to read in the picker */
 .k-tile { padding: 16px 6px 12px; gap: 8px; }
 /* A mission opens full screen, with a bar of three segments on top: read the brief, write the answer, reflect (app.ts renderProg). The done screen fills all three. */
 .k-sh-in { transition: translate .22s cubic-bezier(.2, .8, .2, 1); } .k-sh-in.drag { transition: none; } /* a sheet follows the finger while it is dragged down from its top, and springs back when let go (app.ts) */
