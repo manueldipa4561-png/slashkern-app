@@ -3,7 +3,8 @@
 # PNG sizes (icons, cursor, wallpapers) are screenshots of these SVGs in a browser (see README.md).
 import json, math, re
 
-NAVY, ULTRA, ICE, CREAM, WHITE = '#0E1B3D', '#2D4BFF', '#DCE6FF', '#F5F2EA', '#FFFFFF'
+# BLUE is the icon tile (app icon, favicon, profile picture): electric blue, not the app's accent #2D4BFF, which reads purple on phones.
+NAVY, BLUE, ICE, CREAM, WHITE = '#0E1B3D', '#0050F0', '#DCE6FF', '#F5F2EA', '#FFFFFF'
 G = json.load(open('geometry.json'))
 RADII = [9, 18, 8, 14, 14, 8, 18]  # corner rounding, in px of the 400 canvas
 
@@ -91,9 +92,25 @@ def svg(inner, vb='0 0 400 400'): return f'<svg xmlns="http://www.w3.org/2000/sv
 def write(name, text): open(name, 'w').write(text)
 
 
+def rbox(pts, r, n=24):
+    # bounding box of the rounded body: its straight sides end on the corner curves, so sampling the curves is enough
+    xs, ys = [], []
+    for i, p1 in enumerate(pts):
+        a, b = toward(p1, pts[i - 1], r[i]), toward(p1, pts[(i + 1) % len(pts)], r[i])
+        for k in range(n + 1):
+            t = k / n
+            xs.append((1 - t) ** 2 * a[0] + 2 * (1 - t) * t * p1[0] + t * t * b[0])
+            ys.append((1 - t) ** 2 * a[1] + 2 * (1 - t) * t * p1[1] + t * t * b[1])
+    return min(xs), min(ys), max(xs), max(ys)
+
+
+BX0, BY0, BX1, BY1 = rbox(POLY, RADII)
+CX, CY = (BX0 + BX1) / 2, (BY0 + BY1) / 2  # the tiles centre the body (and its even outline) on this point
+
+
 def tile(scale, rx=0, kw=18):
     r = f' rx="{rx}"' if rx else ''
-    return svg(f'<rect width="400" height="400"{r} fill="{ULTRA}"/><g transform="translate(200 206) scale({scale}) translate(-200 -200)">'
+    return svg(f'<rect width="400" height="400"{r} fill="{BLUE}"/><g transform="translate(200 200) scale({scale}) translate({-CX:.2f} {-CY:.2f})">'
                f'<path d="{BODY}" fill="{WHITE}" stroke="{WHITE}" stroke-width="{kw}" stroke-linejoin="round"/><path d="{BODY}" fill="{NAVY}"/><path d="{MOODS["neutral"]}" fill="{ICE}"/></g>')
 
 
