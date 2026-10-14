@@ -323,7 +323,10 @@ const SAMPLE = { guess: $('kGuess').dataset.en!, why: $('kWhy').dataset.en!, ai:
 // Launch loader
 const kLoad = $('kLoad');
 if (still) kLoad.classList.add('off');
-else { kLoad.classList.add('go'); window.setTimeout(() => kLoad.classList.add('off'), S.onboarded ? 1900 : 2600); }
+else { // the website's loader: 4.6 s of Slash finding its spot and the name, a short hold, then the app; a tap skips it
+  const done = () => kLoad.classList.add('off');
+  kLoad.classList.add('go'); window.setTimeout(done, 5000); kLoad.addEventListener('pointerdown', done, { once: true });
+}
 
 // Theme: light only (the dark theme is retired; its CSS stays in app.css, dormant). The same two lines as public/theme-init.js, which runs before the first paint.
 const applyTheme = () => {
@@ -2215,7 +2218,7 @@ const shareQuiz = async () => {
   quizShareBusy = true;
   try {
     const m = quizMatch, r = QRESULT[m.type], [tint, strong] = QHUE[m.type], name = tr(r.name[0]);
-    const url = `https://slashkern.com${S.lang === 'it' ? '/it' : ''}/quiz/?r=${m.type}`, text = tr(QUIZ_SHARE).replace('{name}', name);
+    const url = `https://slashkern.com${S.lang === 'en' ? '' : `/${S.lang}`}/quiz/?r=${m.type}` /* the website has the app's six languages */, text = tr(QUIZ_SHARE).replace('{name}', name);
     const blob = await quizImage({ top: tr('Which kind of maker are you?'), you: tr('You are'), name, line: tr(r.line[0]), firstLabel: tr('Your first project'),
       project: tr(FIELDS[m.f].m[m.i][1]), mix: mixNames(m), host: 'slashkern.com' }, tint, strong);
     if (blob) await shareImage(blob, 'my-maker-type.png', `${text} ${url}`); else await shareText('slashkern', text, url, 'Link copied.');

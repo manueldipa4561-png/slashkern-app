@@ -33,7 +33,8 @@ assert.ok(!/kKern|Gradient|<filter/.test(page), 'index.astro: the old gradient s
 
 // The surfaces. Static: the Assistant tab's header. Built in app.ts: slashRow() is the one place that puts the face beside an assistant bubble.
 assert.ok(/<div class="k-ait"><span class="k-slash-av k-slash-lg" aria-hidden="true" set:html=\{slash\('neutral', true\)\}/.test(page), 'index.astro: the Assistant tab header shows Slash, neutral and speaking, aria-hidden');
-assert.equal((page.match(/\bslash\('/g) || []).length, 1, 'index.astro: Slash appears once in the markup (the Assistant tab header): he only shows where the assistant speaks');
+assert.equal((page.match(/\bslash\('/g) || []).length, 2, 'index.astro: Slash appears twice in the markup: the Assistant tab header (he only shows where the assistant speaks) and the launch screen (the website loader)');
+assert.ok(/<span class="k-ld-y" set:html=\{slash\('neutral'\)\} \/>/.test(page), 'index.astro: the launch screen flies Slash (k-ld-x / k-ld-y, app.css)');
 assert.ok(/const slashRow = [\s\S]*?face\.innerHTML = slash\(mood, speaking\)/.test(app) && /import \{ slash, type Mood[^}]*\} from '\.\/slash'/.test(app), 'app.ts: slashRow() draws the avatar from slash.ts');
 assert.equal((app.match(/\bslash\(/g) || []).length, 3, 'app.ts: the avatar is drawn in slashRow(), in the "Make a first version" panel (look()) and on the maker quiz result card (renderResult, like the website card) only: one drawing, not pasted around');
 assert.ok(/\$\('kFRS'\)\.innerHTML = slash\('happy'\)/.test(app), 'app.ts: the quiz result card shows Slash happy, its eyes in the type colour (app.css .k-rc .k-slash)');

@@ -61,7 +61,7 @@ assert.ok(/<div class="k-logo"><span class="k-lgw" set:html=\{MARK\} \/><span>sl
 assert.ok(/class="k-fs k-f0"[^]*?set:html=\{MARK_REV\}/.test(page) && /class="k-kt"><span class="k-lgw" set:html=\{MARK_REV\}/.test(page), 'index.astro: the navy welcome screen and the KernCard show the reversed mark');
 assert.ok(!page.includes('M7 29A25 25 0 0 1 57 29Z') && !/>\s*kern\s*</.test(page) && !/kern<i>\.<\/i>/.test(page) && !page.includes('mark.webp'), 'index.astro: no slit disc, no "kern" wordmark left');
 assert.match(readFileSync('public/manifest.webmanifest', 'utf8'), /"name": "slashkern",\s*"short_name": "slashkern"[\s\S]*"background_color": "#0E1B3D"[\s\S]*"theme_color": "#0E1B3D"/, 'manifest: slashkern, navy background and theme colour');
-assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v43'/, 'sw.js: bump CACHE with every visual change');
+assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v44'/, 'sw.js: bump CACHE with every visual change');
 // The icons: the favicon is the pointer on ultramarine, and favicon.ico carries favicon-32.png.
 assert.ok(readFileSync('public/favicon.svg', 'utf8').includes(body) && readFileSync('public/favicon.svg', 'utf8').includes('#0050F0'), 'favicon.svg: the slashkern pointer on the electric blue icon tile');
 { const ico = readFileSync('public/favicon.ico'), png = readFileSync('public/icons/favicon-32.png'); assert.ok(ico.readUInt16LE(2) === 1 && ico.subarray(ico.length - png.length).equals(png), 'favicon.ico embeds public/icons/favicon-32.png'); }

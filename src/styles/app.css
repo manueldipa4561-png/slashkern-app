@@ -158,15 +158,12 @@
       /* launch loader: the mark settles in (no glow), then the name slides in */
       .k-load { position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; background: var(--bg); transition: opacity .5s; }
       .k-load.off { opacity: 0; pointer-events: none; }
-      .k-ic { position: relative; width: 108px; height: 108px; opacity: 0; transform: scale(.8); }
-      .k-ic img { position: relative; display: block; width: 100%; height: 100%; }
       .k-tag { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
       .k-tag span { font-weight: 800; font-size: 1.6562rem; letter-spacing: -.05em; line-height: 1.1; opacity: 0; transform: translateY(8px); }
       .k-tag strong { font: italic 400 3.0625rem/1 var(--ks); letter-spacing: -.01em; color: var(--acc); opacity: 0; transform: translateY(8px); }
-      .k-load.go .k-ic { animation: kIc .7s .1s cubic-bezier(.22,1,.36,1) forwards; }
       .k-load.go .k-tag span { animation: kR .6s .6s cubic-bezier(.2,.8,.2,1) forwards; }
       .k-load.go .k-tag strong { animation: kR .6s .9s cubic-bezier(.2,.8,.2,1) forwards; }
-      @keyframes kIc { to { opacity: 1; transform: none; } } @keyframes kR { to { opacity: 1; transform: none; } }
+      @keyframes kR { to { opacity: 1; transform: none; } }
       @media (prefers-reduced-motion: reduce) { .k-load { display: none; } .k-toast { transition: none; } }
 
 /* ---- standalone app shell ---- */
@@ -1173,7 +1170,7 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-logo { font-weight: 800; letter-spacing: -.06em; }
 .k-lgw { display: inline-flex; flex: none; }
 .k-lg { display: block; flex: none; width: 28px; height: 28px; object-fit: contain; }
-.k-ic .k-lg, .k-mark .k-lg { width: 100%; height: 100%; }
+.k-mark .k-lg { width: 100%; height: 100%; }
 .k-mark { display: block; flex: none; width: 56px; height: 56px; margin: 0; }
 .k-wm { font: 800 2.25rem/1 var(--kd); letter-spacing: -.06em; }
 .k-brandrow { display: flex; align-items: center; gap: 12px; }
@@ -1358,11 +1355,24 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 
 /* Launch screen and the first screens: the page colour, the mark and the name in navy; the mark settles in, no glow */
 :root.light .k-scr .k-load, :root.light .k-scr .k-start { background: var(--bg); }
-:root.light .k-scr .k-ic .k-lg { filter: none; }
 .k-lock { display: flex; align-items: center; gap: 14px; color: var(--fg); }
-.k-lock .k-ic { width: 64px; height: 64px; }
-.k-lock .k-wm { font-size: 2.75rem; opacity: 0; transform: translateX(-8px); } /* "slashkern" is nine letters: it fits a 320px screen beside the mark */
-.k-load.go .k-wm { animation: kR .6s .45s cubic-bezier(.2, .8, .2, 1) forwards; }
+/* The launch screen is the website's hero loader (yourkern-site Demo.astro): Slash flies from point to point on soft arcs, looks around,
+   settles beside the name, then "slashkern" appears. 4.6 s, then the app (a tap skips it). Sizes are shares of the screen (cqw/cqh), so it
+   looks the same on every phone. The two axes are two animations with their own timing: that makes the arcs. Reduced motion: no loader. */
+.k-load { container-type: size; }
+.k-load .k-lock { gap: 3.6cqw; }
+.k-ld-x, .k-ld-y { display: block; will-change: translate; }
+.k-ld-y .k-slash { --s: 16.4cqw; display: block; }
+.k-lock .k-wm { font-size: 11.3cqw; opacity: 0; transform: translateX(-2cqw); } /* "slashkern" is nine letters: it fits a 320px screen beside Slash */
+.k-load.go .k-ld-x { animation: k-ld-x 4.6s cubic-bezier(.45, 0, .3, 1) both; }
+.k-load.go .k-ld-y { animation: k-ld-y 4.6s cubic-bezier(.4, 0, .35, 1) both, k-ld-in .6s .05s cubic-bezier(.22, 1, .36, 1) both; }
+.k-load.go .k-ld-y .k-slash-e { animation: k-ld-look 4.6s cubic-bezier(.45, 0, .35, 1) both; }
+.k-load.go .k-wm { animation: kR .7s 3.9s cubic-bezier(.2, .8, .2, 1) forwards; }
+@keyframes k-ld-x { 0% { translate: 52cqw 0; } 30% { translate: 4cqw 0; } 58% { translate: 46cqw 0; } 80% { translate: -2cqw 0; } 90%, 100% { translate: 0 0; } }
+@keyframes k-ld-y { 0% { translate: 0 -30cqh; } 24% { translate: 0 -13cqh; } 52% { translate: 0 18cqh; } 77% { translate: 0 1.5cqh; } 90%, 100% { translate: 0 0; } }
+@keyframes k-ld-in { from { opacity: 0; scale: .6; } to { opacity: 1; scale: 1; } }
+@keyframes k-ld-look { 0%, 8% { translate: 0 0; } 18% { translate: -16px 0; } 28% { translate: 14px -8px; } 40% { translate: 12px 10px; } 52% { translate: -14px 4px; } 62% { translate: 14px -6px; } 74% { translate: -14px -6px; } 88%, 100% { translate: 0 0; } }
+@supports not (width: 1cqh) { .k-load.go .k-ld-x, .k-load.go .k-ld-y, .k-load.go .k-ld-y .k-slash-e { animation: none; } .k-lock .k-wm { font-size: 2.75rem; } .k-ld-y .k-slash { --s: 64px; } }
 
 /* First run: four screens, one action each, no tab bar behind them. Welcome is the navy one. */
 :root.light .k-scr .k-first { justify-content: flex-start; gap: 0; padding: max(10px, env(safe-area-inset-top)) 22px max(22px, env(safe-area-inset-bottom)); background: var(--bg); color: var(--fg); }
