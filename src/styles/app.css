@@ -1516,6 +1516,13 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 .k-listen { position: relative; display: inline-flex; align-items: center; margin-left: 10px; min-height: 28px; padding: 2px 12px; border: 1px solid var(--line2); border-radius: 999px; background: #fff; color: var(--fg); font: 600 0.8125rem/1.2 var(--kd); vertical-align: middle; cursor: pointer; }
 .k-listen::before { content: ''; position: absolute; inset: -8px -4px; } /* a 44px tap area around a small pill */
 :root.light .k-scr .k-listen[aria-pressed="true"] { background: var(--acc); border-color: var(--acc); color: var(--on); }
+html:not([data-slash-voice]) .k-listen { display: none; } /* Slash's own voice is the only voice: no Listen button until the server says it has one (voice.ts) */
+/* Talk with Slash: one button under the chat (on while the conversation runs), a quiet status, and "Tap to answer" to cut in */
+.k-talk { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 12px; }
+.k-talk[hidden], .k-talk [hidden] { display: none; }
+.k-talk .k-ask-btn { min-height: 44px; padding: 8px 16px; }
+.k-talk .k-ask-btn[aria-pressed="true"] { background: var(--acc); border-color: var(--acc); color: var(--on); }
+.k-talk p { flex-basis: 100%; margin: 0; color: var(--dim); }
 .k-ai-chip { display: inline-flex; align-items: center; align-self: flex-start; padding: 3px 10px; border: 1px solid var(--fg); border-radius: 999px; background: #fff; color: var(--fg); font: 700 0.75rem/1.3 var(--kd); }
 #kAns .k-an > .k-ai-chip { margin: 2px 0 6px; }
 .k-make-host { display: flex; flex-direction: column; align-items: stretch; gap: 10px; width: 100%; }

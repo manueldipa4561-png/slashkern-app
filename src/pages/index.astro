@@ -541,6 +541,12 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
               <div class="k-log" id="kChat"></div><div class="k-sr" id="kSr" role="status" aria-live="polite"></div>
               <div class="k-cmp" id="kCmp" hidden><div class="k-l">Version 1</div><p id="kV1"></p><div class="k-l">Version 3</div><p id="kV3"></p><button type="button" class="k-ask-btn" id="kSaveV">Save to your KernCard</button></div>
               <div class="k-comp"><input id="kIn" type="text" maxlength="140" autocomplete="off" aria-label="Your idea" /><button type="button" class="k-send" id="kSend" aria-label="Send">↑</button></div>
+              <div class="k-talk" id="kTalkRow" hidden>
+                <button type="button" class="k-ask-btn" id="kTalk" aria-pressed="false">Talk with Slash</button>
+                <button type="button" class="k-lnk" id="kTalkNow" hidden>Tap to answer</button>
+                <span class="k-l k-s" id="kTalkS" role="status" aria-live="polite"></span>
+                <p class="k-l k-s">Slash's own voice sends the question to our voice provider (ElevenLabs) to make the audio.</p>
+              </div>
               <div class="k-chips" id="kEx"><span role="button" tabindex="0">Use an example</span><span role="button" tabindex="0">Start over</span><span role="button" tabindex="0">I’m stuck</span><span role="button" tabindex="0">Make it smaller</span></div>
             </div>
             <div class="k-card k-cut"><div class="k-l">Do it twice</div><p>Make it alone first. Then with Slash. Compare the two.</p></div>

@@ -32,7 +32,7 @@ import * as stats from './stats';
 import { akey, ver, stamp, mergeAnswers, type Tomb } from './sync';
 import { inTime, clampCount, cleanAi, cleanName } from './valid';
 import { canMake, countMake, countPic, makeBody, makesLeft, parseMake, parsePic, picBody, picsLeft, type MakeBody, type MakeResult, type PicBody, type PicResult, type Pair as QaPair } from './make';
-import { attachMic, bindVoicePicker, listenButton, refreshVoice, stopSpeaking, voice } from './voice';
+import { attachMic, bindTalk, bindVoicePicker, listenButton, refreshVoice, stopSpeaking, stopTalk, talkLine, talking, voice } from './voice';
 import { slash, type Mood, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX } from './slash';
 import { PIECES, PIECE_AT, cleanRuns, type Piece, type Run } from './pieces';
 import { initPieces, type RunReply } from './pieces-ui';
@@ -971,7 +971,7 @@ const unlight = (row: Element) => { window.setTimeout(() => row.querySelector('.
 const pauseRow = (text: string) => { const p = document.createElement('p'); p.className = 'k-msg k-ai'; p.textContent = text; return slashRow(p, 'neutral'); };
 let justSaid: Msg | null = null; // the reply that just arrived in the chat: Slash keeps speaking a moment
 const renderChat = () => {
-  stopSpeaking();
+  if (!talking()) stopSpeaking(); // a voice chat goes on through the chat's own redraws
   const lastAi = [...S.msgs].reverse().find((m) => !m.typing);
   if (S.msgs.some((m) => m.typing)) { announced = ''; $('kSr').textContent = tr('Slash is typing'); } // the waiting is said once, the reply then replaces it
   else if (lastAi && lastAi.who === 'ai' && said(lastAi) !== announced) { announced = said(lastAi); $('kSr').textContent = announced; }
@@ -996,10 +996,10 @@ const renderChat = () => {
 const aiSay = (t: string, p?: string) => {
   S.msgs.push({ who: 'ai', t: '', typing: true }); renderChat();
   const g = gen;
-  window.setTimeout(() => { if (g !== gen) return; S.msgs.pop(); justSaid = p ? { who: 'ai', t, p } : { who: 'ai', t }; S.msgs.push(justSaid); busy = false; save(); renderChat(); renderSignals(); renderBadges(); }, still ? 0 : 750);
+  window.setTimeout(() => { if (g !== gen) return; S.msgs.pop(); const m: Msg = p ? { who: 'ai', t, p } : { who: 'ai', t }; justSaid = m; S.msgs.push(m); busy = false; save(); renderChat(); renderSignals(); renderBadges(); talkLine(said(m), t === HEAVY_REPLY); }, still ? 0 : 750); // in a voice chat the line is said aloud (a pause line ends it)
 };
 const startChat = () => {
-  gen++;
+  gen++; stopTalk();
   S.msgs = [{ who: 'ai', t: OPEN }]; S.mine = []; busy = false; inEl.value = '';
   save(); renderChat();
 };
@@ -1057,7 +1057,7 @@ const sendChat = () => {
     if (!reply) { setLive(false, lastWhy); scripted(v); return; }
     setLive(true);
     if (!ASKED.test(v) && !STUCK.test(v)) S.mine.push(v); // versions still count the same way
-    justSaid = { who: 'ai', t: reply }; S.msgs.push(justSaid); busy = false; save(); renderChat(); renderSignals(); renderBadges();
+    const m: Msg = { who: 'ai', t: reply }; justSaid = m; S.msgs.push(m); busy = false; save(); renderChat(); renderSignals(); renderBadges(); talkLine(said(m));
   });
 };
 $('kSend').addEventListener('click', sendChat);
@@ -2496,7 +2496,12 @@ $('kMicOk').addEventListener('click', () => {
 });
 $('kMicNo').addEventListener('click', () => { micGo = null; dismiss(kMic); });
 const addListen = (p: HTMLElement, text: string) => { const b = listenButton(text); if (b) p.append(b); }; // a small Listen button on an assistant question
-bindVoicePicker($('kVoRow'), $('kVoice') as HTMLSelectElement, $('kVoNote')); // Settings: which of the phone's voices reads Slash's questions
+bindVoicePicker($('kVoRow'), $('kVoice') as HTMLSelectElement, $('kVoNote')); // Settings: Josh or Rachel, the voice of Slash (the phone's own voices are not used)
+bindTalk({ // Talk with Slash: the voice chat in the Slash tab, only when the person taps it
+  row: $('kTalkRow'), toggle: $<HTMLButtonElement>('kTalk'), now: $<HTMLButtonElement>('kTalkNow'), status: $('kTalkS'), field: inEl,
+  send: (spoken) => { if (busy) return false; inEl.value = spoken; sendChat(); return true; }, // the words go through the same path as a typed message
+  last: () => { const m = [...S.msgs].reverse().find((x) => x.who === 'ai' && !x.typing); return m ? said(m) : tr(OPEN); }, // Slash starts by saying the question that is on screen
+});
 attachMic(kTa, 'inside'); attachMic(kF2Ta, 'inside'); attachMic($<HTMLTextAreaElement>('kCoTa'), 'inside'); attachMic(inEl, 'after', inEl.closest('.k-comp') ?? undefined);
 
 // "Make a first version with AI" (make.ts, mode 'make' of the coach function): at the end of a project, only when the person asks, from the idea they wrote. The assistant itself keeps asking questions only.
