@@ -1,9 +1,10 @@
 // The KernCard as a collectible: it tilts toward the finger or the pointer, the foil shine and the glare follow, it sways a little on its own,
 // and a tap (or the button) turns it over. The motion is five CSS variables on the stage (--rx --ry in degrees, --px --py the light, --bx the
 // light mirrored for the back); the card's CSS (app.css, "KernCard v2") reads them. A touch only tilts it while held; a scroll lets go.
-const MAX_DEG = 14;       // tilt at the very edge of the card
-const EASE = 0.14;        // the share of the way to the target covered each frame (a critically damped feel, no overshoot)
-const SWAY_MS = 9000;     // one slow lap of the idle sway
+const MAX_DEG = 9;        // tilt at the very edge of the card
+const EASE = 0.12;        // the share of the way to the target covered each frame (a critically damped feel, no overshoot)
+const SWAY_MS = 10000;    // one slow lap of the idle sway
+const SWAY_X = 0.24, SWAY_Y = 0.18; // how far the idle sway reaches, as a share of the full tilt
 const PEEK_MS = 2200;     // phones sway once when the card comes into view, then rest (no endless animation there)
 const TAP_PX = 8, TAP_MS = 450, SETTLED = 0.002;
 
@@ -31,7 +32,7 @@ export const bindCardTilt = ({ stage, flipper, button, front, back }: Parts, opt
     raf = 0;
     if (!visible || document.hidden) return;
     const sway = !held && !hover && (!opts.lite || now - seen < PEEK_MS);
-    if (sway) { const a = (now / SWAY_MS) * Math.PI * 2; tx = Math.sin(a) * 0.38; ty = Math.cos(a * 0.8) * 0.3; }
+    if (sway) { const a = (now / SWAY_MS) * Math.PI * 2; tx = Math.sin(a) * SWAY_X; ty = Math.cos(a * 0.8) * SWAY_Y; }
     else if (!held && !hover) { tx = 0; ty = 0; }
     cx += (tx - cx) * EASE; cy += (ty - cy) * EASE;
     paint();
