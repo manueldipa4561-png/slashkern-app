@@ -67,13 +67,14 @@ const CLOUD = cloud.enabled && !DEMO;
 const KEY = DEMO ? 'kern:demo' : 'kern:v1';
 const PEND = 'kern:rm-signs'; // ids of signs still to be removed from the trail
 const YK_SEEN = 'kern:seen-yourkern'; // slashkern was opened once on this device: its one-line explanation is not needed any more
+const LOADER_SEEN = 'kern:loader'; // the full launch animation has played once on this device
 const RUNS = 'kern:runs'; // today's tries of "Try your prompt on the AI", per mission
 const MAKES = 'kern:makes'; // today's "first version with AI" per project (make.ts)
 const MIC_OK = 'kern:mic-ok'; // the voice privacy sheet was read and accepted on this device
 const AI_TAG = 'Made with AI help'; // shown on every project whose text came from the AI first version; never hidden
 // Delete my data, Log out and Delete my account also clear what sits beside the trail: the demo and the copy set aside when a trail could not be read.
 // Once the account is gone so is the list of signs still to be removed (a plain Log out or Delete keeps it: those signs must still go at the next sign-in). The demo never touches any of it.
-const wipeExtras = (accountGone = false) => { if (DEMO) return; try { for (const k of ['kern:demo', 'kern:mode', 'kern:v1:unreadable', YK_SEEN, RUNS, MAKES, MIC_OK, ...(accountGone ? [PEND] : [])]) localStorage.removeItem(k); } catch { /* nothing stored */ } };
+const wipeExtras = (accountGone = false) => { if (DEMO) return; try { for (const k of ['kern:demo', 'kern:mode', 'kern:v1:unreadable', YK_SEEN, LOADER_SEEN, RUNS, MAKES, MIC_OK, ...(accountGone ? [PEND] : [])]) localStorage.removeItem(k); } catch { /* nothing stored */ } };
 const eraseStats = () => (DEMO ? Promise.resolve() : stats.erase()); // the demo must never touch the real usage-count record
 const OPEN = "What is your idea? Write it in your own words first. I won't suggest one."; // the assistant's first line (the demo chat starts with it too)
 // Slash's introduction, the first line of the Assistant tab's chat. It is drawn there, never stored in the chat, so it is the same in every language and for every saved chat. Slash is always called an AI.
@@ -323,9 +324,12 @@ const SAMPLE = { guess: $('kGuess').dataset.en!, why: $('kWhy').dataset.en!, ai:
 // Launch loader
 const kLoad = $('kLoad');
 if (still) kLoad.classList.add('off');
-else { // the website's loader: 4.6 s of Slash finding its spot and the name, a short hold, then the app; a tap skips it
+else { // the website's loader, in full the first time on this device (4.6 s), then a short one (about 1 s); a tap skips either
+  let seen = false;
+  try { seen = localStorage.getItem(LOADER_SEEN) === '1'; localStorage.setItem(LOADER_SEEN, '1'); } catch { /* no storage: the full one */ }
   const done = () => kLoad.classList.add('off');
-  kLoad.classList.add('go'); window.setTimeout(done, 5000); kLoad.addEventListener('pointerdown', done, { once: true });
+  kLoad.classList.toggle('quick', seen); kLoad.classList.add('go');
+  window.setTimeout(done, seen ? 1100 : 5000); kLoad.addEventListener('pointerdown', done, { once: true });
 }
 
 // Theme: light only (the dark theme is retired; its CSS stays in app.css, dormant). The same two lines as public/theme-init.js, which runs before the first paint.

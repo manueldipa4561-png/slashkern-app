@@ -1372,6 +1372,12 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 @keyframes k-ld-y { 0% { translate: 0 -30cqh; } 24% { translate: 0 -13cqh; } 52% { translate: 0 18cqh; } 77% { translate: 0 1.5cqh; } 90%, 100% { translate: 0 0; } }
 @keyframes k-ld-in { from { opacity: 0; scale: .6; } to { opacity: 1; scale: 1; } }
 @keyframes k-ld-look { 0%, 8% { translate: 0 0; } 18% { translate: -16px 0; } 28% { translate: 14px -8px; } 40% { translate: 12px 10px; } 52% { translate: -14px 4px; } 62% { translate: 14px -6px; } 74% { translate: -14px -6px; } 88%, 100% { translate: 0 0; } }
+/* after the first time on a device: the short version, about 1 s. Slash is already in its spot, glances left and right, the name follows */
+.k-load.go.quick .k-ld-x { animation: none; }
+.k-load.go.quick .k-ld-y { animation: k-ld-in .45s cubic-bezier(.22, 1, .36, 1) both; }
+.k-load.go.quick .k-ld-y .k-slash-e { animation: k-ld-glance .9s cubic-bezier(.45, 0, .35, 1) both; }
+.k-load.go.quick .k-wm { animation: kR .45s .3s cubic-bezier(.2, .8, .2, 1) forwards; }
+@keyframes k-ld-glance { 0% { translate: 0 0; } 35% { translate: -12px 0; } 70% { translate: 10px -4px; } 100% { translate: 0 0; } }
 @supports not (width: 1cqh) { .k-load.go .k-ld-x, .k-load.go .k-ld-y, .k-load.go .k-ld-y .k-slash-e { animation: none; } .k-lock .k-wm { font-size: 2.75rem; } .k-ld-y .k-slash { --s: 64px; } }
 
 /* First run: four screens, one action each, no tab bar behind them. Welcome is the navy one. */
@@ -1688,3 +1694,10 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
   @keyframes k-rc-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
   @keyframes k-rc-slash { from { opacity: 0; translate: 1.5rem -1rem; rotate: 12deg; } to { opacity: 1; translate: 0 0; rotate: -7deg; } }
 }
+
+/* Headings in the website's calm style (yourkern-site, after cluely.com and sideshift.app): medium weight instead of extra bold,
+   and the key words every heading already marks with <b> ("Your <b>KernCard.</b>") step back in a soft grey, like the site's two-tone titles. */
+.k-scr { --quiet: rgba(238, 242, 255, .6); }
+:root.light .k-scr { --quiet: #6E7891; } /* 4.4:1 on the page colour, for large text */
+.k-scr h4, #k-missions h4, .k-f0 h4 { font-weight: 600; letter-spacing: -.04em; }
+.k-scr h4 b, :root.light .k-scr h4 b { color: var(--quiet); font-weight: inherit; }
