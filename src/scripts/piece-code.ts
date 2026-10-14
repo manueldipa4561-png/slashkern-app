@@ -13,11 +13,11 @@ export const L = {
   lang: t2('en', 'it'), // the language code of the file: the German, French, Dutch and Swedish texts of this key are de, fr, nl and sv
   // The comments inside the file, in the person's language (they may open it in a text editor).
   c0: t2('Your page. It is one file: open it in a browser, change it in any text editor, put it online as it is.', 'La tua pagina. È un solo file: aprilo nel browser, cambialo con un editor di testo, mettilo online così com’è.'),
-  c1: t2('Colours and letters: change these lines and the whole page follows.', 'Colori e lettere: cambia queste righe e cambia tutta la pagina.'),
-  c2: t2('On a wider screen the top is centred and the sections sit in a row.', 'Su uno schermo più largo l’inizio è centrato e le sezioni stanno in fila.'),
+  c1: t2('Colours and letters: change these lines and the whole page follows.', 'Colori e lettere: cambia queste righe e tutta la pagina si adegua.'),
+  c2: t2('On a wider screen the top is centred and the sections sit in a row.', 'Su uno schermo più largo la parte in alto è centrata e le sezioni stanno in fila.'),
   c3: t2('The button is a link: it jumps to the first section.', 'Il pulsante è un link: porta alla prima sezione.'),
   c4: t2('A shelf of plants, drawn with simple shapes.', 'Uno scaffale di piante, disegnato con forme semplici.'),
-  c5: t2('Each section has an id, so the menu and the button can jump to it.', 'Ogni sezione ha un id, così il menu e il pulsante possono portarci.'),
+  c5: t2('Each section has an id, so the menu and the button can jump to it.', 'Ogni sezione ha un id, così il menu e il pulsante possono rimandare alla sezione giusta.'),
 };
 
 // What the person chooses from. A section has its card sentence, its short word in the menu and a little picture (one path on a 100 x 100 grid, drawn white on the accent circle; a part
@@ -38,7 +38,7 @@ export const SEC: Record<string, Sec> = {
     icon: 'M50 80C50 80 26 57 26 41A24 24 0 0 1 74 41C74 57 50 80 50 80ZM41 41a9 9 0 1 0 18 0a9 9 0 1 0-18 0Z' },
   delivery: { nav: t2('Delivery', 'Consegna'), line: t2('Packed with care and sent to your door in a few days.', 'Imballate con cura e portate a casa tua in pochi giorni.'),
     icon: 'M50 22L79 37L50 52L21 37ZM21 43L47 56V84L21 71ZM53 56L79 43V71L53 84Z' },
-  week: { nav: t2('Our pick', 'La scelta'), line: t2('Our favourite plant right now, and why we love it.', 'La nostra pianta preferita del momento, e perché la amiamo.'),
+  week: { nav: t2('Our pick', 'La preferita'), line: t2('Our favourite plant right now, and why we love it.', 'La nostra pianta preferita del momento, e perché ci piace tanto.'),
     icon: 'M24 76C24 48 40 28 76 24C74 60 58 76 24 76Z' },
 };
 
@@ -68,16 +68,16 @@ export const FACE: Record<string, Face> = {
 export const piece: Piece = {
   id: 'code-page', n: 2, f: 'Code', client: 'Sunny Plants', mins: 10,
   title: t2('One-page website for a plant shop', 'Sito di una pagina per un negozio di piante'),
-  blurb: t2('Pick a few things and end with a real web page, as a file you can open and put online.', 'Scegli poche cose e finisci con una vera pagina web, in un file che puoi aprire e mettere online.'),
+  blurb: t2('Pick a few things and end with a real web page, as a file you can open and put online.', 'Scegli poche cose e alla fine hai una vera pagina web, in un file che puoi aprire e mettere online.'),
   who: tag('Sunny Plants, a plant shop (fictional)', 'Sunny Plants, un negozio di piante (fittizio)'),
   brief: t2('People keep asking the shop “price?” on Instagram, and there is no website to send them to. You design a one-page site in five small steps. It comes out as a real web page file you can open and put online.',
-    'Su Instagram continuano a scrivere “prezzo?” al negozio, e non c’è un sito a cui mandare le persone. Disegni un sito di una pagina in cinque piccoli passi e ne esce un vero file di pagina web che puoi aprire e mettere online.'),
+    'Su Instagram continuano a scrivere “prezzo?” al negozio, e non c’è un sito a cui mandare le persone. Disegni un sito di una pagina in cinque piccoli passi e ne esce una vera pagina web, in un file che puoi aprire e mettere online.'),
   steps: [
     pick(t2('Pick three sections for the page, in order.', 'Scegli tre sezioni per la pagina, in ordine.'), t2('Think of what a visitor wants to know first. That goes on top.', 'Pensa a cosa vuole sapere subito chi visita la pagina. Quello va in cima.'), 3, [
       o('sell', 'What we sell', 'Cosa vendiamo'), o('care', 'Care tips', 'Consigli di cura'), o('reviews', 'Customer reviews', 'Recensioni dei clienti'),
       o('find', 'Where to find us', 'Dove trovarci'), o('delivery', 'Delivery', 'Consegna'), o('week', 'The plant of the week', 'La pianta della settimana'),
     ]),
-    text(t2('Write the headline. Eight words or fewer.', 'Scrivi il titolo. Otto parole al massimo.'), t2('It is the first thing people read. Say what the shop gives them.', 'È la prima cosa che le persone leggono. Di’ cosa dà loro il negozio.'),
+    text(t2('Write the headline. Eight words or fewer.', 'Scrivi il titolo. Otto parole al massimo.'), t2('It is the first thing people read. Say what the shop gives them.', 'È la prima cosa che le persone leggono. Di’ cosa offre il negozio.'),
       t2('Plants that are happy to live with you.', 'Piante felici di vivere con te.'), 44, 8),
     text(t2('Write the words on the button. Three words or fewer.', 'Scrivi le parole sul pulsante. Tre parole al massimo.'), t2('Start with a verb. Say what happens when someone taps it.', 'Parti da un verbo. Di’ cosa succede quando qualcuno lo tocca.'),
       t2('Shop plants', 'Scopri le piante'), 18, 3, 1),
@@ -85,7 +85,7 @@ export const piece: Piece = {
       o('fern', 'Fern', 'Felce', { hex: THEME.fern.accent }), o('terracotta', 'Terracotta', 'Terracotta', { hex: THEME.terracotta.accent }), o('midnight', 'Midnight', 'Mezzanotte', { hex: THEME.midnight.accent }),
       o('sunny', 'Sunny', 'Sole', { hex: THEME.sunny.accent }), o('paper', 'Paper', 'Carta', { hex: THEME.paper.accent }), o('berry', 'Berry', 'Lampone', { hex: THEME.berry.accent }),
     ], 'swatch'),
-    pick(t2('Pick the look of the letters.', 'Scegli l’aspetto delle lettere.'), t2('Soft is friendly, Sharp is strong, Classic is elegant.', 'Morbido è amichevole, Tagliente è deciso, Classico è elegante.'), 1, [
+    pick(t2('Pick the look of the letters.', 'Scegli lo stile delle lettere.'), t2('Soft is friendly, Sharp is strong, Classic is elegant.', 'Morbido è amichevole, Tagliente è deciso, Classico è elegante.'), 1, [
       o('soft', 'Soft', 'Morbido'), o('sharp', 'Sharp', 'Tagliente'), o('classic', 'Classic', 'Classico'),
     ], 'chip'),
   ],

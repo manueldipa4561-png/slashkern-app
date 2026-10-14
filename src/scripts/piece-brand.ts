@@ -15,7 +15,7 @@ const L = {
 export const piece: Piece = {
   id: 'design-brand', n: 0, f: 'Design', client: 'Bar Ficus', mins: 10,
   title: t2('Brand sheet for a bar', 'Scheda del brand per un bar'),
-  blurb: t2('Pick a few things and end with a page that shows how a bar looks and feels.', 'Scegli poche cose e finisci con una pagina che mostra com’è e cosa trasmette un bar.'),
+  blurb: t2('Pick a few things and end with a page that shows how a bar looks and feels.', 'Scegli poche cose e alla fine hai una pagina che mostra com’è e cosa trasmette un bar.'),
   who: tag('Bar Ficus (fictional)', 'Bar Ficus (fittizio)'),
   brief: t2('Bar Ficus has no brand yet: no colours, no logo, no line under the name. Rosa wants one page that shows how the bar looks and feels. You make it in five small steps.',
     'Bar Ficus non ha ancora un brand: niente colori, niente logo, niente frase sotto il nome. Rosa vuole una pagina che mostri com’è e cosa trasmette il bar. La fai in cinque piccoli passi.'),

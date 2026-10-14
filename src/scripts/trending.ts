@@ -121,7 +121,7 @@ const LIST: Trend[] = [
     [['Slide 1 hooks in one line', 'La slide 1 aggancia in una riga'],
       ['Every slide is 1 or 2 short lines', 'Ogni slide è di 1 o 2 righe brevi'],
       ['Slide 4 says what you learned', 'La slide 4 dice cosa hai imparato']],
-    ['Build it as a real carousel in your post editor and publish it, or send it to someone.', 'Costruiscilo come vero carosello nell’editor dei post e pubblicalo, o mandalo a qualcuno.'],
+    ['Build it as a real carousel in your post editor and publish it, or send it to someone.', 'Costruiscilo come un vero carosello nell’editor dei post e pubblicalo, o mandalo a qualcuno.'],
     ['The 5 slides, one per line: the number, then your 1 or 2 short lines.', 'Le 5 slide, una per riga: il numero, poi le tue 1 o 2 righe brevi.'],
     ['1. My latest flops, and what they taught me. 2. Flop 1: I posted at 3am. Nobody was awake. 3. Flop 2: 40 hashtags, 2 views. 4. What I learned: post when friends are awake, and keep 3 hashtags. 5. What was your last flop? Tell me.',
       '1. I miei ultimi flop, e cosa mi hanno insegnato. 2. Flop 1: ho pubblicato alle 3 di notte. Nessuno era sveglio. 3. Flop 2: 40 hashtag, 2 visualizzazioni. 4. Cosa ho imparato: pubblicare quando gli amici sono svegli e usare 3 hashtag. 5. Qual è stato il tuo ultimo flop? Scrivimelo.'],
@@ -175,7 +175,7 @@ const LIST: Trend[] = [
       'Lampada da scrivania, metallo nero, 40 cm. Sì, illumina tutta la scrivania. Ma l’interruttore fa un clic forte. Sì, il braccio tiene qualsiasi angolo. Ma dopo un’ora si abbassa. Sì, la lampadina è inclusa. Ma la luce è giallo caldo, non bianca. Perfetta per chi legge di notte e non ha problemi con un clic forte.'],
     [['What is the first thing you would tell someone you know about this object?', 'Qual è la prima cosa che diresti di questo oggetto a una persona che conosci?'],
       ['What would a buyer notice first and wish you had said?', 'Cosa noterebbe per prima cosa chi compra, e vorrebbe che tu l’avessi detto?'],
-      ['Who would be happy with this catch?', 'Chi sarebbe contento con questo difetto?']]),
+      ['Who would be happy with this catch?', 'A chi andrebbe bene questo difetto?']]),
 
   trend('Music',
     ['Your own sound', 'Il tuo suono'],

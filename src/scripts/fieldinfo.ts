@@ -27,21 +27,21 @@ export const FIELD_INFO: Record<string, FieldInfo> = {
   },
   Code: {
     day: t2('You tell a machine exactly what to do, step by step, then find out where it did something else.', 'Dici a una macchina esattamente cosa fare, un passo alla volta, poi scopri dove ha fatto altro.'),
-    like: [t2('The moment a puzzle finally works', 'Il momento in cui un rompicapo finalmente funziona'), t2('Making something other people can tap', 'Costruire qualcosa che gli altri possono toccare')],
+    like: [t2('The moment a puzzle finally works', 'Il momento in cui un rompicapo finalmente funziona'), t2('Making something other people can tap', 'Costruire qualcosa che gli altri possono usare con un tap')],
     hard: [t2('One tiny mistake breaking everything', 'Un piccolo errore che rompe tutto'), t2('Not knowing why it does that', 'Non sapere perché fa così')],
     steps: {
       ask: t2('Ask someone who builds apps or sites what their first small project did.', 'Chiedi a qualcuno che crea app o siti cosa faceva il suo primo piccolo progetto.'),
       make: t2('Build one tiny thing a friend will use, like a quiz, a counter or a rule for a chat.', 'Costruisci una cosa piccolissima che un amico userà: un quiz, un contatore o una regola per una chat.'),
-      learn: t2('Do one free beginner lesson of an hour, then notice if you want to go on.', 'Fai una lezione gratuita per principianti di un’ora, poi guarda se hai voglia di continuare.'),
+      learn: t2('Do one free beginner lesson of an hour, then notice if you want to go on.', 'Fai una lezione gratuita per principianti di un’ora, poi vedi se hai voglia di continuare.'),
     },
   },
   Video: {
-    day: t2('You decide the first two seconds, cut what drags and make it work with the sound off.', 'Decidi i primi due secondi, tagli quello che trascina e fai in modo che funzioni anche senza audio.'),
-    like: [t2('A slow clip becoming worth watching', 'Una clip lenta che diventa da guardare'), t2('Planning it, then filming with just a phone', 'Pianificarla e poi girarla solo con il telefono')],
+    day: t2('You decide the first two seconds, cut what drags and make it work with the sound off.', 'Decidi i primi due secondi, tagli quello che rallenta e fai in modo che funzioni anche senza audio.'),
+    like: [t2('A slow clip becoming worth watching', 'Una clip lenta che diventa bella da guardare'), t2('Planning it, then filming with just a phone', 'Pianificarla e poi girarla solo con il telefono')],
     hard: [t2('Cutting a moment you like', 'Tagliare un momento che ti piace'), t2('Being on camera, or directing someone else', 'Stare davanti alla camera o dirigere qualcun altro')],
     steps: {
       ask: t2('Ask someone who edits videos what they look at in the first two seconds.', 'Chiedi a qualcuno che monta video cosa guarda nei primi due secondi.'),
-      make: t2('Film 10 seconds for a friend’s shop or club, then cut it to the best moment.', 'Gira 10 secondi per il negozio o il gruppo di un amico, poi tagliali sul momento migliore.'),
+      make: t2('Film 10 seconds for a friend’s shop or club, then cut it to the best moment.', 'Gira 10 secondi per il negozio o il gruppo di un amico, poi tieni solo il momento migliore.'),
       learn: t2('Watch a clip you like three times and write down what happens in the first two seconds.', 'Guarda tre volte una clip che ti piace e scrivi cosa succede nei primi due secondi.'),
     },
   },
@@ -51,13 +51,13 @@ export const FIELD_INFO: Record<string, FieldInfo> = {
     hard: [t2('A reply that never comes', 'Una risposta che non arriva mai'), t2('Saying a price out loud', 'Dire un prezzo ad alta voce')],
     steps: {
       ask: t2('Ask someone who sells at a market or online what they say first to a new buyer.', 'Chiedi a chi vende in un mercatino o online cosa dice per prima cosa a un nuovo cliente.'),
-      make: t2('Sell one thing you own with a listing you wrote after the projects.', 'Vendi una cosa tua con un annuncio scritto dopo i progetti.'),
+      make: t2('Sell one thing you own with a listing you wrote after the projects.', 'Vendi una cosa tua con un annuncio scritto dopo aver fatto i progetti.'),
       learn: t2('Read five listings of the same thing and note which one you would message.', 'Leggi cinque annunci della stessa cosa e segna quello a cui scriveresti.'),
     },
   },
   Music: {
     day: t2('You choose what people hear, in what order, and what a few seconds should make them feel.', 'Scegli cosa sentono le persone, in che ordine e cosa devono provare in pochi secondi.'),
-    like: [t2('Matching a sound to a feeling', 'Abbinare un suono a un’emozione'), t2('Small choices that change the whole mood', 'Piccole scelte che cambiano tutto l’umore')],
+    like: [t2('Matching a sound to a feeling', 'Abbinare un suono a un’emozione'), t2('Small choices that change the whole mood', 'Piccole scelte che cambiano tutta l’atmosfera')],
     hard: [t2('Taste is personal and nobody agrees', 'Il gusto è personale e nessuno è d’accordo'), t2('There is no single right answer', 'Non esiste una sola risposta giusta')],
     steps: {
       ask: t2('Ask someone who makes or picks music how they decide what comes next.', 'Chiedi a qualcuno che fa o sceglie musica come decide cosa viene dopo.'),
@@ -66,7 +66,7 @@ export const FIELD_INFO: Record<string, FieldInfo> = {
     },
   },
   Prompting: {
-    day: t2('You tell an AI exactly what you want, read what comes back and rewrite your instructions until the answer is useful.', 'Dici a un’AI esattamente cosa vuoi, leggi cosa torna e riscrivi le istruzioni finché la risposta è utile.'),
+    day: t2('You tell an AI exactly what you want, read what comes back and rewrite your instructions until the answer is useful.', 'Dici a un’AI esattamente cosa vuoi, leggi cosa ti risponde e riscrivi le istruzioni finché la risposta è utile.'),
     like: [t2('An answer that is exactly what you meant', 'Una risposta che è esattamente quella che volevi'), t2('Small changes in the words that change the whole result', 'Piccole modifiche alle parole che cambiano tutto il risultato')],
     hard: [t2('Getting a sure-sounding answer that is wrong', 'Ricevere una risposta sicura di sé ma sbagliata'), t2('Knowing what to tell the AI and what to leave out', 'Capire cosa dire all’AI e cosa lasciare fuori')],
     steps: {

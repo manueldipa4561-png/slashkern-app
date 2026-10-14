@@ -31,7 +31,7 @@ export const PLAY_PROMPTING: Record<string, Play> = {
   'Prompting.5': [
     { kind: 'pick', label: t2('Tap the 2 things that matter most to your friend', 'Tocca le 2 cose che contano di più per l’altra persona'), out: t2('What matters', 'Cosa conta'), max: 2,
       items: [t2('Short walk to the station', 'Poca strada fino alla stazione'), t2('A quiet street', 'Una via tranquilla'), t2('Lower rent', 'Affitto più basso'), t2('A balcony', 'Un balcone'), t2('A big kitchen', 'Una cucina grande'), t2('Lots of light', 'Tanta luce')] },
-    { kind: 'pick', label: t2('Tap 3 things the AI should give back', 'Tocca 3 cose che l’AI deve restituire'), out: t2('Ask for', 'Chiedi'), max: 3,
+    { kind: 'pick', label: t2('Tap 3 things the AI should give back', 'Tocca 3 cose che l’AI deve darti'), out: t2('Ask for', 'Chiedi'), max: 3,
       items: [t2('A comparison on those two only', 'Un confronto solo su quelle due'), t2('One pick', 'Una scelta sola'), t2('One doubt about the pick', 'Un dubbio sulla scelta'), t2('Every pro and con', 'Tutti i pro e i contro'), t2('A draw: both are fine', 'Pareggio: vanno bene tutte e due'), t2('The cheaper one', 'La più economica')] },
   ],
 };

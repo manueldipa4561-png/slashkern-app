@@ -21,12 +21,12 @@ export const NAVY = '#0E1B3D', BONE = '#EEF2FF', DIM = '#A9B4D0';
 export const piece: Piece = {
   id: 'music-release', n: 5, f: 'Music', client: 'Clank Gym', mins: 10, monoFrom: 2, cover: true,
   title: t2('A beat and its release card', 'Un ritmo e la sua scheda di uscita'),
-  blurb: t2('Tap a beat, name it and pick its cover. End with a release card that plays your beat.', 'Batti un ritmo, dagli un nome e scegli la sua cover. Finisci con una scheda che suona il tuo ritmo.'),
+  blurb: t2('Tap a beat, name it and pick its cover. End with a release card that plays your beat.', 'Batti un ritmo, dagli un nome e scegli la sua cover. Alla fine hai una scheda che suona il tuo ritmo.'),
   who: tag('Clank Gym (fictional)', 'Clank Gym (fittizia)'),
   brief: t2('Clank Gym wants a strong beat for its videos and a release card to share it. You tap the beat, name the track and pick its cover in five small steps.',
     'Clank Gym vuole un ritmo forte per i suoi video e una scheda per condividerlo. Batti il ritmo, dai un nome al brano e scegli la cover in cinque piccoli passi.'),
   steps: [
-    beat(t2('Tap a beat for Clank Gym.', 'Batti un ritmo per Clank Gym.'), t2('Kick is the thump, snare the clap, hat the tick. Press Play to hear it.', 'La cassa è il colpo profondo, il rullante il battimani, l’hi-hat il tic. Premi Suona per sentirlo.')),
+    beat(t2('Tap a beat for Clank Gym.', 'Batti un ritmo per Clank Gym.'), t2('Kick is the thump, snare the clap, hat the tick. Press Play to hear it.', 'La cassa fa “bum”, il rullante “clap”, l’hi-hat “tic”. Premi Suona per sentirlo.')),
     pick(t2('Pick the mood of the track.', 'Scegli l’atmosfera del brano.'), t2('One word that tells people how it sounds. It goes under the title.', 'Una parola che dice come suona. Va sotto il titolo.'), 1, [
       o('heavy', 'Heavy', 'Pesante'), o('bouncy', 'Bouncy', 'Saltellante'), o('dreamy', 'Dreamy', 'Sognante'), o('dark', 'Dark', 'Cupo'), o('hype', 'Hype', 'Carico'), o('chill', 'Chill', 'Rilassato'),
     ], 'chip'),

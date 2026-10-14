@@ -20,7 +20,7 @@ export const piece: Piece = {
   id: 'writing-kit', n: 1, f: 'Writing', client: 'Pigro Gelato', mins: 10,
   title: t2('Launch kit for a new flavour', 'Kit di lancio per un gusto nuovo'),
   blurb: t2('Name a new flavour, write the sign for the counter and the first post, and end with one page you can show.',
-    'Dai un nome a un gusto nuovo, scrivi il cartello per il banco e il primo post, e finisci con una pagina da mostrare.'),
+    'Dai un nome a un gusto nuovo, scrivi il cartello per il banco e il primo post: alla fine hai una pagina da mostrare.'),
   who: tag('Pigro Gelato (fictional)', 'Pigro Gelato (fittizio)'),
   brief: t2('Pigro Gelato is a small, proudly slow gelato shop. It has a new flavour and nothing written for it yet. You write the launch kit in five small steps: the name, the sign for the counter and the caption for the first post.',
     'Pigro Gelato è una piccola gelateria, orgogliosamente lenta. Ha un gusto nuovo e ancora niente di scritto. Il kit di lancio lo scrivi tu, in cinque piccoli passi: il nome, il cartello per il banco e la caption del primo post.'),

@@ -9,7 +9,7 @@ const MODEL = process.env.COACH_MODEL || 'claude-haiku-5-5';
 // Haiku 4.5 takes a temperature. COACH_MODEL=claude-haiku-4-5-20251001 still works for comparisons (evals/coach).
 const tuning = (model: string) => (/^claude-haiku-5/.test(model) ? { thinking: { type: 'disabled' } } : { temperature: 0.8 });
 // The fields the app sends, with their Italian names (prompt v8 names the field in the language of its reply), and their German, French, Dutch and Swedish names (the category names the app shows).
-const FIELDS: Record<string, string> = { Design: 'Poster e loghi', Writing: 'Post e didascalie', Code: 'Siti e piccoli strumenti', Video: 'Video brevi', Selling: 'Annunci di prodotti', Music: 'Musica e suoni', Prompting: 'Prompt per l’IA' };
+const FIELDS: Record<string, string> = { Design: 'Poster e loghi', Writing: 'Post e didascalie', Code: 'Siti e piccoli strumenti', Video: 'Video brevi', Selling: 'Annunci di prodotti', Music: 'Musica e suoni', Prompting: 'Prompt per l’AI' };
 const FIELDS_DE: Record<string, string> = { Design: 'Poster und Logos', Writing: 'Posts und Bildunterschriften', Code: 'Websites und kleine Tools', Video: 'Kurzvideos', Selling: 'Produktanzeigen', Music: 'Musik und Sound', Prompting: 'KI-Prompts' };
 const FIELDS_FR: Record<string, string> = { Design: 'Affiches et logos', Writing: 'Posts et légendes', Code: 'Sites web et petits outils', Video: 'Vidéos courtes', Selling: 'Annonces de produits', Music: 'Musique et son', Prompting: 'Prompts IA' };
 const FIELDS_NL: Record<string, string> = { Design: 'Posters en logo’s', Writing: 'Posts en captions', Code: 'Websites en kleine tools', Video: 'Korte video’s', Selling: 'Productadvertenties', Music: 'Muziek en geluid', Prompting: 'AI-prompts' };

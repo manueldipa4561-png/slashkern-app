@@ -19,7 +19,7 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Pomo Pizza (fictional)', 'Pomo Pizza (fittizia)'),
       brief: t2(
         'Pomo Pizza’s story shows 7 messages at once, so people swipe past. Keep the 1 or 2 that make people come, cut the rest, pick one colour for the words.',
-        'La storia di Pomo Pizza mostra 7 messaggi insieme e la gente scorre via. Tienine 1 o 2, quelli che fanno venire la gente, togli il resto e scegli un colore per le parole.'),
+        'Nella storia di Pomo Pizza ci sono 7 messaggi tutti insieme e la gente tira dritto. Tienine 1 o 2, quelli che fanno venire la gente, togli il resto e scegli un colore per le parole.'),
       asset: {
         mono: false,
         img: '/img/m/story-en.webp', imgIt: '/img/m/story-it.webp', only: true,
@@ -31,7 +31,7 @@ const CORE: Record<string, MissionX[]> = {
       steps: [
         t2('Pick the 1 or 2 messages that make people come.', 'Scegli 1 o 2 messaggi che fanno venire la gente.'),
         t2('Pick one colour for the words.', 'Scegli un colore per le parole.'),
-        t2('Check: 1 or 2 kept, the rest cut, one colour.', 'Controlla: 1 o 2 tenuti, il resto tolto, un colore.'),
+        t2('Check: 1 or 2 kept, the rest cut, one colour.', 'Controlla: 1 o 2 messaggi, il resto tolto, un solo colore.'),
       ],
       mins: 2,
       bar: [
@@ -39,7 +39,7 @@ const CORE: Record<string, MissionX[]> = {
         t2('Readable in two seconds', 'Si legge in due secondi'),
         t2('One colour for all the words', 'Un colore per tutte le parole'),
       ],
-      twist: t2('Build it in your story editor for a real place you like. Post it, or send it to a friend.', 'Costruiscila nell’editor delle storie per un posto vero che ti piace. Pubblicala, o mandala a qualcuno.'),
+      twist: t2('Build it in your story editor for a real place you like. Post it, or send it to a friend.', 'Rifalla nell’editor delle storie per un posto vero che ti piace. Pubblicala, o mandala a qualcuno.'),
       answer: t2('The messages you keep (1 or 2), the ones you cut, and one colour for the words.', 'I messaggi che tieni (1 o 2), quelli che togli e un colore per le parole.'),
     },
     {
@@ -52,7 +52,7 @@ const CORE: Record<string, MissionX[]> = {
         title: t2('What you know about the bar', 'Cosa sai del bar'),
         body: t2(
           'Open since 1987, 6:30am to 9pm\nEspresso €1.20 · Spritz €4\nRosa runs it and calls everyone “tesoro” (sweetheart)\nA giant plant by the cash register, older than Rosa’s kids\nLoud at 6pm, sleepy at 3pm\nThe sticker: round, 8 cm, on the glass door',
-          'Aperto dal 1987, dalle 6:30 alle 21\nCaffè 1,20 € · Spritz 4 €\nRosa lo gestisce e chiama tutti “tesoro”\nUna pianta gigante vicino alla cassa, più vecchia dei figli di Rosa\nChiassoso alle 18, assonnato alle 15\nL’adesivo: rotondo, 8 cm, sulla porta a vetri'),
+          'Aperto dal 1987, dalle 6:30 alle 21\nCaffè 1,20 € · Spritz 4 €\nRosa lo gestisce e chiama tutti “tesoro”\nUna pianta gigante vicino alla cassa, più vecchia dei figli di Rosa\nAlle 18 è un caos, alle 15 si dorme\nL’adesivo: rotondo, 8 cm, sulla porta a vetri'),
       },
       steps: [
         t2('Pick the one thing that makes this bar special.', 'Scegli la cosa che rende speciale questo bar.'),
@@ -63,16 +63,16 @@ const CORE: Record<string, MissionX[]> = {
       bar: [
         t2('The picture is one simple shape', 'L’immagine è una forma semplice'),
         t2('The line is 4 words or fewer', 'La frase ha 4 parole o meno'),
-        t2('Only 2 colours, and you named them', 'Solo 2 colori, e li hai nominati'),
+        t2('Only 2 colours, and you named them', 'Solo 2 colori, e hai detto quali'),
       ],
       twist: t2('Sketch it on paper, even badly. Post the photo, or send it to a friend.', 'Schizzalo su carta, anche male. Pubblica la foto, o mandala a qualcuno.'),
       answer: t2('One picture in 2 colours, and a line under the bar’s name: 4 words or fewer.', 'Un’immagine in 2 colori e una frase sotto il nome del bar: 4 parole al massimo.'),
     },
     {
-      who: tag('Elena’s bare room', 'La stanza vuota di Elena'),
+      who: tag('Elena’s bare room', 'La stanza spoglia di Elena'),
       brief: t2(
         'Elena wants her bare room to feel like “a slow Sunday in a tiny flat by the sea”. Describe 6 pictures for her moodboard (a collage that shows a feeling).',
-        'Elena vuole che la sua stanza vuota sembri “una domenica lenta in una casetta sul mare”. Descrivi 6 immagini per il suo moodboard (un collage che mostra una sensazione).'),
+        'Elena vuole che la sua stanza spoglia sembri “una domenica lenta in una casetta sul mare”. Descrivi 6 immagini per il suo moodboard (un collage che mostra una sensazione).'),
       asset: {
         mono: false,
         img: '/img/m/room.webp',
@@ -84,55 +84,55 @@ const CORE: Record<string, MissionX[]> = {
       steps: [
         t2('Pick 2 words for the feeling of her sentence.', 'Scegli 2 parole per la sensazione della sua frase.'),
         t2('Describe 6 different pictures, one line each.', 'Descrivi 6 immagini diverse, una riga ciascuna.'),
-        t2('Name 2 colours that all 6 share.', 'Nomina 2 colori che tutte e 6 hanno in comune.'),
+        t2('Name 2 colours that all 6 share.', 'Scegli 2 colori che tornano in tutte e 6.'),
       ],
       mins: 3,
       bar: [
-        t2('Every picture fits the feeling', 'Ogni immagine segue la sensazione'),
+        t2('Every picture fits the feeling', 'Ogni immagine rispecchia la sensazione'),
         t2('6 different things, not 6 lamps', '6 cose diverse, non 6 lampade'),
         t2('A stranger could guess the sentence', 'Chi non la conosce indovinerebbe la frase'),
       ],
-      twist: t2('Ask a friend for their dream room in one sentence, then plan their 6 pictures.', 'Chiedi a qualcuno la sua stanza dei sogni in una frase, poi pianifica le sue 6 immagini.'),
+      twist: t2('Ask a friend for their dream room in one sentence, then plan their 6 pictures.', 'Chiedi a qualcuno di descrivere in una frase la sua stanza dei sogni, poi pianifica le sue 6 immagini.'),
       answer: t2('The feeling in 2 words, 6 pictures (one line each), and 2 colours.', 'La sensazione in 2 parole, 6 immagini (una riga ciascuna) e 2 colori.'),
     },
     {
       who: tag('Nonna Kicks (fictional)', 'Nonna Kicks (fittizia)'),
       brief: t2(
         'Nonna Kicks’ photo of used sneakers got zero messages in 5 days. Name the 3 worst problems and plan a new photo: where, what light, what behind the shoes.',
-        'La foto di sneaker usate di Nonna Kicks non ha ricevuto messaggi in 5 giorni. Indica i 3 problemi peggiori e pianifica una foto nuova: dove, che luce, cosa c’è dietro le scarpe.'),
+        'La foto delle sneaker usate di Nonna Kicks non ha avuto neanche un messaggio in 5 giorni. Trova i 3 problemi peggiori e pianifica una foto nuova: dove, con che luce, cosa c’è dietro le scarpe.'),
       asset: {
         mono: false,
         img: '/img/m/sneakers.webp', only: true,
         title: t2('The photo today', 'La foto oggi'),
         body: t2(
           'Taken at 8pm under one dim ceiling light\nOn an unmade bed, a hoodie in the corner\nBoth sneakers slightly blurry\nLaces undone, toes cut off at the edge\nWhite sneakers look yellow\nYou can’t see the sole or the size',
-          'Scattata alle 20 sotto una luce fioca sul soffitto\nSu un letto sfatto, con una felpa in un angolo\nEntrambe le sneaker un po’ sfocate\nLacci slacciati, punte tagliate sul bordo\nLe sneaker bianche sembrano gialle\nNon si vedono la suola né la taglia'),
+          'Scattata alle 20 con una sola luce fioca al soffitto\nSu un letto sfatto, con una felpa in un angolo\nEntrambe le sneaker un po’ sfocate\nLacci slacciati, punte tagliate fuori dalla foto\nLe sneaker bianche sembrano gialle\nNon si vedono la suola né la taglia'),
       },
       steps: [
         t2('Pick the 3 worst problems in the photo.', 'Scegli i 3 problemi peggiori della foto.'),
-        t2('Plan the new photo: where, what light, what behind.', 'Pianifica la foto nuova: dove, che luce, cosa c’è dietro.'),
-        t2('Say how close: the shoes should fill the photo.', 'Di’ quanto vicino: le scarpe devono riempire la foto.'),
+        t2('Plan the new photo: where, what light, what behind.', 'Pianifica la foto nuova: dove, con che luce, cosa c’è dietro.'),
+        t2('Say how close: the shoes should fill the photo.', 'Decidi quanto avvicinarti: le scarpe devono riempire la foto.'),
       ],
       mins: 4,
       bar: [
-        t2('Where, light and background all covered', 'Dove, luce e sfondo: tutti e tre'),
+        t2('Where, light and background all covered', 'Ci sono tutti e tre: dove, luce e sfondo'),
         t2('The shoes fill most of the photo', 'Le scarpe riempiono quasi tutta la foto'),
-        t2('Nothing in the photo distracts from the shoes', 'Niente nella foto distrae dalle scarpe'),
+        t2('Nothing in the photo distracts from the shoes', 'Niente che distragga dalle scarpe'),
       ],
-      twist: t2('Take a photo of your own shoes this way. Use it on Vinted or Subito, or send before and after to a friend.', 'Fai così una foto alle tue scarpe. Usala su Vinted o Subito, oppure manda prima e dopo a qualcuno.'),
-      answer: t2('The 3 worst problems, then the new photo: where, what light, what behind, how close.', 'I 3 problemi peggiori, poi la foto nuova: dove, che luce, cosa c’è dietro, quanto vicino.'),
+      twist: t2('Take a photo of your own shoes this way. Use it on Vinted or Subito, or send before and after to a friend.', 'Fai una foto così alle tue scarpe. Usala su Vinted o Subito, oppure manda prima e dopo a qualcuno.'),
+      answer: t2('The 3 worst problems, then the new photo: where, what light, what behind, how close.', 'I 3 problemi peggiori, poi la foto nuova: dove, con che luce, cosa c’è dietro, quanto da vicino.'),
     },
     {
       who: tag('Fuorisede Diaries (fictional)', 'Fuorisede Diaries (fittizio)'),
       brief: t2(
         'Fuorisede Diaries has a post with 5 flatmate tips, one per picture, but no first picture yet. Plan it around one tip: up to 6 words and one bright colour.',
-        'Fuorisede Diaries ha un post con 5 consigli sui coinquilini, uno per immagine, ma ancora nessuna prima immagine. Pianificala attorno a un consiglio: fino a 6 parole e un colore acceso.'),
+        'Fuorisede Diaries ha un post con 5 consigli sui coinquilini, uno per immagine, ma gli manca ancora la prima immagine. Pianificala attorno a un consiglio: fino a 6 parole e un colore acceso.'),
       asset: {
         mono: false,
         title: t2('The 5 tips inside + the rules', 'I 5 consigli dentro + le regole'),
         body: t2(
           'Tip 1: label your food, always\nTip 2: buy your own pan\nTip 3: talk about the bills in week 1\nTip 4: know who takes out the bin\nTip 5: if something bugs you, say it early, not at 2am\nRules: square, seen small in a feed, 6 words max, one bright colour',
-          'Consiglio 1: etichetta sempre il tuo cibo\nConsiglio 2: compra una pentola tua\nConsiglio 3: parla delle bollette già nella settimana 1\nConsiglio 4: chiarisci chi porta giù la spazzatura\nConsiglio 5: se qualcosa ti dà fastidio, dillo subito, non alle 2 di notte\nRegole: quadrata, vista piccola nel feed, massimo 6 parole, un colore acceso'),
+          'Consiglio 1: etichetta sempre il tuo cibo\nConsiglio 2: compra una pentola tua\nConsiglio 3: parla delle bollette già nella prima settimana\nConsiglio 4: metti in chiaro chi porta giù la spazzatura\nConsiglio 5: se qualcosa ti dà fastidio, dillo subito, non alle 2 di notte\nRegole: quadrata, si vede piccola nel feed, massimo 6 parole, un colore acceso'),
       },
       steps: [
         t2('Pick the tip that would make a stranger curious.', 'Scegli il consiglio che incuriosirebbe uno sconosciuto.'),
@@ -145,7 +145,7 @@ const CORE: Record<string, MissionX[]> = {
         t2('Readable when the picture is tiny', 'Si legge anche quando l’immagine è piccola'),
         t2('It does not give away all 5 tips', 'Non svela tutti e 5 i consigli'),
       ],
-      twist: t2('Copy the plan and send it to someone about to move in with flatmates. Would they keep swiping?', 'Copia il piano e mandalo a chi sta per andare a vivere con dei coinquilini. Andrebbe avanti a scorrere?'),
+      twist: t2('Copy the plan and send it to someone about to move in with flatmates. Would they keep swiping?', 'Copia il piano e mandalo a chi sta per andare a vivere con dei coinquilini. Si fermerebbe o tirerebbe dritto?'),
       answer: t2('The tip, the words on the picture (6 or fewer), and the picture in one bright colour.', 'Il consiglio, le parole sull’immagine (6 al massimo) e l’immagine in un colore acceso.'),
     },
     {
@@ -159,7 +159,7 @@ const CORE: Record<string, MissionX[]> = {
         title: t2('Luca’s video + the rules', 'Il video di Luca + le regole'),
         body: t2(
           'Video: “I tried Noce Bites for 7 days”\nThe snack: oat and hazelnut bites, orange wrapper\nLuca on day 7: tired but happy\nOn a phone the thumbnail is about 3 cm wide\nRules: 3 words max, wrapper visible, one colour that pops',
-          'Video: “Ho provato Noce Bites per 7 giorni”\nLo snack: bocconcini di avena e nocciola, confezione arancione\nLuca al giorno 7: stanco ma felice\nSul telefono la miniatura è larga circa 3 cm\nRegole: massimo 3 parole, confezione visibile, un colore che spicca'),
+          'Video: “Ho provato Noce Bites per 7 giorni”\nLo snack: bocconcini di avena e nocciola, confezione arancione\nLuca al settimo giorno: stanco ma felice\nSul telefono la miniatura è larga circa 3 cm\nRegole: massimo 3 parole, confezione visibile, un colore che spicca'),
       },
       steps: [
         t2('Plan thumbnail A: Luca’s face, a colour, 3 words max.', 'Pianifica la miniatura A: la faccia di Luca, un colore, massimo 3 parole.'),
@@ -172,7 +172,7 @@ const CORE: Record<string, MissionX[]> = {
         t2('Readable at 3 cm wide', 'Leggibile a 3 cm di larghezza'),
         t2('Your “why” is about the viewer, not you', 'Il “perché” riguarda chi guarda, non te'),
       ],
-      twist: t2('Swap Noce for a snack you love. Make the winner for real and send it to a friend.', 'Sostituisci Noce con uno snack che ami. Fai davvero la vincente e mandala a qualcuno.'),
+      twist: t2('Swap Noce for a snack you love. Make the winner for real and send it to a friend.', 'Sostituisci Noce con uno snack che ami. Falla davvero, la vincente, e mandala a qualcuno.'),
       answer: t2('Thumbnail A and B (a face, a colour, 3 words max each), then the winner and why.', 'Miniatura A e B (una faccia, un colore, massimo 3 parole ciascuna), poi la vincente e perché.'),
     },
   ],
@@ -188,7 +188,7 @@ const CORE: Record<string, MissionX[]> = {
         title: t2('Camilla’s caption · 3 likes, 0 comments', 'La caption di Camilla · 3 like, 0 commenti'),
         body: t2(
           'Gym day 💪 Feeling good #gym #fitness\nWhat Camilla didn’t say:\n– she almost stayed home\n– her bag strap snapped on the bus\n– first time lifting 40 kg',
-          'Giorno di palestra 💪 Mi sento bene #gym #fitness\nCosa Camilla non ha detto:\n– stava per restare a casa\n– le si è rotta la tracolla sul bus\n– prima volta con 40 kg'),
+          'Giorno di palestra 💪 Mi sento bene #gym #fitness\nCosa Camilla non ha detto:\n– stava per restare a casa\n– le si è rotta la tracolla sul bus\n– ha sollevato 40 kg per la prima volta'),
       },
       steps: [
         t2('Pick the details a friend would ask about.', 'Scegli i dettagli che farebbero fare domande agli amici.'),
@@ -224,8 +224,8 @@ const CORE: Record<string, MissionX[]> = {
       mins: 3,
       bar: [
         t2('Names something Leo really did', 'Nomina qualcosa che Leo ha fatto davvero'),
-        t2('Kind: no guilt, no countdown', 'Gentile: niente colpe né conti alla rovescia'),
-        t2('You would tap it yourself', 'Lo toccheresti anche tu'),
+        t2('Kind: no guilt, no countdown', 'Gentile: niente sensi di colpa né conti alla rovescia'),
+        t2('You would tap it yourself', 'Lo apriresti anche tu'),
       ],
       twist: t2('Bonus: reword it for a friend who owes you a reply. Send it.', 'Bonus: riscrivilo per chi ti deve una risposta. Mandalo.'),
       answer: t2('One phone message, 10 words or fewer, no guilt.', 'Un messaggio per il telefono, 10 parole al massimo, niente sensi di colpa.'),
@@ -260,13 +260,13 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Bolla Laundry (fictional)', 'Lavanderia Bolla (fittizia)'),
       brief: t2(
         'Bolla Laundry’s bio (the short text on its profile) could be about any laundry. Rewrite it so a student new in town wants to come.',
-        'La bio della Lavanderia Bolla (il testo breve sul suo profilo) potrebbe parlare di qualsiasi lavanderia. Riscrivila perché chi studia ed è appena arrivato in città abbia voglia di venire.'),
+        'La bio della Lavanderia Bolla (il testo breve sul suo profilo) potrebbe parlare di qualsiasi lavanderia. Riscrivila in modo che chi è appena arrivato in città per studiare abbia voglia di passare.'),
       asset: {
         mono: false,
         title: t2('Bolla’s bio today + the true facts', 'La bio di Bolla oggi + i fatti veri'),
         body: t2(
           'Welcome to Bolla! 🧺 Self-service laundry, best quality, best prices. Open most days. Visit us!\nTrue facts:\n– next to the university gate\n– wash €4, dry €3, soap included\n– free wifi and a shelf of books to swap\n– open every day, even Sunday',
-          'Benvenuti da Bolla! 🧺 Lavanderia self-service, qualità migliore, prezzi migliori. Aperti quasi tutti i giorni. Venite a trovarci!\nFatti veri:\n– accanto al cancello dell’università\n– lavaggio 4 €, asciugatura 3 €, sapone incluso\n– wifi gratis e uno scaffale di libri da scambiare\n– aperti ogni giorno, anche la domenica'),
+          'Benvenuti da Bolla! 🧺 Lavanderia self-service, la migliore qualità ai migliori prezzi. Aperti quasi tutti i giorni. Venite a trovarci!\nFatti veri:\n– accanto al cancello dell’università\n– lavaggio 4 €, asciugatura 3 €, sapone incluso\n– wifi gratis e uno scaffale di libri da scambiare\n– aperti ogni giorno, anche la domenica'),
       },
       steps: [
         t2('Spot the words any laundry could say.', 'Trova le parole che direbbe qualsiasi lavanderia.'),
@@ -286,7 +286,7 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Cinema Orsa (fictional)', 'Cinema Orsa (fittizio)'),
       brief: t2(
         'Cinema Orsa raised tickets by €1, and one comment is rude. Reply as the cinema in 25 words or fewer, calm and human.',
-        'Cinema Orsa ha alzato il biglietto di 1 € e un commento è maleducato. Rispondi come il cinema in 25 parole al massimo, con calma e da persona vera.'),
+        'Cinema Orsa ha alzato di 1 € il prezzo del biglietto e sotto c’è un commento maleducato. Rispondi a nome del cinema in 25 parole al massimo, con calma e senza fare il robot.'),
       asset: {
         mono: false,
         title: t2('Under Orsa’s post · the rude comment', 'Sotto il post di Orsa · il commento maleducato'),
@@ -301,9 +301,9 @@ const CORE: Record<string, MissionX[]> = {
       ],
       mins: 4,
       bar: [
-        t2('Names the €1, no hiding', 'Nomina l’aumento di 1 €, senza nascondersi'),
+        t2('Names the €1, no hiding', 'Parla chiaro dell’aumento di 1 €, senza nascondersi'),
         t2('One true reason, no excuses', 'Un motivo vero, niente scuse'),
-        t2('Ends warmly, with no sarcasm', 'Finisce con calore, senza sarcasmo'),
+        t2('Ends warmly, with no sarcasm', 'Chiude con un tono caldo, senza sarcasmo'),
       ],
       twist: t2('Copy it. Send it to someone and ask: would you still come?', 'Copiala. Mandala a qualcuno e chiedi: ci verresti lo stesso?'),
       answer: t2('One reply from the cinema, 25 words or fewer.', 'Una risposta del cinema, 25 parole al massimo.'),
@@ -312,18 +312,18 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Pigro Gelato (fictional)', 'Pigro Gelato (fittizio)'),
       brief: t2(
         'Pigro Gelato has a new flavour and no name yet. Write three names, pick one, and write the small sign for the counter.',
-        'Pigro Gelato ha un gusto nuovo e ancora nessun nome. Scrivi tre nomi, scegline uno e scrivi il cartello per il banco.'),
+        'Pigro Gelato ha un gusto nuovo, ma ancora senza nome. Scrivi tre nomi, scegline uno e poi il cartello per il banco.'),
       asset: {
         mono: false,
         title: t2('Pigro Gelato · new flavour, no name', 'Pigro Gelato · gusto nuovo, senza nome'),
         body: t2(
           'What’s in it: roasted hazelnuts, sea salt, a dark chocolate ribbon\nTaste: sweet first, a little salt at the end\nArrives: Friday, in the case between pistachio and lemon\nThe shop’s voice: lazy, kind, a bit funny\nRules: names 3 words or fewer, sign 12 words or fewer',
-          'Dentro: nocciole tostate, sale marino, un nastro di cioccolato fondente\nSapore: prima dolce, alla fine un po’ di sale\nArriva: venerdì, in vetrina tra pistacchio e limone\nLa voce del locale: pigra, gentile, un po’ buffa\nRegole: nomi di 3 parole al massimo, cartello di 12 parole al massimo'),
+          'Dentro: nocciole tostate, sale marino, una variegatura di cioccolato fondente\nSapore: prima dolce, alla fine un po’ di sale\nArriva: venerdì, in vetrina tra pistacchio e limone\nLa voce del locale: pigra, gentile, un po’ buffa\nRegole: nomi di 3 parole al massimo, cartello di 12 parole al massimo'),
       },
       steps: [
         t2('Write 3 names, each 3 words or fewer.', 'Scrivi 3 nomi, ognuno di 3 parole al massimo.'),
         t2('Pick the one you’d say out loud to order.', 'Scegli quello che diresti ad alta voce per ordinarlo.'),
-        t2('Write its sign for the counter: 12 words or fewer.', 'Scrivi il suo cartello per il banco: 12 parole al massimo.'),
+        t2('Write its sign for the counter: 12 words or fewer.', 'Scrivi il cartello per il banco: 12 parole al massimo.'),
       ],
       mins: 5,
       bar: [
@@ -341,7 +341,7 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Moss Merch, a band’s hoodie shop (fictional)', 'Moss Merch, il negozio di felpe di una band (fittizio)'),
       brief: t2(
         'The Moss Merch hoodies sold out, but the Buy button stays green instead of turning red. Find the word spelled wrong in the code and write its line again, fixed.',
-        'Le felpe di Moss Merch sono finite, ma il pulsante Compra resta verde invece di diventare rosso. Trova la parola scritta male nel codice e riscrivi la sua riga, corretta.'),
+        'Le felpe di Moss Merch sono esaurite, ma il pulsante Compra resta verde invece di diventare rosso. Trova la parola scritta male nel codice e riscrivi quella riga correggendola.'),
       asset: {
         mono: true,
         title: t2('The Buy button’s code, with notes', 'Il codice del pulsante Compra, con le note'),
@@ -361,7 +361,7 @@ const CORE: Record<string, MissionX[]> = {
         t2('You can explain the mistake in a sentence', 'Sai spiegare l’errore in una frase'),
       ],
       twist: t2('Send the broken code to someone: “Why is my button still green?” Time them.', 'Manda il codice rotto a qualcuno: “Perché il mio pulsante è ancora verde?” Cronometra quanto ci mette.'),
-      answer: t2('The word spelled wrong, then its line written again, fixed.', 'La parola scritta male, poi la sua riga riscritta, corretta.'),
+      answer: t2('The word spelled wrong, then its line written again, fixed.', 'La parola scritta male, poi quella riga riscritta e corretta.'),
     },
     {
       who: tag('Pizzeria Zeta (fictional)', 'Pizzeria Zeta (fittizia)'),
@@ -373,7 +373,7 @@ const CORE: Record<string, MissionX[]> = {
         title: t2('The two questions and the three pizzas', 'Le due domande e le tre pizze'),
         body: t2(
           'Question 1: Saturday night, stay in or go out?\nQuestion 2: Spice, none or lots?\nPizzas: Margherita, Diavola, Quattro Formaggi\nA rule: IF (answers) THEN (pizza)\nUse AND when a rule needs both answers.\nThe 4 kinds of people:\nstay in, no spice\nstay in, lots of spice\ngo out, no spice\ngo out, lots of spice',
-          'Domanda 1: sabato sera, a casa o fuori?\nDomanda 2: piccante, niente o tanto?\nPizze: Margherita, Diavola, Quattro Formaggi\nUna regola: SE (risposte) ALLORA (pizza)\nUsa E quando una regola vuole tutte e due le risposte.\nI 4 tipi di persona:\na casa, niente piccante\na casa, tanto piccante\nfuori, niente piccante\nfuori, tanto piccante'),
+          'Domanda 1: sabato sera, a casa o fuori?\nDomanda 2: piccante, per niente o tanto?\nPizze: Margherita, Diavola, Quattro Formaggi\nUna regola: SE (risposte) ALLORA (pizza)\nUsa E quando una regola vuole tutte e due le risposte.\nI 4 tipi di persona:\na casa, niente piccante\na casa, tanto piccante\nfuori, niente piccante\nfuori, tanto piccante'),
       },
       steps: [
         t2('Write 3 rules, one per line, each starting with IF.', 'Scrivi 3 regole, una per riga, ognuna inizia con SE.'),
@@ -460,7 +460,7 @@ const CORE: Record<string, MissionX[]> = {
       ],
       mins: 4,
       bar: [
-        t2('DM 1 gets a question, not a guess', 'Il DM 1 riceve una domanda, non un’ipotesi'),
+        t2('DM 1 gets a question, not a guess', 'Il DM 1 riceve una domanda, non una risposta a caso'),
         t2('DM 3 reaches a real person', 'Il DM 3 arriva a una persona vera'),
         t2('Replies sound like Sunny Plants, not a robot', 'Suonano come Sunny Plants, non come un robot'),
       ],
@@ -490,7 +490,7 @@ const CORE: Record<string, MissionX[]> = {
         t2('Your REPEAT stops on something visible', 'Il RIPETI si ferma su qualcosa di visibile'),
         t2('It handles a plant that is already wet', 'Gestisce una pianta già bagnata'),
       ],
-      twist: t2('Send the steps to a friend. Ask which line was unclear.', 'Manda i passaggi a una persona amica. Chiedi quale riga era poco chiara.'),
+      twist: t2('Send the steps to a friend. Ask which line was unclear.', 'Manda i passaggi a qualcuno e chiedi quale riga non era chiara.'),
       answer: t2('The robot’s steps, one per line, each starting with DO, REPEAT or IF.', 'I passaggi del robot, uno per riga, ognuno inizia con FAI, RIPETI o SE.'),
     },
   ],
@@ -500,7 +500,7 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Tosta, a toasted-sandwich van (fictional)', 'Tosta, un furgone di toast (fittizio)'),
       brief: t2(
         'Rocco’s 15-second clip at the Tosta sandwich van starts slowly, so people scroll away. Pick the pieces to keep, 6 seconds or less in total, with the best moment first.',
-        'La clip di 15 secondi di Rocco al furgone dei toast Tosta parte piano, e la gente scorre via. Scegli i pezzi da tenere, 6 secondi al massimo in tutto, con il momento migliore per primo.'),
+        'La clip di 15 secondi di Rocco al furgone dei toast Tosta parte lenta e la gente tira dritto. Scegli i pezzi da tenere, 6 secondi al massimo in tutto, con il momento migliore per primo.'),
       asset: {
         mono: true,
         video: '/media/tosta.mp4',
@@ -516,7 +516,7 @@ const CORE: Record<string, MissionX[]> = {
       ],
       mins: 2,
       bar: [
-        t2('It opens on the best moment', 'Apre sul momento migliore'),
+        t2('It opens on the best moment', 'Parte dal momento migliore'),
         t2('The total is 6 seconds or less', 'Il totale è al massimo 6 secondi'),
         t2('No walking, no waiting', 'Niente camminate né attese'),
       ],
@@ -543,10 +543,10 @@ const CORE: Record<string, MissionX[]> = {
       mins: 3,
       bar: [
         t2('Seconds add up to exactly 10', 'I secondi fanno esattamente 10'),
-        t2('It opens on the empty shelf', 'Apre sullo scaffale vuoto'),
+        t2('It opens on the empty shelf', 'Parte dallo scaffale vuoto'),
         t2('Every text is 6 words or fewer', 'Ogni testo ha al massimo 6 parole'),
       ],
-      twist: t2('Copy it and send it to someone who will laugh. Or film it tonight and post it.', 'Copialo e mandalo a chi riderà. Oppure giralo stasera e pubblicalo.'),
+      twist: t2('Copy it and send it to someone who will laugh. Or film it tonight and post it.', 'Copialo e mandalo a qualcuno che si farà una risata. Oppure giralo stasera e pubblicalo.'),
       answer: t2('3 shots, one per line: seconds, what we see, text on screen. 10 seconds in total.', '3 inquadrature, una per riga: secondi, cosa si vede, testo a schermo. 10 secondi in tutto.'),
     },
     {
@@ -589,13 +589,13 @@ const CORE: Record<string, MissionX[]> = {
       },
       steps: [
         t2('Split Greta’s lines into subtitles of 5 words or fewer.', 'Dividi le frasi di Greta in sottotitoli di massimo 5 parole.'),
-        t2('Add start-end seconds to each, at least 1.5 seconds.', 'Aggiungi a ognuno inizio-fine in secondi, almeno 1,5 secondi.'),
+        t2('Add start-end seconds to each, at least 1.5 seconds.', 'Aggiungi a ognuno inizio e fine in secondi, per almeno 1,5 secondi.'),
         t2('Check: from 0 to 12 seconds with no gaps.', 'Controlla: da 0 a 12 secondi senza buchi.'),
       ],
       mins: 4,
       bar: [
         t2('5 words or fewer in every subtitle', 'Massimo 5 parole per sottotitolo'),
-        t2('None on screen under 1.5 seconds', 'Nessuno a schermo meno di 1,5 secondi'),
+        t2('None on screen under 1.5 seconds', 'Nessuno resta a schermo meno di 1,5 secondi'),
         t2('No gaps from 0 to 12 seconds', 'Nessun buco da 0 a 12 secondi'),
       ],
       twist: t2('Copy your subtitles. Add them to a clip of your own and post it.', 'Copia i tuoi sottotitoli. Mettili su una tua clip e pubblicala.'),
@@ -605,7 +605,7 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Rotella, a skate shop (fictional)', 'Rotella, un negozio di skate (fittizio)'),
       brief: t2(
         'Rotella’s 10-second clip shows a skateboard push, then the board rolling away. Write what a sports commentator would say: one line per shot, within its word limit.',
-        'La clip di 10 secondi di Rotella mostra una spinta su uno skate, poi la tavola che se ne va. Scrivi cosa direbbe un telecronista sportivo: una riga per inquadratura, nel suo limite di parole.'),
+        'La clip di 10 secondi di Rotella mostra una spinta su uno skate, poi la tavola che se ne va. Scrivi cosa direbbe un telecronista sportivo: una riga per inquadratura, rispettando il suo limite di parole.'),
       asset: {
         mono: true,
         video: '/media/skate.mp4',
@@ -625,7 +625,7 @@ const CORE: Record<string, MissionX[]> = {
         t2('It sounds like a real commentator', 'Sembra una vera telecronaca'),
         t2('The last line makes someone smile', 'L’ultima riga fa sorridere'),
       ],
-      twist: t2('Say “Rotella” once, in the last line, without sounding like an ad. Then send it as a voice note.', 'Di’ “Rotella” una volta, nell’ultima riga, senza sembrare una pubblicità. Poi mandalo come nota vocale.'),
+      twist: t2('Say “Rotella” once, in the last line, without sounding like an ad. Then send it as a voice note.', 'Di’ “Rotella” una volta, nell’ultima riga, senza sembrare una pubblicità. Poi mandalo in un vocale.'),
       answer: t2('4 lines, one per shot in order, each within its limit: 4, 6, 6 and 4 words.', '4 righe, una per inquadratura in ordine, ognuna nel suo limite: 4, 6, 6 e 4 parole.'),
     },
     {
@@ -661,7 +661,7 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Giulia’s lamp on Subito', 'la lampada di Giulia su Subito'),
       brief: t2(
         'Giulia’s €10 desk lamp has sat on Subito, a second-hand app, for 3 weeks with zero messages. Write a new title and 3 short lines, all true.',
-        'La lampada da scrivania di Giulia, 10 €, è su Subito, un’app dell’usato, da 3 settimane con zero messaggi. Scrivi un nuovo titolo e 3 righe brevi, tutte vere.'),
+        'La lampada da scrivania di Giulia, 10 €, è su Subito (un’app dell’usato) da 3 settimane e non ha ricevuto nemmeno un messaggio. Scrivi un nuovo titolo e 3 righe brevi, tutte vere.'),
       asset: {
         mono: false,
         img: '/img/m/lamp.webp',
@@ -681,7 +681,7 @@ const CORE: Record<string, MissionX[]> = {
         t2('Every line is true, the chip included', 'Ogni riga è vera, scheggiatura compresa'),
         t2('Ends with price and how to get it', 'Finisce con il prezzo e come averla'),
       ],
-      twist: t2('Copy it. Swap in something you really want to sell, or send it to a friend with a pile of stuff.', 'Copialo. Metti al suo posto una cosa che vuoi vendere davvero, o mandalo a chi ha una pila di roba da vendere.'),
+      twist: t2('Copy it. Swap in something you really want to sell, or send it to a friend with a pile of stuff.', 'Copialo. Al posto della lampada metti una cosa che vuoi vendere davvero, o mandalo a chi ha una pila di roba da vendere.'),
       answer: t2('One title, then 3 short lines. True facts only.', 'Un titolo, poi 3 righe brevi. Solo fatti veri.'),
     },
     {
@@ -694,11 +694,11 @@ const CORE: Record<string, MissionX[]> = {
         title: t2('The sauce: facts and rules', 'La salsa: fatti e regole'),
         body: t2(
           'PRODUCT: Ardi hot sauce, 150 ml bottle, €6, sold at delis\nTRUE: made from red chilli, garlic and vinegar\nTRUE: medium heat, warm but not painful\nPARTS: OPENING (first 3 seconds, makes people stop), SHOW (one thing the camera sees), ASK (one thing viewers can do)\nLENGTH: 15 seconds out loud, about 40 words\nNEVER: “best ever”, fake reviews, health promises',
-          'PRODOTTO: salsa piccante Ardi, bottiglia da 150 ml, 6 €, in vendita in gastronomia\nVERO: fatta con peperoncino rosso, aglio e aceto\nVERO: piccantezza media, calda ma non dolorosa\nPARTI: INIZIO (primi 3 secondi, fa fermare chi scorre), COSA MOSTRI (una cosa che la camera vede), RICHIESTA (una cosa che chi guarda può fare)\nDURATA: 15 secondi a voce, circa 40 parole\nMAI: “la migliore di sempre”, finte recensioni, promesse sulla salute'),
+          'PRODOTTO: salsa piccante Ardi, bottiglia da 150 ml, 6 €, in vendita nelle gastronomie\nVERO: fatta con peperoncino rosso, aglio e aceto\nVERO: piccantezza media: scalda ma non fa male\nPARTI: INIZIO (primi 3 secondi, fa fermare chi scorre), COSA MOSTRI (una cosa che si vede nel video), RICHIESTA (una cosa che chi guarda può fare)\nDURATA: 15 secondi a voce, circa 40 parole\nMAI: “la migliore di sempre”, finte recensioni, promesse sulla salute'),
       },
       steps: [
         t2('Write the OPENING: one line for the first 3 seconds.', 'Scrivi l’INIZIO: una riga per i primi 3 secondi.'),
-        t2('Write what you SHOW: one thing the camera sees.', 'Scrivi COSA MOSTRI: una cosa che la camera vede.'),
+        t2('Write what you SHOW: one thing the camera sees.', 'Scrivi COSA MOSTRI: una cosa che si vede nel video.'),
         t2('Write the ASK: one small thing viewers can do.', 'Scrivi la RICHIESTA: una piccola cosa che chi guarda può fare.'),
       ],
       mins: 3,
@@ -707,14 +707,14 @@ const CORE: Record<string, MissionX[]> = {
         t2('Shows something real, not just talk', 'Mostra qualcosa di vero, non solo parole'),
         t2('15 seconds or less, nothing false', '15 secondi al massimo, niente di falso'),
       ],
-      twist: t2('Time it out loud. Swap in something you really like, then film it or send it to a friend.', 'Cronometralo a voce alta. Metti una cosa che ti piace davvero al suo posto, poi giralo o mandalo a qualcuno.'),
+      twist: t2('Time it out loud. Swap in something you really like, then film it or send it to a friend.', 'Leggilo ad alta voce col cronometro. Al posto della salsa metti una cosa che ti piace davvero, poi giralo o mandalo a qualcuno.'),
       answer: t2('Three lines: OPENING, SHOW, ASK. 15 seconds out loud, about 40 words.', 'Tre righe: INIZIO, COSA MOSTRI, RICHIESTA. 15 secondi a voce, circa 40 parole.'),
     },
     {
       who: tag('Quokka Vintage, a market stall (fictional)', 'Quokka Vintage, un banco al mercatino (fittizio)'),
       brief: t2(
         'You run Quokka Vintage’s market stall, and a buyer wants the €45 denim jacket for €30. Answer their 2 messages: a true reason first, then a friendly final price.',
-        'Hai il banco di Quokka Vintage al mercatino, e chi compra vuole la giacca di jeans da 45 € per 30 €. Rispondi ai suoi 2 messaggi: prima un motivo vero, poi un prezzo finale detto con gentilezza.'),
+        'Hai il banco di Quokka Vintage al mercatino, e chi compra vuole la giacca di jeans da 45 € a 30 €. Rispondi ai suoi 2 messaggi: prima un motivo vero, poi un prezzo finale detto con gentilezza.'),
       asset: {
         mono: false,
         img: '/img/m/jacket.webp',
@@ -726,7 +726,7 @@ const CORE: Record<string, MissionX[]> = {
       steps: [
         t2('Answer “€30?” with one true reason, no new price.', 'Rispondi a “30 €?” con un motivo vero, senza un nuovo prezzo.'),
         t2('Answer “€35?” with a final price of €38 or more.', 'Rispondi a “35 €?” con un prezzo finale da 38 € in su.'),
-        t2('Check: kind words, no fake rush or other buyer.', 'Controlla: parole gentili, niente fretta finta né altri interessati.'),
+        t2('Check: kind words, no fake rush or other buyer.', 'Controlla: parole gentili, niente fretta finta né altri interessati inventati.'),
       ],
       mins: 3,
       bar: [
@@ -741,13 +741,13 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Cera Cera, a candle shop (fictional)', 'Cera Cera, un negozio di candele (fittizio)'),
       brief: t2(
         'Cera Cera, a small candle shop, sent Sara a pushy DM (private message) and got no reply. Rewrite it so it sounds like a person offering a free candle.',
-        'Cera Cera, un piccolo negozio di candele, ha mandato a Sara un DM (messaggio privato) insistente e non ha avuto risposta. Riscrivilo così che sembri una persona che offre una candela gratis.'),
+        'Cera Cera, un piccolo negozio di candele, ha mandato a Sara un DM (messaggio privato) insistente e non ha avuto risposta. Riscrivilo in modo che sembri una persona che le offre una candela gratis.'),
       asset: {
         mono: false,
         title: t2('The message Sara ignored, and the facts', 'Il messaggio che Sara ha ignorato, e i fatti'),
         body: t2(
           'SENT: “Hi dear!!! BEST candles in town 🔥 Collab alert, only TODAY, DM us NOW!!”\nTRUE: Sara posts study-desk videos for about 2,300 followers\nTRUE: her story: “my flat smells of nothing”\nTRUE: Cera Cera is 3 people pouring candles by hand in Turin\nTRUE: you can send her one free Fig Leaf candle (€18)\nTRUE: no post required; if she posts, she says it is a gift',
-          'INVIATO: “Ciao cara!!! Le MIGLIORI candele della città 🔥 Collab alert, solo OGGI, scrivici ORA!!”\nVERO: Sara posta video dalla scrivania mentre studia, per circa 2.300 follower\nVERO: la sua storia: “casa mia non sa di niente”\nVERO: Cera Cera sono 3 persone che versano candele a mano a Torino\nVERO: puoi mandarle gratis una candela Fig Leaf (18 €)\nVERO: nessun post richiesto; se posta, dice che è un regalo'),
+          'INVIATO: “Ciao cara!!! Le MIGLIORI candele della città 🔥 Collab alert, solo OGGI, scrivici ORA!!”\nVERO: Sara posta video dalla scrivania mentre studia, con circa 2.300 follower\nVERO: in una sua storia ha scritto: “casa mia non sa di niente”\nVERO: Cera Cera sono in 3 e fanno le candele a mano a Torino\nVERO: puoi mandarle gratis una candela Fig Leaf (18 €)\nVERO: non deve postare niente; se lo fa, dice che è un regalo'),
       },
       steps: [
         t2('Name the 2 parts that sound most like spam.', 'Indica le 2 parti che suonano più da spam.'),
@@ -767,13 +767,13 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Gnomo Prints, screen-printed goods (fictional)', 'Gnomo Prints, oggetti serigrafati (fittizio)'),
       brief: t2(
         'Gnomo Prints can make only one new €8 product: stickers or postcards. Write a story poll, a question with 2 answers to tap, that shows which one people would buy.',
-        'Gnomo Prints può fare un solo nuovo prodotto da 8 €: adesivi o cartoline. Scrivi un sondaggio nelle storie, una domanda con 2 risposte da toccare, che mostri quale comprerebbero.'),
+        'Gnomo Prints può fare un solo nuovo prodotto da 8 €: adesivi o cartoline. Scrivi un sondaggio nelle storie, una domanda con 2 risposte da toccare, che faccia capire quale comprerebbero.'),
       asset: {
         mono: false,
         title: t2('The two ideas and the rules', 'Le due idee e le regole'),
         body: t2(
           'IDEA A: a pack of 6 stickers\nIDEA B: a set of 4 postcards\nBOTH: €8, screen-printed by hand\nQUESTION: short, with the real price\nOPTIONS: 4 words or fewer each\nNEVER: “only 10 left!”, fake rush, made-up numbers',
-          'IDEA A: un pacchetto da 6 adesivi\nIDEA B: un set da 4 cartoline\nENTRAMBE: 8 €, serigrafate a mano\nDOMANDA: breve, con il prezzo vero\nOPZIONI: 4 parole al massimo ciascuna\nMAI: “ultimi 10 rimasti!”, finta fretta, numeri inventati'),
+          'IDEA A: un pacchetto da 6 adesivi\nIDEA B: un set da 4 cartoline\nENTRAMBE: 8 €, serigrafate a mano\nDOMANDA: breve, con il prezzo vero\nOPZIONI: 4 parole al massimo ciascuna\nMAI: “ne restano solo 10!”, finta fretta, numeri inventati'),
       },
       steps: [
         t2('Write the poll question, with the €8 price in it.', 'Scrivi la domanda del sondaggio, con dentro il prezzo di 8 €.'),
@@ -793,7 +793,7 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('a buyer who goes quiet', 'chi compra e poi sparisce'),
       brief: t2(
         'Someone asks “Is it still available?” about your €80 guitar. Write your reply, and a kind reminder for when they go quiet for two days.',
-        'Qualcuno chiede “È ancora disponibile?” per la tua chitarra da 80 €. Scrivi la tua risposta, e un promemoria gentile per quando sparisce per due giorni.'),
+        'Qualcuno chiede “È ancora disponibile?” per la tua chitarra da 80 €. Scrivi la tua risposta e un promemoria gentile per quando sparisce due giorni.'),
       asset: {
         mono: false,
         img: '/img/m/guitar.webp',
@@ -849,13 +849,13 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Forno Gufo, a bakery (fictional)', 'Forno Gufo, un forno (fittizio)'),
       brief: t2(
         'Forno Gufo is posting a 10-second video for Monday morning. Describe its music in three words and pick the second it comes in (the drop).',
-        'Forno Gufo pubblica un video di 10 secondi per il lunedì mattina. Descrivi la sua musica in tre parole e scegli il secondo in cui entra (il drop).'),
+        'Forno Gufo pubblica un video di 10 secondi per lunedì mattina. Descrivi la sua musica in tre parole e scegli il secondo in cui entra (il drop).'),
       asset: {
         mono: true,
         title: t2('The video, second by second', 'Il video, secondo per secondo'),
         body: t2(
           '0s  dark street, roller shutter down\n3s  the shutter rolls up\n5s  dough slaps down, flour flies\n8s  first loaf out of the oven\n9s  “Forno Gufo · open from 6”',
-          '0s  strada buia, saracinesca giù\n3s  si alza la saracinesca\n5s  l’impasto sbatte sul banco, farina\n8s  la prima pagnotta dal forno\n9s  “Forno Gufo · aperto dalle 6”'),
+          '0s  strada buia, saracinesca giù\n3s  si alza la saracinesca\n5s  l’impasto sbatte sul banco, vola la farina\n8s  la prima pagnotta dal forno\n9s  “Forno Gufo · aperto dalle 6”'),
       },
       steps: [
         t2('Pick three words for the music.', 'Scegli tre parole per la musica.'),
@@ -868,7 +868,7 @@ const CORE: Record<string, MissionX[]> = {
         t2('A few seconds without music come first', 'Prima ci sono alcuni secondi senza musica'),
         t2('Your three words fit a Monday morning', 'Le tre parole stanno bene a un lunedì mattina'),
       ],
-      twist: t2('Write the text that goes under the post, starting “Sound on.” Then redo it for a real shop you love.', 'Scrivi il testo che va sotto il post, che inizia con “Alza l’audio.” Poi rifallo per un negozio vero che ami.'),
+      twist: t2('Write the text that goes under the post, starting “Sound on.” Then redo it for a real shop you love.', 'Scrivi la caption da mettere sotto il post, che inizia con “Alza l’audio.” Poi rifalla per un negozio vero che ami.'),
       answer: t2('Three words for the music, the second it comes in, and one line on why.', 'Tre parole per la musica, il secondo in cui entra e una riga sul perché.'),
     },
     {
@@ -886,7 +886,7 @@ const CORE: Record<string, MissionX[]> = {
       steps: [
         t2('Read Ilaria’s text and what she asks for.', 'Leggi il messaggio di Ilaria e cosa ti chiede.'),
         t2('Write 3 short lines you’d say to her.', 'Scrivi 3 righe brevi che le diresti.'),
-        t2('Name one song to send, and one line why.', 'Scrivi una canzone da mandarle, più una riga sul perché.'),
+        t2('Name one song to send, and one line why.', 'Scegli una canzone da mandarle e scrivi una riga sul perché.'),
       ],
       mins: 3,
       bar: [
@@ -894,7 +894,7 @@ const CORE: Record<string, MissionX[]> = {
         t2('You say something specific, not “it’s fine”', 'Dici qualcosa di preciso, non “tutto ok”'),
         t2('The song fits how they feel right now', 'La canzone rispecchia come si sente adesso'),
       ],
-      twist: t2('Record the 3 lines as a voice note and send it with the song to someone who had a rough week.', 'Registra le 3 righe come vocale e mandalo con la canzone a chi ha avuto una settimana dura.'),
+      twist: t2('Record the 3 lines as a voice note and send it with the song to someone who had a rough week.', 'Registra le 3 righe in un vocale e mandalo con la canzone a chi ha avuto una settimana pesante.'),
       answer: t2('3 short lines for Ilaria, then one song and one line on why.', '3 righe brevi per Ilaria, poi una canzone e una riga sul perché.'),
     },
     {
@@ -908,7 +908,7 @@ const CORE: Record<string, MissionX[]> = {
         title: t2('The playlist as it is now', 'La playlist com’è adesso'),
         body: t2(
           'Name: Shelf mix 3\nCover: grey default squares\nAbout: (empty)\nFollowers: 12\nMood: quiet piano, rainy days',
-          'Nome: Shelf mix 3\nCover: quadrati grigi di default\nInfo: (vuota)\nFollower: 12\nAtmosfera: pianoforte calmo, pioggia'),
+          'Nome: Shelf mix 3\nCover: quadrati grigi di default\nInfo: (vuota)\nFollower: 12\nAtmosfera: pianoforte calmo, giorni di pioggia'),
       },
       steps: [
         t2('Write a new name, four words or fewer.', 'Scrivi un nuovo nome, quattro parole al massimo.'),
@@ -938,7 +938,7 @@ const CORE: Record<string, MissionX[]> = {
       },
       steps: [
         t2('Tap boxes in the grid below to add hits.', 'Tocca le caselle della griglia qui sotto per aggiungere colpi.'),
-        t2('Press Play and change it until it feels strong.', 'Premi Suona e cambialo finché suona forte.'),
+        t2('Press Play and change it until it feels strong.', 'Premi Suona e cambialo finché non ti sembra forte.'),
         t2('Check: 2-3 kicks, 1-2 snares, never on the same step.', 'Controlla: 2-3 casse, 1-2 rullanti, mai sullo stesso passo.'),
       ],
       mins: 4,
@@ -954,7 +954,7 @@ const CORE: Record<string, MissionX[]> = {
       who: tag('Tiny Pan, a cooking channel (fictional)', 'Tiny Pan, un canale di cucina (fittizio)'),
       brief: t2(
         'Tiny Pan films cooking in a student room with one hotplate. Write its hook: 4 short, catchy lines that people hum.',
-        'Tiny Pan cucina in una stanza da studente con un solo fornello. Scrivi il suo hook: 4 righe brevi e orecchiabili da canticchiare.'),
+        'Tiny Pan gira video di cucina in una stanza da studente, con un solo fornello. Scrivi il suo hook: 4 righe brevi e orecchiabili da canticchiare.'),
       asset: {
         mono: false,
         title: t2('What each line does', 'Cosa fa ogni riga'),
@@ -1067,7 +1067,7 @@ const CORE: Record<string, MissionX[]> = {
         title: t2('What happened', 'Cosa è successo'),
         body: t2(
           'Marco typed: When does Trattoria Nonno Pio close on Sundays?\nThe AI said: Trattoria Nonno Pio is open every Sunday until 11pm.\n\nThe truth: the trattoria is closed on Sundays.\nThe AI had no way to know. It never said so.',
-          'Marco ha scritto: A che ora chiude la Trattoria Nonno Pio la domenica?\nL’AI ha risposto: La Trattoria Nonno Pio è aperta ogni domenica fino alle 23.\n\nLa verità: la trattoria la domenica è chiusa.\nL’AI non poteva saperlo. Non l’ha mai detto.'),
+          'Marco ha scritto: A che ora chiude la Trattoria Nonno Pio la domenica?\nL’AI ha risposto: La Trattoria Nonno Pio è aperta ogni domenica fino alle 23.\n\nLa verità: la trattoria la domenica è chiusa.\nL’AI non poteva saperlo, ma non l’ha detto.'),
       },
       steps: [
         t2('Tell the AI it may say “I don’t know”.', 'Di’ all’AI che può rispondere “non lo so”.'),

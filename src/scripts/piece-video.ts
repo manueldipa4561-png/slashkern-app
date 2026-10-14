@@ -17,7 +17,7 @@ export const L = {
 export const piece: Piece = {
   id: 'video-board', n: 3, f: 'Video', client: NAME, mins: 10,
   title: t2('15-second storyboard for a sandwich van', 'Storyboard di 15 secondi per un furgone di panini'),
-  blurb: t2('Pick a few things and end with a four-frame storyboard that Rocco can film on his phone.', 'Scegli poche cose e finisci con uno storyboard di quattro vignette che Rocco può girare con il telefono.'),
+  blurb: t2('Pick a few things and end with a four-frame storyboard that Rocco can film on his phone.', 'Scegli poche cose e alla fine hai uno storyboard di quattro vignette che Rocco può girare con il telefono.'),
   who: tag('Rocco’s sandwich van (fictional)', 'Il furgone di panini di Rocco (fittizio)'),
   brief: t2('Rocco runs a sandwich van, and his 15-second clip starts slowly. He wants a plan for a better one: four frames he can film with his phone. You make the storyboard in five small steps.',
     'Rocco ha un furgone di panini e la sua clip di 15 secondi parte piano. Vuole un piano per girarne una migliore: quattro vignette da filmare con il telefono. Tu fai lo storyboard in cinque piccoli passi.'),

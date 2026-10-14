@@ -23,13 +23,13 @@ export type Play = (Pick | Sort | Beat)[];
 export const PLAY: Record<string, Play> = {
   ...PLAY_DESIGN, ...PLAY_WRITING, ...PLAY_CODE, ...PLAY_VIDEO, ...PLAY_SELLING, ...PLAY_MUSIC, ...PLAY_PROMPTING, // missions 2 to 6, one file per field
   'Design.0': [
-    { kind: 'pick', label: t2('Tap 1 or 2 messages to keep: the rest are cut.', 'Tocca 1 o 2 messaggi da tenere: gli altri si tolgono.'), out: t2('Keep', 'Tieni'), rest: t2('Cut', 'Tolgo'), max: 2,
+    { kind: 'pick', label: t2('Tap 1 or 2 messages to keep: the rest are cut.', 'Tocca 1 o 2 messaggi da tenere: gli altri si tolgono.'), out: t2('Keep', 'Tengo'), rest: t2('Cut', 'Tolgo'), max: 2,
       items: [t2('Pizza night Saturday', 'Serata pizza sabato'), t2('2 for 1 until 9pm', '2x1 fino alle 21'), t2('Live DJ from 10', 'DJ dal vivo dalle 22'), t2('New menu', 'Nuovo menu'), t2('Win a year of pizza', 'Vinci un anno di pizza'), t2('Tag 3 friends', 'Tagga 3 amici'), t2('12 Via Verdi', 'Via Verdi 12')] }, // the dog is part of the photo, not a message: keeping it is the person's call
     { kind: 'pick', label: t2('Tap one colour for the words', 'Tocca un colore per le parole'), out: t2('Colour', 'Colore'), max: 1,
       items: [t2('Red on cream', 'Rosso su crema'), t2('Yellow on black', 'Giallo su nero'), t2('Blue on white', 'Blu su bianco'), t2('Green on bone', 'Verde su avorio')] },
   ],
   'Writing.0': [
-    { kind: 'pick', label: t2('Tap up to 3 details a friend would ask about', 'Tocca fino a 3 dettagli che fanno fare domande'), out: t2('Details', 'Dettagli'), max: 3,
+    { kind: 'pick', label: t2('Tap up to 3 details a friend would ask about', 'Tocca fino a 3 dettagli su cui i tuoi amici farebbero domande'), out: t2('Details', 'Dettagli'), max: 3,
       items: [t2('She almost stayed home', 'Stava per restare a casa'), t2('Bag strap snapped on the bus', 'Tracolla rotta sul bus'), t2('First time lifting 40 kg', 'Prima volta con 40 kg'), t2('Feeling good', 'Mi sento bene'), '#gym #fitness'] },
   ],
   'Code.0': [
@@ -37,7 +37,7 @@ export const PLAY: Record<string, Play> = {
       items: ['let', 'hoodiesLeft', '0', 'color', '"green"', 'if', '===', 'colour', '"red"', 'paintButton'] },
   ],
   'Video.0': [
-    { kind: 'sort', label: t2('Tap ✕ on slow pieces, drag the best one to the top', 'Tocca ✕ sui pezzi lenti, trascina in cima il migliore'), out: t2('Keep', 'Tieni'), cutOut: t2('Cut', 'Tolgo'), cut: 5,
+    { kind: 'sort', label: t2('Tap ✕ on slow pieces, drag the best one to the top', 'Tocca ✕ sui pezzi lenti, trascina in cima il migliore'), out: t2('Keep', 'Tengo'), cutOut: t2('Cut', 'Tolgo'), cut: 5,
       sum: { label: t2('Total', 'Totale'), max: 6 },
       items: [ // the seconds of the real clip, public/media/tosta.mp4
         { t: t2('0-3s Rocco walks to the van', '0-3s Rocco cammina verso il furgone'), n: 3 },
@@ -63,7 +63,7 @@ export const PLAY: Record<string, Play> = {
     { kind: 'pick', label: t2('Tap who the post is for (pick 1)', 'Tocca per chi è il post (scegline 1)'), out: t2('Post for', 'Post per'), max: 1,
       items: [t2('People who never touched clay', 'Chi non ha mai toccato l’argilla'), t2('Expert potters', 'Ceramisti esperti'), t2('Everyone', 'Tutti'), t2('Families with kids', 'Famiglie con bambini')] },
     { kind: 'pick', label: t2('Tap 3 words for how Dana talks', 'Tocca 3 parole su come parla Dana'), out: t2('Tone', 'Tono'), max: 3,
-      items: [t2('warm', 'calda'), t2('funny', 'divertente'), t2('relaxed', 'rilassata'), t2('formal', 'formale'), t2('hyped', 'esaltata'), t2('honest', 'sincera')] },
+      items: [t2('warm', 'calda'), t2('funny', 'divertente'), t2('relaxed', 'rilassata'), t2('formal', 'formale'), t2('hyped', 'carica'), t2('honest', 'sincera')] },
   ],
 };
 
