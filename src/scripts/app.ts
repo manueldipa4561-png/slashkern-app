@@ -754,6 +754,9 @@ const piecesUi = { render: () => {}, open: () => {} }; // the card on Projects a
 const renderHome = () => {
   renderStat(); renderStages(); markTrend(); piecesUi.render();
   $('kQuizCard').hidden = !S.onboarded || !!S.quiz; // once, for profiles (and the demo) from before the quiz
+  const qm = S.quiz ? scoreQuiz(S.quiz.a) : null, qmDone = !!qm && S.answers.some((a) => a.f === qm.f && a.i === qm.i);
+  $('kQuizPick').hidden = !qm || qmDone; // the project the quiz picked waits here until it is done: no push, it starts when they tap it
+  if (qm && !qmDone) setD($('kQuizPickT'), tr(FIELDS[qm.f].m[qm.i][1]));
   renderFields(); renderAbout(); renderFurther(); renderCoopIn();
   const f = F(), b = base(), round = b / PER_ROUND, done = winDone(), next = [0, 1, 2].find((k) => !done.has(k));
   // fresh: a round was just finished and the next one is not started. Celebrate the KernCard first, then offer the new missions.
@@ -1838,7 +1841,7 @@ const arrive = () => { goTab('missions'); pop(); landHome(); };
 // Nothing here says or implies money was earned: the prices are examples and nobody is paying yet.
 const kFirst = $('kFirst'), kFirstAge = $<HTMLInputElement>('kFirstAge'), kF1Go = $<HTMLButtonElement>('kF1Go'), kF2Ta = $<HTMLTextAreaElement>('kF2Ta'), kF2C = $('kF2C'), kF2Ask = $('kF2Ask');
 const FIRST_IDS = ['kF0', 'kF1', 'kF2', 'kF3', 'kFQ', 'kFR'], FIRST_HEADS = ['kF0H', 'kF1H', 'kF2Q', 'kF3H', 'kFQH', 'kFRH']; // the screens, and the heading each one is named by (4 and 5: the maker quiz and its result)
-const FIRST_NO = [1, 2, 3, 4, 2, 2]; // the "n of 4" each screen shows: the quiz and its result stand where the example starters stand
+const FIRST_NO = [0, 1, 2, 3, 0, 0]; // the "n of 3" of the example-starter path (pick, steps, saved); the welcome and the quiz path show no count: the quiz leads into the app
 let firstAt = 0, firstPick = -1, firstStep = 0, firstAns: string[] = [], firstCards: HTMLElement[] = [];
 // The maker quiz (quiz.ts): right after the welcome, five questions, one tap each. The answers pick the field, the mix of other fields and the first project;
 // "Skip the quiz" goes to the example starters. A quiz match is a starter made from its own mission (brief, material, steps). The answers never go to the account copy.
@@ -1853,7 +1856,7 @@ const showFirst = (n: number) => {
   FIRST_IDS.forEach((id, k) => { $(id).hidden = k !== n; });
   kFirst.classList.toggle('black', n === 0); // the welcome screen is the black one
   $('kFBack').hidden = n === 0 || n === 3; // nothing to go back to from the welcome, nor from the confirmation
-  setD($('kFNum'), fill(t2('{n} of 4', '{n} di 4'), { n: FIRST_NO[n] })); $('kFNum').hidden = quizOnly; // the quiz alone is not step 2 of 4
+  setD($('kFNum'), fill(t2('{n} of 3', '{n} di 3'), { n: FIRST_NO[n] })); $('kFNum').hidden = quizOnly || !FIRST_NO[n];
   kFirst.setAttribute('aria-labelledby', FIRST_HEADS[n]);
   kFirst.scrollTo({ top: 0 }); if (n === 1) fadeFirst();
   stopSpeaking();
@@ -1989,16 +1992,20 @@ const openFirst = () => {
 $('kF0Go').addEventListener('click', startQuiz);
 $('kFQSkip').addEventListener('click', () => { if (quizOnly) { closeQuiz(); return; } quizMatch = null; showFirst(1); land($('kF1H')); markFirst(); });
 kQuizAge.addEventListener('change', markQuizAge);
-kFRGo.addEventListener('click', () => {
+// After the result: into the app, never straight into a project (he wants people to look around first). The matched field becomes the path
+// and the matched project waits on Home (#kQuizPick); the first-project panel on the card opens it at once, for those who want to.
+// An existing profile keeps its answers, stones and KernCard; a new one joins with the winning field first, then the mix.
+const enterFromQuiz = (open: boolean) => {
   if (!quizMatch || kFRGo.disabled) return;
-  if (quizOnly) { // an existing profile keeps its answers, stones and KernCard: the matched field joins its interests and the project opens
-    const m = quizMatch; S.field = m.f; S.fields = [...new Set([...S.fields, m.f])]; save();
-    closeQuiz(); applyField(false); goTab('missions'); openAnswer(m.f, m.i); return;
-  }
-  S.adult = true; S.field = quizMatch.f; S.fields = [...new Set([...S.fields, quizMatch.f, ...quizMatch.mix])]; save(); // the winning field first, then the mix
-  startSteps();
-});
-$('kFRF').addEventListener('click', () => { if (kFRGo.disabled) { markQuizAge(); kQuizAge.focus(); } else kFRGo.click(); }); // the first project opens it (after the 18+ box)
+  const m = quizMatch;
+  if (quizOnly) S.fields = [...new Set([...S.fields, m.f])];
+  else { S.adult = true; S.onboarded = true; S.fields = [...new Set([...S.fields, m.f, ...m.mix])]; }
+  S.field = m.f; save();
+  quizOnly = false; kFirst.classList.remove('on'); syncInert(); applyField(false); renderHome(); arrive();
+  if (open) openAnswer(m.f, m.i);
+};
+kFRGo.addEventListener('click', () => enterFromQuiz(false));
+$('kFRF').addEventListener('click', () => { if (kFRGo.disabled) { markQuizAge(); kQuizAge.focus(); } else enterFromQuiz(true); }); // the panel opens the project (after the 18+ box)
 $('kFRShare').addEventListener('click', () => { void shareQuiz(); });
 kFirstAge.addEventListener('change', markFirst);
 kF1Go.addEventListener('click', () => {
@@ -2418,6 +2425,7 @@ $('kSetX').addEventListener('click', () => dismiss(kSet));
 $('kChField').addEventListener('click', () => { kSet.hidden = true; openStart(true); });
 $('kQuizS').addEventListener('click', () => { kSet.hidden = true; openQuiz(); });
 $('kQuizCard').addEventListener('click', openQuiz);
+$('kQuizPick').addEventListener('click', () => { const qm = S.quiz && scoreQuiz(S.quiz.a); if (qm) openAnswer(qm.f, qm.i); });
 // Feedback goes to the founder's inbox through the person's own mail app; nothing is sent by slashkern.
 const CONTACT = 'manuel@trykern.it';
 $('kFeed').addEventListener('click', () => {
