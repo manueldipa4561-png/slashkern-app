@@ -5,9 +5,9 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildSync } from 'esbuild';
 
-const entry = ['piece-writing', 'piece-types', 'i18n', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
+const entry = ['piece-writing', 'piece-types', 'i18n', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv', 'i18n-es'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
 const { text } = buildSync({ stdin: { contents: entry, resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false, logLevel: 'silent' }).outputFiles[0]; // silent: the language files carry old duplicate keys that esbuild warns about
-const { piece, view, lookOf, nameLen, MUTE, contrast, stepOk, wordsIn, INK, PAPER, PIECE_AT, IT, DE, FR, NL, SV } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
+const { piece, view, lookOf, nameLen, MUTE, contrast, stepOk, wordsIn, INK, PAPER, PIECE_AT, IT, DE, FR, NL, SV, ES } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 
 // The shape of the piece: a flavour (its colour), who it is for, then three lines of the person's own.
 assert.equal(piece.f, 'Writing'); assert.equal(piece.client, 'Pigro Gelato'); assert.ok(piece.who.includes('(fictional)'));
@@ -60,6 +60,6 @@ for (const m of css.replace(/\/\*[\s\S]*?\*\//g, '').matchAll(/([^{}]+)\{/g)) fo
 assert.ok(!/innerHTML/.test(readFileSync('src/scripts/piece-writing.ts', 'utf8')), 'what the person wrote goes in as text, never as HTML');
 
 // The audience labels finish the line "Pigro Gelato · for ...", so none starts with an article ("for the students" would need a contraction in Italian and a case in German).
-const ARTICLE = { it: /^(il|lo|la|i|gli|le|un|uno|una)\s/i, de: /^(der|die|das|dem|den|ein|eine)\s/i, fr: /^(le|la|les|un|une|des|l')/i, nl: /^(de|het|een)\s/i, sv: /^(en|ett|den|det)\s/i };
-for (const [lang, table] of [['it', IT], ['de', DE], ['fr', FR], ['nl', NL], ['sv', SV]]) for (const x of piece.steps[1].opts) assert.ok(table[x.label] && !ARTICLE[lang].test(table[x.label]), `${lang}: "${table[x.label]}" must read after "for" (no article first)`);
+const ARTICLE = { it: /^(il|lo|la|i|gli|le|un|uno|una)\s/i, de: /^(der|die|das|dem|den|ein|eine)\s/i, fr: /^(le|la|les|un|une|des|l')/i, nl: /^(de|het|een)\s/i, sv: /^(en|ett|den|det)\s/i, es: /^(el|la|los|las|un|una|unos|unas)\s/i };
+for (const [lang, table] of [['it', IT], ['de', DE], ['fr', FR], ['nl', NL], ['sv', SV], ['es', ES]]) for (const x of piece.steps[1].opts) assert.ok(table[x.label] && !ARTICLE[lang].test(table[x.label]), `${lang}: "${table[x.label]}" must read after "for" (no article first)`);
 console.log(`piece writing: ok (${flavours.length} flavours readable, ${flavours.length * piece.steps[1].opts.length} pages, the name scales down to ${(Math.min(...sizes.map(([, , k]) => k)) / 24).toFixed(2)}rem for 24 letters)`);

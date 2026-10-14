@@ -2,7 +2,7 @@
 // The key is the ELEVENLABS_API_KEY environment variable of the site; ELEVENLABS_VOICE_ID picks the voice. Nothing of the text or the audio is stored or logged.
 import type { Config, Context } from '@netlify/functions';
 
-const LANGS = ['en', 'it', 'de', 'fr', 'nl', 'sv'];
+const LANGS = ['en', 'it', 'de', 'fr', 'nl', 'sv', 'es'];
 const MAX_TEXT = 500; // the assistant's replies are cut at 500 characters (coach.mts)
 // Two voices to choose from in Settings: 'a' and 'b'. The defaults are ElevenLabs' premade "Josh" and "Rachel"; ELEVENLABS_VOICE_ID and ELEVENLABS_VOICE_ID_2 replace them (voice.ts labels follow the defaults).
 const DEFAULT_VOICES = { a: 'TxGEqnHWrfWFTfGW9XjX', b: '21m00Tcm4TlvDq8ikWAM' };

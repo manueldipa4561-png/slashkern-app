@@ -55,7 +55,7 @@ export function summarize(rows, { now = Date.now(), tz = 'Europe/Rome' } = {}) {
   };
   const split = (flag) => ({ opened: [...seen.open.values()].filter((r) => !!r.brand === flag).length, answered: [...seen.answer.values()].filter((r) => !!r.brand === flag).length });
 
-  const langs = { en: 0, it: 0, de: 0, fr: 0, nl: 0, sv: 0 };
+  const langs = { en: 0, it: 0, de: 0, fr: 0, nl: 0, sv: 0, es: 0 };
   for (const p of who.values()) if (p.lang in langs) langs[p.lang] += 1;
   const days = [...who.values()].flatMap((p) => [...p.days]).sort();
   const answerers = peopleIn(seen.answer);

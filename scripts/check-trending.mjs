@@ -5,12 +5,12 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildSync } from 'esbuild';
 
-const entry = ['fields', 'missions', 'helps', 'trending', 'i18n', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
+const entry = ['fields', 'missions', 'helps', 'trending', 'i18n', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv', 'i18n-es'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
 const { text } = buildSync({ stdin: { contents: entry, resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false }).outputFiles[0];
-const { FIELDS, MX, HELPS, IT, DE, FR, NL, SV, TREND_FROM, TREND_SHELF, TRENDING } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
+const { FIELDS, MX, HELPS, IT, DE, FR, NL, SV, ES, TREND_FROM, TREND_SHELF, TRENDING } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 
 const strings = (v) => (typeof v === 'string' ? [v] : Array.isArray(v) ? v.flatMap(strings) : v && typeof v === 'object' ? Object.values(v).flatMap(strings) : []);
-const LANGS = { en: (s) => s, it: (s) => IT[s], de: (s) => DE[s], fr: (s) => FR[s], nl: (s) => NL[s], sv: (s) => SV[s] };
+const LANGS = { en: (s) => s, it: (s) => IT[s], de: (s) => DE[s], fr: (s) => FR[s], nl: (s) => NL[s], sv: (s) => SV[s], es: (s) => ES[s] };
 
 // The 7 categories keep their keys, and the shelf has the 8 projects of the brief in this order.
 assert.deepEqual(Object.keys(FIELDS).sort(), ['Code', 'Design', 'Music', 'Prompting', 'Selling', 'Video', 'Writing'], 'the 7 category keys are unchanged');
@@ -31,8 +31,9 @@ const NO_MONEY = {
   fr: /[€$£]|\b(euros?|gagn\w*|pay\w*|argent|revenus?|salaire|bénéfice|rémunér\w*)\b/i,
   nl: /[€$£]|\b(euros?|verdien\w*|betaal\w*|betaald|betalen|geld|inkomen|salaris|winst|omzet)\b/i,
   sv: /[€$£]|\b(euro|kronor|tjäna\w*|tjänar|betal\w*|pengar|inkomst\w*|lön|vinst\w*|intäkt\w*)(?![a-zåäö])/i, // no \b after å, ä, ö: JavaScript's \b only knows ASCII letters
+  es: /[€$£]|\b(euros?|ganar|ganancias?|pagar|pagad[oa]s?|pago|cobrar|dinero|ingresos|sueldo|salario|beneficios)(?![a-záéíóúñ])/i,
 };
-const NO_HYPE = /viral|famous|fame\b|berühmt|célèbre|celebre|beroemd|berömd|kändis|guarantee|garantie|garantit|garantisc|garantiert|garand|garanti|\p{Extended_Pictographic}/iu; // no "go viral", no promise of reach, no emoji (so no flame)
+const NO_HYPE = /viral|famous|fame\b|berühmt|célèbre|celebre|beroemd|berömd|kändis|guarantee|garantie|garantit|garantisc|garantiert|garand|garanti|famos[oa]s?|garantiz|garantía|\p{Extended_Pictographic}/iu; // no "go viral", no promise of reach, no emoji (so no flame)
 const BANNED_WORD = /lavor/i; // the Italian "lavor-" family, in any language's text
 // What a brief says so the AI help is labelled: "say in your caption", "a line that says it is an AI character", "say so on the page".
 const LABELS = {
@@ -42,10 +43,11 @@ const LABELS = {
   fr: /(écris|dit|dire)[^.]*\bIA\b|dis-le sur la page/i, // no \b before é: JavaScript's \b only knows ASCII letters
   nl: /\b(zeg|zegt|vermeld\w*|schrijf|schrijft)\b[^.]*\bAI\b|\bzeg het op de pagina\b/i,
   sv: /\b(säg|säger|skriv|skriver)\b[^.]*\bAI\b|\bsäg det på sidan\b/i,
+  es: /\b(di|dice|diga|digas|decir|dilo|escribe|escribir|indica|indícalo|pon)\b[^.]*\bIA\b|dilo en la página/i,
 };
-const AI_CHARACTER = { en: /AI character/, it: /personaggio AI/, de: /KI-Figur/, fr: /personnage IA/, nl: /AI-personage/, sv: /AI-karaktär/ };
-const REAL_PERSON = { en: /real person/, it: /persona reale/, de: /echte[nr]? Person/, fr: /personne réelle/, nl: /echte? persoon/, sv: /verklig person/ };
-const NO_COPYRIGHTED = { en: /No copyrighted music/, it: /protetta da copyright/, de: /urheberrechtlich geschützte Musik/, fr: /musique protégée/, nl: /auteursrechtelijk beschermde muziek/i, sv: /upphovsrättsskyddad musik/i };
+const AI_CHARACTER = { en: /AI character/, it: /personaggio AI/, de: /KI-Figur/, fr: /personnage IA/, nl: /AI-personage/, sv: /AI-karaktär/, es: /personaje (de )?IA/ };
+const REAL_PERSON = { en: /real person/, it: /persona reale/, de: /echte[nr]? Person/, fr: /personne réelle/, nl: /echte? persoon/, sv: /verklig person/, es: /persona real/ };
+const NO_COPYRIGHTED = { en: /No copyrighted music/, it: /protetta da copyright/, de: /urheberrechtlich geschützte Musik/, fr: /musique protégée/, nl: /auteursrechtelijk beschermde muziek/i, sv: /upphovsrättsskyddad musik/i, es: /derechos de autor|música protegida/i };
 
 for (let k = 0; k < TRENDING.length; k++) {
   const { f, i } = TRENDING[k], at = `trending #${k + 1} (${f}.${i})`;

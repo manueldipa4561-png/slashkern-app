@@ -173,3 +173,6 @@ export const PROMPTING_SV: Record<string, string> = {
   'One short post, under 60 words, no hashtags.': 'Ett kort inlägg, under 60 ord, inga hashtags.',
   'Reply with the post only.': 'Svara bara med inlägget.',
 };
+export const PROMPTING_ES: Record<string, string> = {
+
+};

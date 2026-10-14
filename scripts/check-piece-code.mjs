@@ -5,9 +5,9 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildSync } from 'esbuild';
 
-const entry = ['piece-code', 'piece-types', 'i18n', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
+const entry = ['piece-code', 'piece-types', 'i18n', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv', 'i18n-es'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
 const { text } = buildSync({ stdin: { contents: entry, resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false }).outputFiles[0];
-const { piece, view, file, esc, lookOf, THEME, FACE, ART, SEC, L, contrast, PIECE_AT, IT, DE, FR, NL, SV } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
+const { piece, view, file, esc, lookOf, THEME, FACE, ART, SEC, L, contrast, PIECE_AT, IT, DE, FR, NL, SV, ES } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 
 const t = { tr: (s) => s, fill: (e, v) => e.replace(/\{(\w+)\}/g, (m, k) => v[k]) };
 const run = (s) => ({ f: piece.f, i: PIECE_AT + piece.n, at: 1760000000000, s, done: 1760000600000 });
@@ -76,7 +76,7 @@ assert.equal(esc(`&<>"'`), '&amp;&lt;&gt;&quot;&#39;'); assert.equal(esc('plain'
 assert.ok(h.length < 40000, `the file is small (${h.length} characters)`);
 
 // Every language, every theme and every look of the letters: no address, no script, nothing to download, and a translation that has a quote or a tag in it cannot break the file.
-const TABLES = { en: null, it: IT, de: DE, fr: FR, nl: NL, sv: SV };
+const TABLES = { en: null, it: IT, de: DE, fr: FR, nl: NL, sv: SV, es: ES };
 for (const [code, table] of Object.entries(TABLES)) {
   for (const hostileTr of [false, true]) {
     const tr = (s) => { const x = table ? table[s] || s : s; return hostileTr ? `${x}"><script>'&` : x; }, tt = { tr, fill: (e, o) => tr(e).replace(/\{(\w+)\}/g, (m, k) => o[k]) };
@@ -137,7 +137,7 @@ for (const s of strings) {
   assert.ok(!/\p{L}'\p{L}/u.test(IT[s]), `a straight apostrophe in the Italian for "${s.slice(0, 50)}"`);
   assert.ok(!/!|\bmissions?\b|no experience/i.test(s), `a banned word or an exclamation mark in "${s.slice(0, 50)}"`);
 }
-for (const code of ['de', 'fr', 'nl', 'sv']) assert.equal(TABLES[code][L.lang], code, `the language code of the file in ${code}`);
+for (const code of ['de', 'fr', 'nl', 'sv', 'es']) assert.equal(TABLES[code][L.lang], code, `the language code of the file in ${code}`);
 assert.equal(IT[L.lang], 'it');
 
 // The screens: the styles of the page start with .k-pc-code-, text sizes are rem, and what a person typed never goes in as markup.

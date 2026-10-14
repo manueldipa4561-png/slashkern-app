@@ -3,12 +3,13 @@ import { EN, IT } from './i18n';
 
 // The page behind a piece's share link (p.astro): the finished sheet, how it was made, a note that slashkern did not check it, and a way to make one. Read-only, no account, nothing stored.
 // The language is the visitor's browser language (the six the app speaks, else English); the German, French, Dutch and Swedish tables load only when they are needed.
-type Lang = 'en' | 'it' | 'de' | 'fr' | 'nl' | 'sv';
-const LANGS: Lang[] = ['en', 'it', 'de', 'fr', 'nl', 'sv'];
-const LOCALE: Record<Lang, string> = { en: 'en-GB', it: 'it-IT', de: 'de-DE', fr: 'fr-FR', nl: 'nl-NL', sv: 'sv-SE' };
+type Lang = 'en' | 'it' | 'de' | 'fr' | 'nl' | 'sv' | 'es';
+const LANGS: Lang[] = ['en', 'it', 'de', 'fr', 'nl', 'sv', 'es'];
+const LOCALE: Record<Lang, string> = { en: 'en-GB', it: 'it-IT', de: 'de-DE', fr: 'fr-FR', nl: 'nl-NL', sv: 'sv-SE', es: 'es-ES' };
 const TABLE: Record<Lang, () => Promise<Record<string, string>>> = {
   en: async () => ({}), it: async () => IT,
   de: async () => (await import('./i18n-de')).DE, fr: async () => (await import('./i18n-fr')).FR, nl: async () => (await import('./i18n-nl')).NL, sv: async () => (await import('./i18n-sv')).SV,
+  es: async () => (await import('./i18n-es')).ES,
 };
 const el = (id: string) => document.getElementById(id) as HTMLElement;
 const mk = <K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text = ''): HTMLElementTagNameMap[K] => Object.assign(document.createElement(tag), { className: cls, textContent: text });

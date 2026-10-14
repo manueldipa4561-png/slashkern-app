@@ -5,8 +5,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildSync } from 'esbuild';
 
-const { text } = buildSync({ stdin: { contents: "export * from './src/scripts/slash.ts'; export { DE } from './src/scripts/i18n-de.ts'; export { FR } from './src/scripts/i18n-fr.ts'; export { NL } from './src/scripts/i18n-nl.ts'; export { SV } from './src/scripts/i18n-sv.ts';", resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false }).outputFiles[0];
-const { slash, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX, DE, FR, NL, SV } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
+const { text } = buildSync({ stdin: { contents: "export * from './src/scripts/slash.ts'; export { DE } from './src/scripts/i18n-de.ts'; export { FR } from './src/scripts/i18n-fr.ts'; export { NL } from './src/scripts/i18n-nl.ts'; export { SV } from './src/scripts/i18n-sv.ts'; export { ES } from './src/scripts/i18n-es.ts';", resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false }).outputFiles[0];
+const { slash, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX, DE, FR, NL, SV, ES } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 const page = readFileSync('src/pages/index.astro', 'utf8'), app = readFileSync('src/scripts/app.ts', 'utf8'), css = readFileSync('src/styles/app.css', 'utf8');
 
 // The geometry is the logo's: the body in public/brand/mark.svg is the body Slash wears, in the same viewBox, and the neutral eyes are the logo's eyes.
@@ -53,9 +53,9 @@ assert.ok(!/slash\(/.test(readFileSync('src/scripts/play.ts', 'utf8')) && !/slas
 // The introduction: the same sentences in every language, each says Slash, and each says the word for AI of its language.
 const [, , en, , it] = intro, WANT = { en: 'Hi, I am Slash, your AI assistant. I ask the questions. I only draft if you ask.', it: 'Ciao, sono Slash, il tuo assistente AI. Faccio le domande. Preparo una bozza solo se me lo chiedi.',
   de: 'Hi, ich bin Slash, dein KI-Assistent. Ich stelle die Fragen. Einen Entwurf mache ich nur, wenn du danach fragst.', fr: 'Salut, moi c’est Slash, ton assistant IA. Je pose les questions. Je fais un brouillon seulement si tu me le demandes.',
-  nl: 'Hoi, ik ben Slash, je AI-assistent. Ik stel de vragen. Ik maak alleen een opzet als je erom vraagt.', sv: 'Hej, jag är Slash, din AI-assistent. Jag ställer frågorna. Jag gör bara ett utkast om du ber om det.' };
-const got = { en, it, de: DE[en], fr: FR[en], nl: NL[en], sv: SV[en] }, AI = { en: /\bAI\b/, it: /\bAI\b/, de: /\bKI\b/, fr: /\bIA\b/, nl: /\bAI\b/, sv: /\bAI\b/ };
-for (const lang of ['en', 'it', 'de', 'fr', 'nl', 'sv']) {
+  nl: 'Hoi, ik ben Slash, je AI-assistent. Ik stel de vragen. Ik maak alleen een opzet als je erom vraagt.', sv: 'Hej, jag är Slash, din AI-assistent. Jag ställer frågorna. Jag gör bara ett utkast om du ber om det.', es: 'Hola, soy Slash, tu asistente de IA. Yo hago las preguntas. Solo hago un borrador si me lo pides.' };
+const got = { en, it, de: DE[en], fr: FR[en], nl: NL[en], sv: SV[en], es: ES[en] }, AI = { en: /\bAI\b/, it: /\bAI\b/, de: /\bKI\b/, fr: /\bIA\b/, nl: /\bAI\b/, sv: /\bAI\b/, es: /\bIA\b/ };
+for (const lang of ['en', 'it', 'de', 'fr', 'nl', 'sv', 'es']) {
   assert.equal(got[lang], WANT[lang], `the Slash introduction in ${lang} changed or is missing (app.ts SLASH_INTRO, i18n-de.ts, i18n-fr.ts, i18n-nl.ts, i18n-sv.ts)`);
   assert.ok(/\bSlash\b/.test(got[lang]) && AI[lang].test(got[lang]), `the Slash introduction in ${lang} must name Slash and say it is an AI`);
   assert.ok(!/lavor|friend|ami\b|amic|freund|love|amo\b|ti voglio|coach|[\u{1F300}-\u{1FAFF}☀-➿]/iu.test(got[lang]), `the Slash introduction in ${lang}: no friend, love, coach or emoji wording (Slash is an AI character, never a person or a companion)`);

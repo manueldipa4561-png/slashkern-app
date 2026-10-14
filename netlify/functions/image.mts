@@ -4,7 +4,7 @@
 import type { Config, Context } from '@netlify/functions';
 import { HEAVY, PAUSE } from './coach.mts'; // the same distress list and the same fixed pause as the assistant
 
-const LANGS = ['en', 'it', 'de', 'fr', 'nl', 'sv'];
+const LANGS = ['en', 'it', 'de', 'fr', 'nl', 'sv', 'es'];
 const MODEL = 'gpt-image-2.5-flare'; // OPENAI_IMAGE_MODEL overrides it (gpt-image-2.5-sunburst is the most capable)
 const IDEA_MIN = 20, IDEA_MAX = 1500, TITLE_MAX = 200;
 const FIELDS = ['Design']; // posters, stickers, thumbnails: where a picture is the project. More fields later.

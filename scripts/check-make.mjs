@@ -51,7 +51,7 @@ assert.equal(sent.messages[0].role, 'user');
 assert.equal(sent.messages[0].content, `<project_data>Make a poster</project_data>\n<idea_data>${IDEA}</idea_data>\nMake the first version.`);
 
 // Bad input: a clear code, the key it concerns, and no model call.
-for (const lang of [undefined, 'es', 'EN', 42]) await refused({ lang }, 'bad_lang', 'lang');
+for (const lang of [undefined, 'pt', 'EN', 42]) await refused({ lang }, 'bad_lang', 'lang');
 for (const field of [undefined, 'design', 'Cooking', 7]) await refused({ field }, 'bad_field', 'field');
 for (const mission of [undefined, 42, ['x']]) await refused({ mission }, 'bad_mission', 'mission');
 for (const mission of ['', '   ']) await refused({ mission }, 'too_short', 'mission');
@@ -71,7 +71,7 @@ for (const over of [{ mission: 'x'.repeat(200) }, { idea: 'x'.repeat(20) }, { id
 }
 
 // Distress in the idea or in the chat: the fixed pause in the app's language, never a model call.
-const PAUSES = { en: /pausing the project.*116 123/, it: /metto in pausa il progetto.*02 2327 2327/, de: /pausiere ich das Projekt.*0800 111 0 111/, fr: /je mets le projet en pause.*3114/, nl: /ik zet het project op pauze.*0800-0113/, sv: /jag pausar projektet.*90101/ };
+const PAUSES = { en: /pausing the project.*116 123/, it: /metto in pausa il progetto.*02 2327 2327/, de: /pausiere ich das Projekt.*0800 111 0 111/, fr: /je mets le projet en pause.*3114/, nl: /ik zet het project op pauze.*0800-0113/, sv: /jag pausar projektet.*90101/, es: /pongo en pausa el proyecto.*024/ };
 for (const [lang, re] of Object.entries(PAUSES)) {
   for (const over of [{ idea: `${IDEA} I want to end it all` }, { qa: [{ q: 'Who is it for?', a: 'nobody, I feel hopeless' }] }, { qa: [QA, { q: 'I want to kill myself, why not?', a: 'Because' }] }]) {
     const r = await make({ lang, ...over });
@@ -94,6 +94,8 @@ text = 'Ik pauzeer de missie. Praat met iemand die je vertrouwt.'; // the model'
 assert.match((await make({ lang: 'nl' })).reply, PAUSES.nl);
 text = 'Jag pausar uppdraget nu.';
 assert.match((await make({ lang: 'sv' })).reply, PAUSES.sv);
+text = 'Pongo en pausa el proyecto ahora.';
+assert.match((await make({ lang: 'es' })).reply, PAUSES.es);
 text = `Spy story\n${'The agent stops the mission and waits for the signal. '.repeat(10)}`;
 assert.equal((await make({ field: 'Writing' })).text, text.trim());
 
@@ -136,10 +138,10 @@ assert.equal((await reply(code, { field: 'Code' })).text, '# adds two numbers\nd
 assert.equal((await reply('  Poster\n\tline  \n')).text, 'Poster\n\tline', 'trimmed');
 
 // Language: the app language goes in the system prompt, and the model may follow an idea that is clearly in another language.
-for (const [lang, name] of [['en', 'English'], ['it', 'Italian'], ['de', 'German'], ['fr', 'French'], ['nl', 'Dutch'], ['sv', 'Swedish']]) {
+for (const [lang, name] of [['en', 'English'], ['it', 'Italian'], ['de', 'German'], ['fr', 'French'], ['nl', 'Dutch'], ['sv', 'Swedish'], ['es', 'Spanish']]) {
   await make({ lang });
   assert.match(sent.system, new RegExp(`App language: ${name}\\.\\n`), `lang ${lang}`);
-  assert.match(sent.system, /If the idea is clearly written in another of English, Italian, German, French, Dutch or Swedish, write in that language instead\./);
+  assert.match(sent.system, /If the idea is clearly written in another of English, Italian, German, French, Dutch, Swedish or Spanish, write in that language instead\./);
 }
 await make({ lang: 'de', idea: 'Un manifesto per la cena di venerdì dai vicini: colori caldi, un pomodoro disegnato a mano.' });
 assert.match(sent.system, /App language: German\./, 'the app language is stated even when the idea is in Italian');

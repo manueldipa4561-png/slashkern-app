@@ -55,7 +55,7 @@ for (const bad of [null, {}, { a: [0, 1], at: 5 }, { a: [0, 1, 2, 3, 4] }, { a: 
 
 // Every text in all six languages: English and Italian in quiz.ts, the others in the i18n maps, keyed by the English.
 const texts = [...QUIZ.flatMap((q) => [q.q, ...q.a.map((x) => x.t)]), ...Object.values(QRESULT).flatMap((r) => [r.name, r.line])];
-const maps = Object.fromEntries(['de', 'fr', 'nl', 'sv'].map((l) => [l, readFileSync(`src/scripts/i18n-${l}.ts`, 'utf8')]));
+const maps = Object.fromEntries(['de', 'fr', 'nl', 'sv', 'es'].map((l) => [l, readFileSync(`src/scripts/i18n-${l}.ts`, 'utf8')]));
 for (const [en, it] of texts) {
   assert.ok(en.trim() && it.trim() && en !== it, `"${en}" needs its Italian`);
   for (const [l, file] of Object.entries(maps)) assert.ok(file.includes(`  ${JSON.stringify(en)}: `), `i18n-${l}.ts has no "${en}"`);

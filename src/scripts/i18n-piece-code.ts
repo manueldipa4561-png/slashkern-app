@@ -223,3 +223,6 @@ export const CODE_SV: Record<string, string> = {
   Sharp: 'Skarp',
   Classic: 'Klassisk',
 };
+export const CODE_ES: Record<string, string> = {
+
+};

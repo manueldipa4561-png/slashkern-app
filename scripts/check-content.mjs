@@ -6,9 +6,9 @@ import { buildSync } from 'esbuild';
 import { PER_ROUND as STATS_PER_ROUND } from './stats-core.mjs';
 
 // The data files import each other without extensions, so bundle them in memory instead of importing directly.
-const entry = ['fields', 'missions', 'helps', 'easy', 'i18n', 'next', 'sponsors', 'loot', 'demo', 'play', 'fieldinfo', 'coopask', 'projects', 'trending', 'pieces', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
+const entry = ['fields', 'missions', 'helps', 'easy', 'i18n', 'next', 'sponsors', 'loot', 'demo', 'play', 'fieldinfo', 'coopask', 'projects', 'trending', 'pieces', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv', 'i18n-es'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
 const { text } = buildSync({ stdin: { contents: entry, resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false }).outputFiles[0];
-const { FIELDS, MX, HELPS, EASY, IT, DE, FR, NL, SV, CLASHES, PER_ROUND, TREND_FROM, TRENDING, SPONSORS, RELICS, SAMPLE_ANSWERS, SAMPLE_IDEA, sampleChat, swapSample, PLAY } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
+const { FIELDS, MX, HELPS, EASY, IT, DE, FR, NL, SV, ES, CLASHES, PER_ROUND, TREND_FROM, TRENDING, SPONSORS, RELICS, SAMPLE_ANSWERS, SAMPLE_IDEA, sampleChat, swapSample, PLAY } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 
 const strings = (v) => (typeof v === 'string' ? [v] : Array.isArray(v) ? v.flatMap(strings) : v && typeof v === 'object' ? Object.values(v).flatMap(strings) : []);
 // supabase/schema.sql limits kern_signs.mission and kern_events.mission to 0..MAX_MISSIONS-1: widen both there before adding a round.
@@ -104,7 +104,7 @@ assert.ok(appPairs.length > 40, `app.ts: expected its own t2() texts, found ${ap
 const appClash = appPairs.filter(([en, it]) => IT[en] !== undefined && IT[en] !== it).map(([en]) => en);
 assert.deepEqual(appClash, [], 'app.ts registers these English texts with a different Italian than the rest of the app');
 const KEYS = [...new Set([...Object.keys(IT), ...appPairs.map(([en]) => en)])], missing = [];
-for (const [name, L, BANNED] of [['German', DE, /lavor/i], ['French', FR, /lavor/i], ['Dutch', NL, /lavor/i], ['Swedish', SV, /lavor/i]]) {
+for (const [name, L, BANNED] of [['German', DE, /lavor/i], ['French', FR, /lavor/i], ['Dutch', NL, /lavor/i], ['Swedish', SV, /lavor/i], ['Spanish', ES, /lavor|trabaj|emple|carrera|oficio|curr|candidatur/i]]) {
   const bad = Object.entries(L).filter(([, v]) => BANNED.test(v) || BANNED_UI.test(v)).map(([en]) => en.slice(0, 50));
   assert.deepEqual(bad, [], `i18n: job-world words in the ${name} copy: ${bad.join(' | ')}`);
   const none = KEYS.filter((k) => !L[k]);

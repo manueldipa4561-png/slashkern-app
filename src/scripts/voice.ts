@@ -10,7 +10,7 @@ export const voice = {
   consent: (go: () => void): void => { go(); }, // app.ts: the first time, the privacy sheet; then it calls go() on Continue
 };
 
-const TAG: Record<string, string> = { en: 'en-GB', it: 'it-IT', de: 'de-DE', fr: 'fr-FR', nl: 'nl-NL', sv: 'sv-SE' };
+const TAG: Record<string, string> = { en: 'en-GB', it: 'it-IT', de: 'de-DE', fr: 'fr-FR', nl: 'nl-NL', sv: 'sv-SE', es: 'es-ES' };
 const tag = () => TAG[voice.lang()] ?? 'en-GB';
 
 type Ev = { results: ArrayLike<ArrayLike<{ transcript: string }> & { isFinal: boolean }>; error?: string };

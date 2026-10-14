@@ -138,3 +138,6 @@ export const WRITING_SV: Record<string, string> = {
   'Talk to the people you picked. Say what it is and when to come.': 'Prata med dem du valde. Säg vad det är och när de kan komma förbi.',
   'New flavour, same slow Sunday. Come and take your time.': 'Ny smak, samma långsamma söndag. Kom förbi och ta god tid på dig.',
 };
+export const WRITING_ES: Record<string, string> = {
+
+};

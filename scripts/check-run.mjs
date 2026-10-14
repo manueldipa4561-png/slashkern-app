@@ -28,7 +28,7 @@ const heavy = await run({ prompt: 'Write a note for my mum, I want to end it all
 assert.match(heavy.reply, /metto in pausa il progetto/, 'heavy words get the fixed pause');
 assert.equal(sent, null, 'heavy words reached the model');
 // The pause comes in the app's language: German, French, Dutch and Swedish have their own helplines, any other value gets English.
-for (const [lang, prompt, re] of [['de', 'Schreib einen Brief an meine Mutter, ich will nicht mehr leben', /pausiere ich das Projekt.*0800 111 0 111/], ['fr', 'Écris une lettre à ma mère, je veux en finir', /je mets le projet en pause.*3114/], ['nl', 'Schrijf een brief aan mijn moeder, ik wil niet meer leven', /ik zet het project op pauze.*0800-0113.*1813/], ['sv', 'Skriv ett brev till min mamma, jag vill inte leva längre', /jag pausar projektet.*90101.*1177/], ['es', 'Write a note for my mum, I want to end it all', /pausing the project/]]) {
+for (const [lang, prompt, re] of [['de', 'Schreib einen Brief an meine Mutter, ich will nicht mehr leben', /pausiere ich das Projekt.*0800 111 0 111/], ['fr', 'Écris une lettre à ma mère, je veux en finir', /je mets le projet en pause.*3114/], ['nl', 'Schrijf een brief aan mijn moeder, ik wil niet meer leven', /ik zet het project op pauze.*0800-0113.*1813/], ['sv', 'Skriv ett brev till min mamma, jag vill inte leva längre', /jag pausar projektet.*90101.*1177/], ['pt', 'Write a note for my mum, I want to end it all', /pausing the project/], ['es', 'Escribe una carta a mi madre, quiero morir', /pongo en pausa el proyecto.*024/]]) {
   assert.match((await run({ prompt, lang })).reply, re, `lang ${lang}: wrong pause`);
   assert.equal(sent, null, 'heavy words reached the model');
 }
@@ -66,6 +66,7 @@ assert.match(await coach('de'), /Reply in German, even if they write in another 
 assert.match(await coach('fr'), /Reply in French, even if they write in another language\. In French the field is called "Annonces de produits"\./);
 assert.match(await coach('nl'), /Reply in Dutch, even if they write in another language\. In Dutch the field is called "Productadvertenties"\.\n/);
 assert.match(await coach('sv'), /Reply in Swedish, even if they write in another language\. In Swedish the field is called "Produktannonser"\.\n/);
+assert.match(await coach('es'), /Reply in Spanish, even if they write in another language\. In Spanish the field is called "Anuncios de productos"\. Never use trabajo/);
 assert.match(await coach('it'), /Reply in Italian, even if they write in another language\.\n/);
 assert.match(await coach('xx'), /Reply in English, even if they write in another language\.\n/);
 console.log('try your prompt: ok (Prompting only, 20-1500 characters, heavy words pause in 6 languages, only the prompt is sent; the coach replies in the app language)');

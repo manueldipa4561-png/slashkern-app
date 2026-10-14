@@ -150,3 +150,6 @@ export const SELLING_SV: Record<string, string> = {
   'Be friendly and short. Offer one next step.': 'Var trevlig och kort. Föreslå ett nästa steg.',
   'Yes, it is. I can show it working when you pick it up.': 'Ja, den finns kvar. När du hämtar den visar jag att den fungerar.',
 };
+export const SELLING_ES: Record<string, string> = {
+
+};
