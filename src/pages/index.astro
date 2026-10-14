@@ -491,15 +491,26 @@ const FIELDS = [['Design', 'Make things clear at a glance'], ['Writing', 'Words 
             <div><div class="k-l">KernCard</div><h4>Your <b>KernCard.</b></h4><p class="k-l k-s k-yk-why" id="kYkWhy">Your KernCard keeps the projects you finish and is built from them and from your reflections.</p><p class="k-early">Early access: companies are not on slashkern yet.</p></div>
             <div class="k-card" id="kPieces" hidden><div class="k-l" id="kPieceH"></div><div id="kPieceL"></div></div>
             <div class="k-card" id="kPages"><div class="k-l">Your projects</div><div id="kAns"></div></div>
-            <div class="k-card k-kcard" id="kSlashCard"><div class="k-l">Your KernCard</div><div class="k-kc">
-                <div class="k-kc-top"><div class="k-kt"><span class="k-lgw" set:html={MARK_REV} /><span>slashke<span class="k-rn">r</span>n</span></div><span class="k-l" id="kCardF">Writing</span></div>
-                <div class="k-kc-path" id="kCardP" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
-                <span class="k-l k-kc-n" id="kCardN">3 of 6 projects</span>
-                <p class="k-kc-q" id="kCardQ">Almost stayed home. Bag strap snapped on the bus. Lifted 40 kg anyway.</p>
-                <p class="k-kc-m" id="kCardM">Rewrite a caption so friends reply · Time flew</p>
-                <h5 id="kCardH">So far, you get into it when you start from zero.</h5>
-                <div class="k-l k-kc-l" id="kCardL">Example · answer and reflect to make it yours</div>
-              </div>
+            <div class="k-card k-kcard" id="kSlashCard"><div class="k-l">Your KernCard</div>
+              <div class="k-kc-stage" id="kStage"><div class="k-kc-tilt"><div class="k-kc-flipper" id="kFlip">
+                <div class="k-kc k-kc-front" id="kFront"><div class="k-kc-skin" aria-hidden="true"><i class="k-kc-bloom"></i><i class="k-kc-foil"></i><i class="k-kc-glare"></i></div>
+                  <div class="k-kc-top"><div class="k-kt"><span class="k-lgw" set:html={MARK_REV} /><span>slashke<span class="k-rn">r</span>n</span></div><span class="k-l" id="kCardF">Writing</span></div>
+                  <div class="k-kc-path" id="kCardP" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+                  <span class="k-l k-kc-n" id="kCardN">3 of 6 projects</span>
+                  <p class="k-kc-q" id="kCardQ">Almost stayed home. Bag strap snapped on the bus. Lifted 40 kg anyway.</p>
+                  <p class="k-kc-m" id="kCardM">Rewrite a caption so friends reply · Time flew</p>
+                  <h5 id="kCardH">So far, you get into it when you start from zero.</h5>
+                  <div class="k-l k-kc-l" id="kCardL">Example · answer and reflect to make it yours</div>
+                </div>
+                <div class="k-kc k-kc-back" id="kBack" aria-hidden="true"><div class="k-kc-skin" aria-hidden="true"><i class="k-kc-bloom"></i><i class="k-kc-foil"></i><i class="k-kc-glare"></i></div>
+                  <div class="k-kc-top"><div class="k-kt"><span class="k-lgw" set:html={MARK_REV} /><span>slashke<span class="k-rn">r</span>n</span></div><span class="k-l" id="kBackF">Writing</span></div>
+                  <div class="k-l k-kc-bh">Your projects</div>
+                  <ul class="k-kc-list" id="kBackL"></ul>
+                  <div class="k-kc-rank"><div><span class="k-l">Your rank</span><b id="kBackR">Pebble</b></div><div class="k-kc-st"><b id="kBackS">0</b> <span class="k-l">stones</span></div></div>
+                  <p class="k-kc-foot">From zero to product.</p>
+                </div>
+              </div></div></div>
+              <button type="button" class="k-kc-flip" id="kFlipB" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16"/><path d="M3 21v-5h5"/></svg><span class="k-l">Flip the card</span></button>
               <p class="k-l k-s" id="kWhy" hidden>Why we think so: you tried 3 versions of the open brief, and you wrote "time flew".</p>
               <div class="k-ask" id="kCardAsk" hidden><button type="button" class="k-yes" data-k-fit="yes" aria-pressed="false">That feels right</button><button type="button" data-k-fit="no" aria-pressed="false">Not really</button></div><div class="k-l k-fb" id="kFb" aria-live="polite"></div>
               <div class="k-btnrow"><button type="button" class="k-ask-btn" data-k-share="card">Share my card</button><button type="button" class="k-ask-btn" data-k-copy="app">Copy app link</button></div></div>

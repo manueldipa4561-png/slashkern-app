@@ -61,7 +61,7 @@ assert.ok(/<div class="k-logo"><span class="k-lgw" set:html=\{MARK\} \/><span>sl
 assert.ok(/class="k-fs k-f0"[^]*?set:html=\{MARK_REV\}/.test(page) && /class="k-kt"><span class="k-lgw" set:html=\{MARK_REV\}/.test(page), 'index.astro: the navy welcome screen and the KernCard show the reversed mark');
 assert.ok(!page.includes('M7 29A25 25 0 0 1 57 29Z') && !/>\s*kern\s*</.test(page) && !/kern<i>\.<\/i>/.test(page) && !page.includes('mark.webp'), 'index.astro: no slit disc, no "kern" wordmark left');
 assert.match(readFileSync('public/manifest.webmanifest', 'utf8'), /"name": "slashkern",\s*"short_name": "slashkern"[\s\S]*"background_color": "#0E1B3D"[\s\S]*"theme_color": "#0E1B3D"/, 'manifest: slashkern, navy background and theme colour');
-assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v49'/, 'sw.js: bump CACHE with every visual change');
+assert.match(readFileSync('public/sw.js', 'utf8'), /CACHE = 'kern-v50'/, 'sw.js: bump CACHE with every visual change');
 // The icons: the favicon is the pointer on ultramarine, and favicon.ico carries favicon-32.png.
 assert.ok(readFileSync('public/favicon.svg', 'utf8').includes(body) && readFileSync('public/favicon.svg', 'utf8').includes('#0050F0'), 'favicon.svg: the slashkern pointer on the electric blue icon tile');
 { const ico = readFileSync('public/favicon.ico'), png = readFileSync('public/icons/favicon-32.png'); assert.ok(ico.readUInt16LE(2) === 1 && ico.subarray(ico.length - png.length).equals(png), 'favicon.ico embeds public/icons/favicon-32.png'); }
@@ -113,5 +113,13 @@ assert.ok(['pubSheet', 'pubHow', 'pubHowB', 'pubNote', 'pubCta'].every((id) => s
 for (const f of ['src/scripts/app.ts', 'src/scripts/play.ts', 'src/scripts/voice.ts', 'src/scripts/make.ts', 'src/scripts/pieces.ts', 'src/scripts/pieces-ui.ts', 'src/scripts/public-page.ts', ...readdirSync('src/scripts').filter((n) => /^piece-.*\.ts$/.test(n)).map((n) => `src/scripts/${n}`)]) {
   const old = readFileSync(f, 'utf8').match(/Object\.hasOwn\(|structuredClone\(|\.toSorted\(|\.toReversed\(|\.findLast(Index)?\(|Object\.groupBy\(|Promise\.withResolvers\(/g);
   assert.ok(!old, `${f} uses ${old} which older iPhones do not have: use an older equivalent`);
+}
+// The KernCard is a collectible (card-tilt.ts, card-image.ts, app.css "KernCard v2"): a stage that tilts, a flipper with a front and a back, a flip button; reduced motion turns it at once and still shows the back; the share image is the same card.
+for (const id of ['kStage', 'kFlip', 'kFront', 'kBack', 'kFlipB', 'kBackF', 'kBackL', 'kBackR', 'kBackS', 'kCardP']) assert.ok(page.includes(`id="${id}"`), `index.astro: the KernCard needs #${id}`);
+{
+  const tilt = readFileSync('src/scripts/card-tilt.ts', 'utf8'), shareImg = readFileSync('src/scripts/card-image.ts', 'utf8');
+  assert.ok(/opts\.still/.test(tilt) && /pointercancel/.test(tilt) && /aria-pressed/.test(tilt), 'card-tilt.ts: reduced motion does not tilt, a scroll lets the card rest, the button says whether it is flipped');
+  assert.ok(/bindCardTilt\(\{[^}]*\}, \{ still, lite \}\)/.test(appSrc) && /kernCardImage\(/.test(appSrc) && /export const kernCardImage/.test(shareImg), 'app.ts: binds the tilt once and shares the card through card-image.ts');
+  assert.ok(/\.k-kc-tilt \{ transform: none !important; \}[^]*?#kSlashCard \.k-kc-flipper\.is-flipped \.k-kc-back \{ visibility: visible; \}/.test(css), 'app.css: with reduced motion the card turns at once and the back shows (both faces must not end up hidden)');
 }
 console.log('design: ok (rem text, icons for every field, 4 text sizes, light only, 3 sections)');

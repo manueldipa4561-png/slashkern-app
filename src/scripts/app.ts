@@ -23,6 +23,8 @@ import { SPONSORS } from './sponsors';
 import { FIRST_BRIEFS, FOUND_AT, type Starter } from './projects';
 import { QUIZ, QRESULT, QHUE, scoreQuiz, cleanQuiz, typeOfField, type QuizMatch } from './quiz';
 import { quizImage } from './quiz-card';
+import { kernCardImage } from './card-image';
+import { bindCardTilt } from './card-tilt';
 import { TREND_FROM, TREND_SHELF, TRENDING } from './trending';
 import { HELPS } from './helps';
 import { EASY } from './easy';
@@ -33,7 +35,7 @@ import { akey, ver, stamp, mergeAnswers, type Tomb } from './sync';
 import { inTime, clampCount, cleanAi, cleanName } from './valid';
 import { canMake, countMake, countPic, makeBody, makesLeft, parseMake, parsePic, picBody, picsLeft, type MakeBody, type MakeResult, type PicBody, type PicResult, type Pair as QaPair } from './make';
 import { attachMic, bindTalk, bindVoicePicker, listenButton, refreshVoice, stopSpeaking, stopTalk, talkLine, talking, voice } from './voice';
-import { slash, type Mood, SLASH_BODY, SLASH_EYES, SLASH_VIEWBOX } from './slash';
+import { slash, type Mood } from './slash';
 import { PIECES, PIECE_AT, cleanRuns, type Piece, type Run } from './pieces';
 import { initPieces, type RunReply } from './pieces-ui';
 
@@ -553,6 +555,8 @@ const cardData = () => {
     me: !lit || fit === 'no' ? '' : tr(KIND_ME[best]), // "Not really" keeps it off the image
   };
 };
+// The card is in the colour of its field (the same pairs as the quiz result); Prompting keeps the app's own blue, because the quiz's ultramarine is too dark on navy.
+const kcHue = (f: string) => { const t = typeOfField(f); return t && t !== 'prompt' ? QHUE[t][1] : '#7C93FF'; };
 const renderCard = () => {
   const c = cardData(), h = $('kCardH'), fbEl = $('kFb');
   $('kSample').hidden = !!c.a;
@@ -573,6 +577,12 @@ const renderCard = () => {
       ? fill(t2('Based on your {n} reflections. Not a test.', 'Basata sulle tue {n} riflessioni. Non è un test.'), { n }) + (c.fit === 'no' ? ` ${tr(t2('You said: not really.', 'Hai detto: non proprio.'))}` : '')
       : fill(n === 1 ? t2('Your latest answer · 1 reflection so far', 'La tua ultima risposta · 1 riflessione finora') : t2('Your latest answer · {n} reflections so far', 'La tua ultima risposta · {n} riflessioni finora'), { n }));
   }
+  // The back: the field's projects as a list (stamped when done) and the rank.
+  const fld = c.a ? S.field : CARD_EX.f, names = FIELDS[fld].m.slice(0, c.a ? c.all : 6).map((m) => tr(m[1]));
+  $('kSlashCard').style.setProperty('--kc', kcHue(fld));
+  if (c.a) setD($('kBackF'), tr(S.field)); else setT($('kBackF'), CARD_EX.f);
+  $('kBackL').replaceChildren(...names.map((name, i) => { const li = document.createElement('li'); li.textContent = name; li.className = on.has(i) ? 'on' : ''; return li; }));
+  setD($('kBackR'), tr(RANKS[rankIdx(S.stones)][0])); $('kBackS').textContent = String(S.stones);
   $('kCardAsk').hidden = !c.lit; // nothing to agree with until the card names a pattern
   kScr.querySelectorAll<HTMLElement>('#kCardAsk [data-k-fit]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.kFit === c.fit)));
   const msg = c.fit ? FIT_MSG[c.fit] : '';
@@ -580,6 +590,7 @@ const renderCard = () => {
   if (fbEl.textContent !== tr(msg)) fbEl.textContent = tr(msg); // the same words again are not news for a screen reader
   kScr.querySelector<HTMLElement>('#kSlashCard [data-k-share="card"]')!.hidden = !c.a; // your own line is worth sharing before the pattern is
 };
+bindCardTilt({ stage: $('kStage'), flipper: $('kFlip'), button: $<HTMLButtonElement>('kFlipB'), front: $('kFront'), back: $('kBack') }, { still, lite });
 const renderSignals = () => {
   const sg = readSignals();
   renderCard();
@@ -2137,76 +2148,17 @@ const shareText = async (title: string, text: string, url: string | undefined, c
   }
   if (await copy(url ? `${text} ${url}` : text)) say(copied); else say(url || text.slice(0, 120));
 };
-// KernCard as a 1080x1920 story image, with what the card shows: your answer line, the field as a path, the pattern once it is
-// ready (never after "Not really"), then the navy block with the line and the address. White page, navy text, the ultramarine accent on the done segments.
-const STORY_W = 1080, STORY_H = 1920, STORY_X = 96, ACCENT = '#2D4BFF', INK = '#0E1B3D', ICE = '#DCE6FF', WHITE = '#FFFFFF', DIMB = '#5A6478', TRACKB = '#DFE5F4', BLOCK_Y = 1432;
+// KernCard as a 1080x1920 story image (card-image.ts): the same card as on screen, in the colour of the field, with what it shows: your answer line,
+// the field as stamps, the pattern once it is ready (never after "Not really"), then the line and the address.
 const cardImage = async (): Promise<Blob | null> => {
   const c = cardData();
   if (!c.a) return null;
-  const X = STORY_X, TW = STORY_W - 2 * X;
-  const D = "'Geist Variable', sans-serif", B = "'Geist Variable', sans-serif";
-  try { await Promise.all([`800 96px ${D}`, `700 96px ${D}`, `600 36px ${B}`].map((f) => document.fonts.load(f))); } catch { /* the fallback fonts will do */ }
-  const cv = document.createElement('canvas'); cv.width = STORY_W; cv.height = STORY_H;
-  const x = cv.getContext('2d'); if (!x) return null;
-  x.fillStyle = WHITE; x.fillRect(0, 0, STORY_W, STORY_H);
-  const put = (s: string, font: string, color: string, px: number, py: number) => { x.font = font; x.fillStyle = color; x.fillText(s, px, py); };
-  const pill = (px: number, py: number, w: number, h: number, r: number) => { x.beginPath(); if (x.roundRect) x.roundRect(px, py, w, h, r); else x.rect(px, py, w, h); };
-  // Lines that fit the width: by words, by characters for a word longer than a line; a cut last line ends in "…".
-  const wrap = (s: string, font: string, max = Infinity) => {
-    x.font = font;
-    const lines: string[] = []; let line = '';
-    const add = (bit: string, sep: string) => { const next = line ? line + sep + bit : bit; if (line && x.measureText(next).width > TW) { lines.push(line); line = bit; } else line = next; };
-    for (const w of s.split(' ')) { if (x.measureText(w).width <= TW) add(w, ' '); else [...w].forEach((ch, i) => add(ch, i ? '' : ' ')); }
-    if (line) lines.push(line);
-    if (lines.length <= max) return lines;
-    let last = lines[max - 1];
-    while (last && x.measureText(last + '…').width > TW) last = [...last].slice(0, -1).join('');
-    return [...lines.slice(0, max - 1), last.trimEnd() + '…'];
-  };
-  // Header: the mark (the slashkern pointer, the same drawing as public/brand/mark.svg: navy body, ice eyes) 96px tall and "slashkern", below the strip a story covers with its progress bar and name.
-  let wx = X;
-  {
-    const [vx, vy, vw, vh] = SLASH_VIEWBOX.split(' ').map(Number), k = 96 / vh;
-    x.save(); x.translate(X, 214); x.scale(k, k); x.translate(-vx, -vy);
-    x.fillStyle = INK; x.fill(new Path2D(SLASH_BODY));
-    x.fillStyle = ICE; x.fill(new Path2D(SLASH_EYES.neutral)); x.restore();
-    wx += vw * k + 24;
-  }
-  put('slashkern', `800 96px ${D}`, INK, wx, 302);
-  // The field and its path: one segment per mission, lit (ultramarine fill, navy edge) when done.
-  put(tr(S.field).toUpperCase(), `700 36px ${B}`, INK, X, 440);
-  x.textAlign = 'right'; put(missionsLine(c.done.size, c.all).toUpperCase(), `600 30px ${B}`, DIMB, STORY_W - X, 440); x.textAlign = 'left';
-  const gap = 14, sw = (TW - gap * (c.all - 1)) / c.all;
-  for (let i = 0; i < c.all; i++) {
-    const sx = X + i * (sw + gap);
-    pill(sx, 470, sw, 16, 8); x.fillStyle = c.done.has(i) ? ACCENT : TRACKB; x.fill();
-    if (c.done.has(i)) { pill(sx + 1, 471, sw - 2, 14, 7); x.strokeStyle = INK; x.lineWidth = 2; x.stroke(); }
-  }
-  // The middle: the quote as big as the room allows, the mission it answered, then the pattern. Set a little above the centre of the room.
-  const TOP = 560, BOTTOM = BLOCK_Y - 50, LH = 1.2, SS = 34, LS = 28, PS = 58;
-  const SF = `500 ${SS}px ${B}`, LF = `600 ${LS}px ${B}`, PF = `700 ${PS}px ${D}`, GF = `800 200px ${D}`, qf = (s: number) => `700 ${s}px ${D}`;
-  const block = (ls: string[], font: string, s: number, color: string, top: number) => { ls.forEach((l, i) => put(l, font, color, X, top + s * 0.95 + i * s * LH)); return top + ls.length * s * LH; };
-  x.font = GF; const gm = x.measureText('“'), markH = gm.actualBoundingBoxAscent + gm.actualBoundingBoxDescent; // the mark sits above the baseline: its descent is negative
-  const src = wrap(`— ${c.src}`, SF, 1), pat = c.me ? wrap(c.me, PF, 3) : [];
-  const fixed = markH + 28 + 20 + SS * LH + (pat.length ? 60 + 6 + 22 + LS * LH + 14 + pat.length * PS * LH : 0);
-  const q = `${answerLine(c.a.t)}”`, room = BOTTOM - TOP - fixed;
-  const size = [96, 84, 72, 62, 54].find((s) => wrap(q, qf(s)).length * s * LH <= room) ?? 54;
-  const lines = wrap(q, qf(size), Math.max(1, Math.floor(room / (size * LH))));
-  let y = TOP + Math.max(0, room - lines.length * size * LH) * 0.4;
-  put('“', GF, TRACKB, X - 6, y + gm.actualBoundingBoxAscent);
-  y = block(lines, qf(size), size, INK, y + markH + 28);
-  y = block(src, SF, SS, DIMB, y + 20);
-  if (pat.length) {
-    x.fillStyle = INK; x.fillRect(X, y + 60, 72, 6);
-    y = block([fill(t2('So far · from {n} reflections', 'Finora · da {n} riflessioni'), { n: c.refl }).toUpperCase()], LF, LS, DIMB, y + 88);
-    block(pat, PF, PS, INK, y + 14);
-  }
-  // The one navy block: the line and the address, above the strip a story covers with its reply bar.
-  x.fillStyle = INK; pill(0, BLOCK_Y, STORY_W, STORY_H - BLOCK_Y, 0); x.fill();
-  const slogan = wrap(tr('From zero to product.'), `800 72px ${D}`, 3); // up to three lines in every language
-  slogan.forEach((l, k) => put(l, `800 72px ${D}`, WHITE, X, BLOCK_Y + 130 + k * 84));
-  put(location.host, `700 36px ${B}`, '#A9B4D0', X, BLOCK_Y + 130 + slogan.length * 84 + 40);
-  return new Promise((res) => cv.toBlob(res, 'image/png'));
+  return kernCardImage({
+    field: tr(S.field), count: missionsLine(c.done.size, c.all), done: Array.from({ length: c.all }, (_, i) => c.done.has(i)),
+    quote: answerLine(c.a.t), source: c.src,
+    patternLabel: c.me ? fill(t2('So far · from {n} reflections', 'Finora · da {n} riflessioni'), { n: c.refl }) : '', pattern: c.me,
+    slogan: tr('From zero to product.'), host: location.host,
+  }, kcHue(S.field));
 };
 let cardBusy = false; // one tap, one download
 const shareCard = async () => { if (cardBusy) return; cardBusy = true; try { await shareCardNow(); } finally { window.setTimeout(() => { cardBusy = false; }, 900); } };

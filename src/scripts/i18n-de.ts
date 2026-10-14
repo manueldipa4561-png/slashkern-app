@@ -2446,6 +2446,7 @@ const APP_DE: Record<string, string> = {
   "I did not hear anything. Try again.": "Ich habe nichts gehört. Versuch es nochmal.",
   "Voice needs a connection.": "Sprache braucht eine Verbindung.",
   "Talk with Slash": "Mit Slash sprechen",
+  "Flip the card": "Karte umdrehen",
   "End conversation": "Gespräch beenden",
   "Listening…": "Ich höre zu…",
   "Slash is speaking…": "Slash spricht…",

@@ -508,7 +508,7 @@ body { min-height: 100dvh; display: flex; align-items: center; justify-content: 
 .k-xa::before { content: ''; position: absolute; left: 0; top: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--acc), color-mix(in srgb, var(--acc) 20%, transparent)); }
 
 /* Trail days chip */
-.k-streak { display: inline-flex; align-items: center; gap: 7px; align-self: flex-start; padding: 6px 12px 6px 9px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--edge)); background: color-mix(in srgb, var(--gold) 12%, transparent); font-size: 0.8438rem; }
+.k-streak { display: inline-flex; align-items: center; gap: 7px; align-self: flex-start; min-width: 0; max-width: 60%; white-space: nowrap; padding: 6px 12px 6px 9px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--edge)); background: color-mix(in srgb, var(--gold) 12%, transparent); font-size: 0.8438rem; }
 .k-streak[hidden] { display: none; }
 .k-streak svg { width: 16px; height: 16px; fill: var(--gold); stroke: var(--gold); stroke-width: 1.4; stroke-linejoin: round; animation: kFlame 2.4s ease-in-out infinite; transform-origin: 50% 90%; }
 .k-streak b { font-weight: 800; }
@@ -1716,3 +1716,69 @@ html:not([data-slash-voice]) .k-listen { display: none; } /* Slash's own voice i
 :root.light .k-scr { --quiet: #6E7891; } /* 4.4:1 on the page colour, for large text */
 .k-scr h4, #k-missions h4, .k-f0 h4 { font-weight: 600; letter-spacing: -.04em; }
 .k-scr h4 b, :root.light .k-scr h4 b { color: var(--quiet); font-weight: inherit; }
+
+/* ===== KernCard v2: a collectible maker card. The card is in the colour of the field (--kc, set in renderCard), tilts toward the finger or the pointer, a foil shine made of tiny Slash pointers and a soft glare follow
+   it, it sways a little on its own, and a tap turns it over (the back lists the projects and the rank). Appended last: it overrides the older .k-kc rules above. ===== */
+#kSlashCard { --kc: #7C93FF; }
+.k-kc-stage { perspective: 900px; perspective-origin: 50% 40%; padding: 6px 2px 10px; touch-action: pan-y; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+.k-kc-tilt { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transform-style: preserve-3d; will-change: transform; }
+.k-kc-flipper { display: grid; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.k-kc-flipper.is-flipped { transform: rotateY(180deg); }
+#kSlashCard .k-kc { grid-area: 1 / 1; position: relative; overflow: visible; transform-style: preserve-3d; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; justify-content: flex-start; gap: 0; min-height: 0; border: 0; border-radius: 28px; padding: 22px 20px 20px; color: #fff;
+  background: none; box-shadow: 0 30px 44px -26px color-mix(in srgb, var(--kc) 75%, #000); }
+#kSlashCard .k-kc-back { transform: rotateY(180deg); }
+#kSlashCard .k-kc-back .k-kc-glare { background: radial-gradient(circle at calc(var(--bx, 0.5) * 100%) calc(var(--py, 0.5) * 100%), rgb(255 255 255 / 0.34), transparent 55%); }
+#kSlashCard .k-kc-back .k-kc-foil { background-position: calc(var(--bx, 0.5) * 100%) calc(var(--py, 0.5) * 100%); }
+.k-kc-skin { position: absolute; inset: 0; z-index: -1; border-radius: inherit; overflow: hidden; pointer-events: none; }
+.k-kc-skin i { position: absolute; display: block; }
+.k-kc-skin::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28), inset 0 0 0 1px rgb(255 255 255 / 0.1); }
+.k-kc-bloom { inset: 0; background: radial-gradient(70% 46% at 94% -6%, color-mix(in srgb, var(--kc) 72%, transparent), transparent 72%), radial-gradient(60% 40% at 0% 104%, color-mix(in srgb, var(--kc) 26%, transparent), transparent 72%), linear-gradient(160deg, #0e1b3d 0%, #122660 58%, color-mix(in srgb, var(--kc) 18%, #0e1b3d) 135%); }
+.k-kc-foil { inset: -25%; opacity: 0.5; mix-blend-mode: color-dodge;
+  background: linear-gradient(115deg, transparent 38%, #ff8ae0 43%, #8affd9 48%, #8ab4ff 53%, #ffe58a 58%, transparent 63%); background-size: 220% 220%; background-position: calc(var(--px, 0.5) * 100%) calc(var(--py, 0.5) * 100%);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='52'%20height='52'%20viewBox='0%200%2052%2052'%3E%3Cg%20transform='translate%2820%2019%29%20scale%280.04059%29%20translate%28-82.0%20-69.0%29'%3E%3Cpath%20d='M99.56%2084.12Q92.48%2078.56%2092.48%2087.56L92.48%20293.52Q92.48%20311.52%20107.50%20301.60L157.49%20268.57Q164.16%20264.16%20167.68%20271.34L190.00%20316.87Q196.16%20329.44%20209.09%20324.08L235.71%20313.04Q248.64%20307.68%20241.86%20295.43L219.23%20254.52Q215.36%20247.52%20223.36%20247.52L289.52%20247.52Q307.52%20247.52%20293.37%20236.40Z'%20fill='white'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 52px 52px; mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='52'%20height='52'%20viewBox='0%200%2052%2052'%3E%3Cg%20transform='translate%2820%2019%29%20scale%280.04059%29%20translate%28-82.0%20-69.0%29'%3E%3Cpath%20d='M99.56%2084.12Q92.48%2078.56%2092.48%2087.56L92.48%20293.52Q92.48%20311.52%20107.50%20301.60L157.49%20268.57Q164.16%20264.16%20167.68%20271.34L190.00%20316.87Q196.16%20329.44%20209.09%20324.08L235.71%20313.04Q248.64%20307.68%20241.86%20295.43L219.23%20254.52Q215.36%20247.52%20223.36%20247.52L289.52%20247.52Q307.52%20247.52%20293.37%20236.40Z'%20fill='white'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 52px 52px; }
+.k-kc-glare { inset: 0; mix-blend-mode: overlay; background: radial-gradient(circle at calc(var(--px, 0.5) * 100%) calc(var(--py, 0.5) * 100%), rgb(255 255 255 / 0.34), transparent 55%); }
+#kSlashCard .k-kc-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; transform: translateZ(26px); }
+#kSlashCard .k-kc .k-kt { position: static; color: #fff; }
+#kSlashCard .k-kc .k-kc-top .k-l, #kSlashCard #kBackF { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px 6px 9px; border-radius: 999px; background: rgb(255 255 255 / 0.1); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16); color: #fff; font: 650 0.6875rem/1 var(--kd); letter-spacing: 0.04em; text-align: left; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; }
+#kSlashCard .k-kc-top .k-l::before, #kSlashCard #kBackF::before { content: ''; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--kc); box-shadow: 0 0 10px var(--kc); }
+#kSlashCard .k-kc-path { display: flex; justify-content: space-between; gap: 6px; margin-top: 22px; transform: translateZ(18px); }
+#kSlashCard .k-kc-path i { position: relative; flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1.5px dashed rgb(255 255 255 / 0.32); background: transparent; box-shadow: none; }
+#kSlashCard .k-kc-path i.on { border: 0; background: var(--kc); box-shadow: 0 0 16px color-mix(in srgb, var(--kc) 60%, transparent), inset 0 -3px 0 rgb(0 0 0 / 0.18); }
+#kSlashCard .k-kc-path i.on::after { content: ''; position: absolute; inset: 7px; background: #0e1b3d; -webkit-mask: url(/brand/mark.svg) center / contain no-repeat; mask: url(/brand/mark.svg) center / contain no-repeat; }
+#kSlashCard .k-kc .k-kc-n { margin-top: 12px; color: rgb(255 255 255 / 0.72); font: 650 0.75rem/1.2 var(--kd); letter-spacing: 0.07em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+#kSlashCard .k-kc .k-kc-q { margin-top: 22px; font: 650 1.5rem/1.2 var(--kd); letter-spacing: -0.03em; text-wrap: balance; transform: translateZ(12px); }
+#kSlashCard .k-kc-q::before, #kSlashCard .k-kc-q::after { color: var(--kc); }
+#kSlashCard .k-kc .k-kc-m { margin-top: 10px; color: rgb(255 255 255 / 0.7); }
+#kSlashCard .k-kc h5 { margin-top: 24px; padding: 0; border: 0; font: 800 1.5rem/1.12 var(--kd); letter-spacing: -0.035em; color: #fff; }
+#kSlashCard .k-kc h5::before { content: ''; display: block; width: 44px; height: 4px; margin-bottom: 14px; border-radius: 4px; background: var(--kc); box-shadow: 0 0 14px var(--kc); }
+#kSlashCard .k-kc h5.wait { font: 500 0.9375rem/1.45 'Geist Variable', system-ui, sans-serif; letter-spacing: 0; color: rgb(255 255 255 / 0.85); }
+#kSlashCard .k-kc h5.no { color: rgb(255 255 255 / 0.55); }
+#kSlashCard .k-kc .k-kc-l { margin-top: 10px; color: rgb(255 255 255 / 0.62); }
+.k-kc-bh { display: block; margin-top: 22px; color: rgb(255 255 255 / 0.62); }
+.k-kc-list { display: grid; gap: 9px; margin: 12px 0 0; padding: 0; list-style: none; }
+.k-kc-list li { display: flex; align-items: center; gap: 11px; font: 600 0.9375rem/1.25 var(--kd); letter-spacing: -0.01em; color: rgb(255 255 255 / 0.66); }
+.k-kc-list li::before { content: ''; flex: none; width: 22px; height: 22px; border-radius: 50%; border: 1.5px dashed rgb(255 255 255 / 0.3); }
+.k-kc-list li { position: relative; }
+.k-kc-list li.on { color: #fff; }
+.k-kc-list li.on::after { content: ''; position: absolute; left: 5px; top: 50%; width: 12px; height: 12px; transform: translateY(-50%); background: #0e1b3d; -webkit-mask: url(/brand/mark.svg) center / contain no-repeat; mask: url(/brand/mark.svg) center / contain no-repeat; }
+.k-kc-list li.on::before { border: 0; background: var(--kc); box-shadow: 0 0 12px color-mix(in srgb, var(--kc) 60%, transparent); }
+.k-kc-rank { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 18px; border-top: 1px solid rgb(255 255 255 / 0.16); }
+.k-kc-rank > div { display: grid; gap: 4px; }
+.k-kc-rank b { font: 800 1.375rem/1.1 var(--kd); letter-spacing: -0.03em; }
+.k-kc-foot { margin-top: 26px; font: 500 0.8125rem/1.3 var(--kd); color: rgb(255 255 255 / 0.55); }
+#kSlashCard .k-kc-back { padding-bottom: 18px; }
+#kSlashCard .k-kc-back .k-kc-list { margin-bottom: 20px; }
+.k-kc-flip { display: flex; align-items: center; gap: 8px; margin: 2px auto 0; min-height: 44px; padding: 0 14px; border: 0; background: none; color: var(--dim); cursor: pointer; }
+.k-kc-flip .k-l { color: inherit; font: 600 0.875rem/1 var(--kd); letter-spacing: 0; text-transform: none; }
+.k-kc-flip svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.k-kc-flip[aria-pressed='true'] svg { transform: rotate(180deg); }
+.k-kc-flip:hover { color: var(--fg); }
+@media (prefers-reduced-motion: reduce) {
+  .k-kc-tilt { transform: none !important; }
+  .k-kc-flipper { transition: none; }
+  .k-kc-flipper.is-flipped { transform: none; }
+  #kSlashCard .k-kc-back { transform: none; visibility: hidden; }
+  #kSlashCard .k-kc-flipper.is-flipped .k-kc-front { visibility: hidden; }
+  #kSlashCard .k-kc-flipper.is-flipped .k-kc-back { visibility: visible; }
+  .k-kc-flip svg { transition: none; }
+}

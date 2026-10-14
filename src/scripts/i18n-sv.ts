@@ -456,6 +456,7 @@ const SV_GEN: Record<string, string> = {
   "I did not hear anything. Try again.": "Jag hörde ingenting. Försök igen.",
   "Voice needs a connection.": "Röstfunktionen kräver en anslutning.",
   "Talk with Slash": "Prata med Slash",
+  "Flip the card": "Vänd på kortet",
   "End conversation": "Avsluta samtalet",
   "Listening…": "Jag lyssnar…",
   "Slash is speaking…": "Slash pratar…",

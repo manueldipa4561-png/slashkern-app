@@ -365,6 +365,7 @@ export const IT: Record<string, string> = {
         "I did not hear anything. Try again.": "Non ho sentito niente. Riprova.",
         "Voice needs a connection.": "La voce ha bisogno di una connessione.",
         "Talk with Slash": "Parla con Slash",
+        "Flip the card": "Gira la card",
         "End conversation": "Termina la conversazione",
         "Listening…": "In ascolto…",
         "Slash is speaking…": "Slash sta parlando…",

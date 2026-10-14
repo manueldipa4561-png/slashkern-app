@@ -456,6 +456,7 @@ const NL_GEN: Record<string, string> = {
   "I did not hear anything. Try again.": "Ik heb niets gehoord. Probeer het nog een keer.",
   "Voice needs a connection.": "Spraak heeft een verbinding nodig.",
   "Talk with Slash": "Praat met Slash",
+  "Flip the card": "Draai de kaart om",
   "End conversation": "Gesprek beëindigen",
   "Listening…": "Ik luister…",
   "Slash is speaking…": "Slash praat…",
