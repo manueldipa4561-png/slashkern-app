@@ -746,6 +746,7 @@ const markTrend = () => trendCards.forEach(({ f, i, mins, st }) => {
 const piecesUi = { render: () => {}, open: () => {} }; // the card on Projects and the list on the KernCard tab, and opening a piece: replaced by initPieces() once the screens are wired, below
 const renderHome = () => {
   renderStat(); renderStages(); markTrend(); piecesUi.render();
+  $('kQuizCard').hidden = !S.onboarded || !!S.quiz; // once, for profiles (and the demo) from before the quiz
   renderFields(); renderAbout(); renderFurther(); renderCoopIn();
   const f = F(), b = base(), round = b / PER_ROUND, done = winDone(), next = [0, 1, 2].find((k) => !done.has(k));
   // fresh: a round was just finished and the next one is not started. Celebrate the KernCard first, then offer the new missions.
@@ -1836,6 +1837,7 @@ let firstAt = 0, firstPick = -1, firstStep = 0, firstAns: string[] = [], firstCa
 // "Skip the quiz" goes to the example starters. A quiz match is a starter made from its own mission (brief, material, steps). The answers never go to the account copy.
 QUIZ.forEach((q) => { t2(...q.q); q.a.forEach((x) => t2(...x.t)); }); Object.values(QRESULT).forEach((r) => { t2(...r.name); t2(...r.line); });
 let quizAt = 0, quizPicks: number[] = [], quizMatch: QuizMatch | null = null, quizBusy = false;
+let quizOnly = false; // the quiz on its own, for a profile that already exists (Home card, Settings): it never resets anything
 const kQuizAge = $<HTMLInputElement>('kQuizAge'), kFRGo = $<HTMLButtonElement>('kFRGo'), kFQA = $('kFQA');
 const starter = (): Starter | undefined => (quizMatch ? { f: quizMatch.f, i: quizMatch.i, label: FIELDS[quizMatch.f].m[quizMatch.i][1], line: '', intro: MX[quizMatch.f][quizMatch.i].brief } : FIRST_BRIEFS[firstPick]);
 const firstSteps = () => { const st = starter(); return st ? MX[st.f]?.[st.i]?.steps ?? [] : []; };
@@ -1844,7 +1846,7 @@ const showFirst = (n: number) => {
   FIRST_IDS.forEach((id, k) => { $(id).hidden = k !== n; });
   kFirst.classList.toggle('black', n === 0); // the welcome screen is the black one
   $('kFBack').hidden = n === 0 || n === 3; // nothing to go back to from the welcome, nor from the confirmation
-  setD($('kFNum'), fill(t2('{n} of 4', '{n} di 4'), { n: FIRST_NO[n] }));
+  setD($('kFNum'), fill(t2('{n} of 4', '{n} di 4'), { n: FIRST_NO[n] })); $('kFNum').hidden = quizOnly; // the quiz alone is not step 2 of 4
   kFirst.setAttribute('aria-labelledby', FIRST_HEADS[n]);
   kFirst.scrollTo({ top: 0 }); if (n === 1) fadeFirst();
   stopSpeaking();
@@ -1963,17 +1965,24 @@ const finishQuiz = () => {
   renderResult(); markQuizAge(); showFirst(5); land($('kFRH'));
 };
 const startQuiz = () => { quizAt = 0; quizPicks = []; quizMatch = null; quizBusy = false; renderQuiz(); showFirst(4); land($('kFQH')); };
+// Profiles made before the quiz (and the demo) take it from a Home card or Settings: the same screens, then straight back to the app.
+const openQuiz = () => { quizOnly = true; kQuizAge.checked = false; kFirst.classList.add('on'); startQuiz(); syncInert(); };
+const closeQuiz = () => { quizOnly = false; kFirst.classList.remove('on'); syncInert(); renderHome(); landHome(); };
 const renderQuizAgain = () => { if (firstAt === 4) renderQuiz(); if (firstAt === 5) renderResult(); }; // a language switch while the quiz is on screen
 const openFirst = () => {
-  firstPick = -1; kFirstAge.checked = false; renderFirstPick(); markFirst();
+  quizOnly = false; firstPick = -1; kFirstAge.checked = false; renderFirstPick(); markFirst();
   quizAt = 0; quizPicks = []; quizMatch = null; kQuizAge.checked = false;
   kFirst.classList.add('on'); showFirst(0); syncInert(); land($('kF0H'));
 };
 $('kF0Go').addEventListener('click', startQuiz);
-$('kFQSkip').addEventListener('click', () => { quizMatch = null; showFirst(1); land($('kF1H')); markFirst(); });
+$('kFQSkip').addEventListener('click', () => { if (quizOnly) { closeQuiz(); return; } quizMatch = null; showFirst(1); land($('kF1H')); markFirst(); });
 kQuizAge.addEventListener('change', markQuizAge);
 kFRGo.addEventListener('click', () => {
   if (!quizMatch || kFRGo.disabled) return;
+  if (quizOnly) { // an existing profile keeps its answers, stones and KernCard: the matched field joins its interests and the project opens
+    const m = quizMatch; S.field = m.f; S.fields = [...new Set([...S.fields, m.f])]; save();
+    closeQuiz(); applyField(false); goTab('missions'); openAnswer(m.f, m.i); return;
+  }
   S.adult = true; S.field = quizMatch.f; S.fields = [...new Set([...S.fields, quizMatch.f, ...quizMatch.mix])]; save(); // the winning field first, then the mix
   startSteps();
 });
@@ -1993,7 +2002,7 @@ $('kF2Next').addEventListener('click', once(() => {
   if (firstStep < firstSteps().length - 1) { firstStep++; renderStep(); } else saveFirst();
 }));
 $('kFBack').addEventListener('click', () => {
-  if (firstAt === 4) { if (quizAt > 0) { quizAt--; renderQuiz(); land($('kFQH')); } else { showFirst(0); land($('kF0H')); } return; }
+  if (firstAt === 4) { if (quizAt > 0) { quizAt--; renderQuiz(); land($('kFQH')); } else if (quizOnly) closeQuiz(); else { showFirst(0); land($('kF0H')); } return; }
   if (firstAt === 5) { quizAt = QUIZ.length - 1; renderQuiz(); showFirst(4); land($('kFQH')); return; }
   if (firstAt === 2 && firstStep > 0) { firstAns[firstStep] = kF2Ta.value; firstStep--; renderStep(); return; }
   if (firstAt === 2 && quizMatch) { renderResult(); markQuizAge(); showFirst(5); land($('kFRH')); return; } // back to the quiz result it came from
@@ -2395,6 +2404,8 @@ kLang.addEventListener('change', () => setLang(isLang(kLang.value) ? kLang.value
 $('kAv').addEventListener('click', () => openSheetEl(kSet, $('kSetX')));
 $('kSetX').addEventListener('click', () => dismiss(kSet));
 $('kChField').addEventListener('click', () => { kSet.hidden = true; openStart(true); });
+$('kQuizS').addEventListener('click', () => { kSet.hidden = true; openQuiz(); });
+$('kQuizCard').addEventListener('click', openQuiz);
 // Feedback goes to the founder's inbox through the person's own mail app; nothing is sent by slashkern.
 const CONTACT = 'manuel@trykern.it';
 $('kFeed').addEventListener('click', () => {
@@ -2631,6 +2642,7 @@ document.addEventListener('keydown', (e) => {
   else if (!kFld.hidden) closeSheet(kFld);
   else if (!kSheet.hidden) closeSheet(kSheet);
   else if (kStart.classList.contains('on') && S.onboarded) closePicker();
+  else if (kFirst.classList.contains('on') && quizOnly) closeQuiz();
 });
 
 // Start
