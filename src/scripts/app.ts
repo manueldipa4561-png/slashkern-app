@@ -1872,7 +1872,10 @@ const renderFirstPick = () => {
 };
 // A fade under the list of examples while there is more below it (the list scrolls, the footer stays on screen).
 const kF1S = $('kF1S');
-const fadeFirst = () => kF1S.toggleAttribute('data-more', kF1S.scrollHeight > kF1S.clientHeight + 2 && kF1S.scrollTop + kF1S.clientHeight < kF1S.scrollHeight - 2);
+const fadeFirst = () => {
+  kF1S.toggleAttribute('data-more', kF1S.scrollHeight > kF1S.clientHeight + 2 && kF1S.scrollTop + kF1S.clientHeight < kF1S.scrollHeight - 2);
+  kF1S.toggleAttribute('data-top', kF1S.scrollTop > 2); // and above, once it is scrolled: no card cut off hard at the top
+};
 kF1S.addEventListener('scroll', fadeFirst, { passive: true }); addEventListener('resize', fadeFirst);
 const markFirst = () => {
   const noPick = firstPick < 0, noAge = !(S.adult || kFirstAge.checked), why = $('kF1Why'); // the button says what it waits for
@@ -1895,6 +1898,7 @@ const renderMaterial = (a: Asset) => {
 };
 const renderStep = () => {
   const steps = firstSteps(), all = steps.length, last = firstStep === all - 1;
+  kFirst.scrollTo({ top: 0 }); // each step starts at its question
   $('kFProg').querySelectorAll<HTMLElement>('b').forEach((b, k) => b.style.setProperty('--p', k < firstStep ? '1' : k === firstStep ? '.4' : '0'));
   $('kFProg').setAttribute('aria-valuenow', String(firstStep + 1));
   setD($('kF2L'), fill(t2('Question {n} of {all}', 'Domanda {n} di {all}'), { n: firstStep + 1, all }));
@@ -1931,6 +1935,7 @@ const saveFirst = () => {
 };
 const renderQuiz = () => {
   const q = QUIZ[quizAt];
+  kFirst.scrollTo({ top: 0 }); // a new question starts at its heading, not where the last answer was tapped (small phones scroll)
   setD($('kFQL'), fill(t2('Question {n} of {all}', 'Domanda {n} di {all}'), { n: quizAt + 1, all: QUIZ.length }));
   setD($('kFQH'), tr(q.q[0]));
   kFQA.replaceChildren(...q.a.map((x, k) => {
