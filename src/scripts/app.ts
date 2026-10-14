@@ -19,7 +19,9 @@ import { PLAY, renderPlay, stopPlay } from './play';
 import { RELICS, rollDrop, type Drop } from './loot';
 import { nextSpot, roundOf, PER_ROUND } from './next';
 import { SPONSORS } from './sponsors';
-import { FIRST_BRIEFS, FOUND_AT } from './projects';
+import { FIRST_BRIEFS, FOUND_AT, type Starter } from './projects';
+import { QUIZ, QRESULT, QHUE, scoreQuiz, cleanQuiz, typeOfField, type QuizMatch } from './quiz';
+import { quizImage } from './quiz-card';
 import { TREND_FROM, TREND_SHELF, TRENDING } from './trending';
 import { HELPS } from './helps';
 import { EASY } from './easy';
@@ -41,7 +43,7 @@ type Msg = { who: 'ai' | 'me'; t: string; typing?: boolean; p?: string }; // p: 
 type Theme = 'light'; // light only since the palette B restyle: the dark theme is retired (a saved "dark" or "system" becomes light)
 type Lang = 'en' | 'it' | 'de' | 'fr' | 'nl' | 'sv';
 type Habit = { t: string; c: string; l: [number, string][] }; // t: the tiny habit, c: the cue (after I...), l: [day number, relic id found that day or ''] per day done
-type State = { v: 1; name: string; adult: boolean; field: string; fields: string[]; onboarded: boolean; stones: number; answers: Answer[]; drafts: Record<string, string>; msgs: Msg[]; mine: string[]; lang: Lang; theme: Theme; text: number; guess: string; saves: number; badges: string[]; dared: boolean; gone: Tomb[]; habit: Habit; easy: boolean; coops: CoopRec[]; builds: Run[] }; // text: the text size step in Settings (0 small, 1 default, 2 large, 3 larger); builds: the pieces in progress or made (pieces.ts)
+type State = { v: 1; name: string; adult: boolean; field: string; fields: string[]; onboarded: boolean; stones: number; answers: Answer[]; drafts: Record<string, string>; msgs: Msg[]; mine: string[]; lang: Lang; theme: Theme; text: number; guess: string; saves: number; badges: string[]; dared: boolean; gone: Tomb[]; habit: Habit; easy: boolean; coops: CoopRec[]; builds: Run[]; quiz?: { a: number[]; at: number } }; // quiz: the maker quiz answers (quiz.ts), this device only. text: the text size step in Settings (0 small, 1 default, 2 large, 3 larger); builds: the pieces in progress or made (pieces.ts)
 
 // Demo profile (open /?demo, switch off with /?demo=off): a lived-in trail to show slashkern in a minute. It has its own storage key,
 // never syncs, never publishes a sign and is never counted, so it cannot touch real data.
@@ -142,6 +144,7 @@ const sanitize = (s: any): State | null => { // eslint-disable-line @typescript-
       easy: !!s.easy,
       coops: cleanCoops(s.coops),
       builds: cleanRuns(s.builds),
+      quiz: cleanQuiz(s.quiz),
       gone: Array.isArray(s.gone) ? s.gone.filter((g: unknown) => Array.isArray(g) && typeof g[0] === 'string' && g[0].length < 40 && inTime(g[1])).map((g: Tomb): Tomb => [g[0], g[1]]).slice(-200) : [],
     };
   } catch { return null; }
@@ -210,7 +213,7 @@ function schedulePush() {
     if (!user) return;
     try {
       if (!pulled) { const remote = await cloud.pull(user.id); if (remote) mergeIn(remote); pulled = true; renderMe(); applyField(false); }
-      await cloud.push(user.id, snapshot()); if (!syncOk) say('Synced again.'); syncOk = true; }
+      await cloud.push(user.id, { ...snapshot(), quiz: undefined }); if (!syncOk) say('Synced again.'); syncOk = true; }
     catch { if (syncOk) say("Couldn't sync. Your answers are safe on this device and will sync later."); syncOk = false; }
     renderAcct();
   }, 1200);
@@ -556,8 +559,8 @@ const renderCard = () => {
     setD($('kCardN'), missionsLine(c.done.size, c.all));
     setD($('kCardQ'), answerLine(c.a.t));
     setD($('kCardM'), c.src);
-    setD(h, c.you || fill(left === 1 ? t2('1 more reflection and the card takes a guess at what you get into.', 'Ancora 1 riflessione e la card prova a dire cosa ti appassiona.')
-      : t2('{n} more reflections and the card takes a guess at what you get into.', 'Ancora {n} riflessioni e la card prova a dire cosa ti appassiona.'), { n: left }));
+    setD(h, c.you || fill(left === 1 ? t2('1 more reflection and the card takes a guess at what you get into.', 'Ancora 1 riflessione e la card prova a indovinare cosa ti appassiona.')
+      : t2('{n} more reflections and the card takes a guess at what you get into.', 'Ancora {n} riflessioni e la card prova a indovinare cosa ti appassiona.'), { n: left }));
     setD($('kCardL'), c.you
       ? fill(t2('Based on your {n} reflections. Not a test.', 'Basata sulle tue {n} riflessioni. Non è un test.'), { n }) + (c.fit === 'no' ? ` ${tr(t2('You said: not really.', 'Hai detto: non proprio.'))}` : '')
       : fill(n === 1 ? t2('Your latest answer · 1 reflection so far', 'La tua ultima risposta · 1 riflessione finora') : t2('Your latest answer · {n} reflections so far', 'La tua ultima risposta · {n} riflessioni finora'), { n }));
@@ -610,7 +613,7 @@ const renderCompare = () => {
   card.hidden = v === 'none';
   if (card.hidden) return;
   setD($('kFcmpT'), v === 'early' ? tr(t2('Early days. Try a second project in each.', 'Siamo all’inizio. Prova un secondo progetto in ognuno.'))
-    : v === 'close' ? tr(t2('Too close to call yet.', 'Ancora troppo vicini per dire.'))
+    : v === 'close' ? tr(t2('Too close to call yet.', 'Ancora troppo vicini per decidere.'))
     : fill(t2('{f} gave you the most energy so far.', 'Finora ti ha dato più energia: {f}.'), { f: tr(rows[0].f) }));
   $('kFcmpM').replaceChildren(...rows.map((r) => {
     const row = document.createElement('div'), lab = document.createElement('span'), val = document.createElement('b'), bar = document.createElement('i'), fill = document.createElement('s');
@@ -794,7 +797,7 @@ const renderHome = () => {
 const renderSteps = () => {
   const b = base(), round = b / PER_ROUND, done = winDone(), n = done.size, next = [0, 1, 2].find((k) => !done.has(k));
   const justDone = roundJustDone(), tb = justDone ? b - PER_ROUND : b; // until the next round is started, the Trail shows the round that was just finished
-  $('kPill').textContent = justDone ? fill(t2('Round {n} done', 'Round {n} fatto'), { n: round }) : round ? fill(t2('Round {n} · {k}/3', 'Round {n} · {k}/3'), { n: round + 1, k: n }) : fill(t2('{n} of 3 done', '{n} su 3 fatte'), { n });
+  $('kPill').textContent = justDone ? fill(t2('Round {n} done', 'Round {n} fatto'), { n: round }) : round ? fill(t2('Round {n} · {k}/3', 'Round {n} · {k}/3'), { n: round + 1, k: n }) : fill(t2('{n} of 3 done', '{n} su 3 fatti'), { n });
   $('kRing').style.setProperty('--p', String(justDone ? 1 : n / 3));
   [0, 1, 2].forEach((i) => {
     setT($('kTr' + i), F().m[tb + i][1]);
@@ -1362,7 +1365,7 @@ const CUES = [t2('wake up', 'mi sveglio'), t2('have my coffee', 'bevo il caffè'
 // A habit or cue picked from the chips is saved as the words on the chip at that moment (in any language): show it in the current language. Words typed by hand stay as typed.
 const HB_EN = new Map([...Object.values(STARTERS).flat(), ...CUES].flatMap((en) => [en, IT[en], DE[en], FR[en], NL[en], SV[en]].filter((t): t is string => !!t).map((t): [string, string] => [t, en])));
 const hbText = (s: string) => tr(HB_EN.get(s) ?? s);
-const HB_MSG = [t2('That counts. Small is the point.', 'Conta. Il bello è essere piccoli.'), t2('Done. Your future self noticed.', 'Fatto. Il tuo io futuro se n’è accorto.'), t2('Again tomorrow, same cue. That is the whole trick.', 'Di nuovo domani, stesso segnale. È tutto qui il trucco.'), t2('Easy on purpose. Keep it that way.', 'Facile di proposito. Resta così.'), t2('One more day on the trail.', 'Un altro giorno sulla traccia.')];
+const HB_MSG = [t2('That counts. Small is the point.', 'Conta. Il punto è restare piccoli.'), t2('Done. Your future self noticed.', 'Fatto. Il te di domani se n’è accorto.'), t2('Again tomorrow, same cue. That is the whole trick.', 'Di nuovo domani, stesso segnale. È tutto qui il trucco.'), t2('Easy on purpose. Keep it that way.', 'Facile di proposito. Resta così.'), t2('One more day on the trail.', 'Un altro giorno sulla traccia.')];
 const kHbSet = $('kHbSet'), kHbRun = $('kHbRun'), kHbT = $<HTMLInputElement>('kHbT'), kHbC = $<HTMLInputElement>('kHbC');
 const chip = (host: Element, text: string, on: () => void) => {
   const c = document.createElement('span'); c.setAttribute('role', 'button'); c.tabIndex = 0; c.textContent = tr(text);
@@ -1598,7 +1601,7 @@ function showDone() {
   $('kDrDare').hidden = co || !lastAns; // right after a mission: send this one as a dare (co-op missions already offer their friend step)
   setT($('kDrT'), 'Done.');
   const trending = cur.i >= TREND_FROM; // a Trending project is not one of the field's 6: no "0 of 6" line and no path under it
-  setD($('kDrN'), trending ? fill(TREND_SHELF.head, { f: tr(f) }) : fill(t2('{n} of {all} done in {f}', '{n} su {all} fatte in {f}'), { n: doneIn(f).size, all: total(f), f: tr(f) }));
+  setD($('kDrN'), trending ? fill(TREND_SHELF.head, { f: tr(f) }) : fill(t2('{n} of {all} done in {f}', '{n} su {all} fatti in {f}'), { n: doneIn(f).size, all: total(f), f: tr(f) }));
   const hit = barsHit(), all = barsAll();
   setD($('kDrS'), hit ? fill(t2('{n} of {all} checks · saved on this device.', '{n} controlli su {all} · salvata su questo dispositivo.'), { n: hit, all }) : tr(t2('Saved on this device.', 'Salvata su questo dispositivo.')));
   $('kDrPath').innerHTML = trending ? '' : pathOf(f, cur.i, 'now'); // the one just finished grows in
@@ -1788,7 +1791,7 @@ $('kAcctUp').addEventListener('click', () => { closeSheet(kSet); setMode('up'); 
 $('kLogout').addEventListener('click', async () => {
   if (!confirm(tr('Log out? Your answers stay in your account and are removed from this device.'))) return;
   clearTimeout(pushT);
-  if (user && pulled) { try { await cloud.push(user.id, snapshot()); } catch { /* best effort before leaving */ } }
+  if (user && pulled) { try { await cloud.push(user.id, { ...snapshot(), quiz: undefined }); } catch { /* best effort before leaving */ } }
   try { await cloud.signOut(); } catch { /* still clear the device */ }
   await eraseStats(); // the next person on this device is asked again
   try { localStorage.removeItem(KEY); } catch { /* nothing stored */ } wipeExtras();
@@ -1826,16 +1829,22 @@ const arrive = () => { goTab('missions'); pop(); landHome(); };
 // 4 saved to your KernCard. A starter (projects.ts) points at an existing mission, so its brief, material and three steps are the mission's own; the answers join into one saved answer.
 // Nothing here says or implies money was earned: the prices are examples and nobody is paying yet.
 const kFirst = $('kFirst'), kFirstAge = $<HTMLInputElement>('kFirstAge'), kF1Go = $<HTMLButtonElement>('kF1Go'), kF2Ta = $<HTMLTextAreaElement>('kF2Ta'), kF2C = $('kF2C'), kF2Ask = $('kF2Ask');
-const FIRST_IDS = ['kF0', 'kF1', 'kF2', 'kF3'], FIRST_HEADS = ['kF0H', 'kF1H', 'kF2Q', 'kF3H']; // the screens, and the heading each one is named by
+const FIRST_IDS = ['kF0', 'kF1', 'kF2', 'kF3', 'kFQ', 'kFR'], FIRST_HEADS = ['kF0H', 'kF1H', 'kF2Q', 'kF3H', 'kFQH', 'kFRH']; // the screens, and the heading each one is named by (4 and 5: the maker quiz and its result)
+const FIRST_NO = [1, 2, 3, 4, 2, 2]; // the "n of 4" each screen shows: the quiz and its result stand where the example starters stand
 let firstAt = 0, firstPick = -1, firstStep = 0, firstAns: string[] = [], firstCards: HTMLElement[] = [];
-const starter = () => FIRST_BRIEFS[firstPick];
+// The maker quiz (quiz.ts): right after the welcome, five questions, one tap each. The answers pick the field, the mix of other fields and the first project;
+// "Skip the quiz" goes to the example starters. A quiz match is a starter made from its own mission (brief, material, steps). The answers never go to the account copy.
+QUIZ.forEach((q) => { t2(...q.q); q.a.forEach((x) => t2(...x.t)); }); Object.values(QRESULT).forEach((r) => { t2(...r.name); t2(...r.line); });
+let quizAt = 0, quizPicks: number[] = [], quizMatch: QuizMatch | null = null, quizBusy = false;
+const kQuizAge = $<HTMLInputElement>('kQuizAge'), kFRGo = $<HTMLButtonElement>('kFRGo'), kFQA = $('kFQA');
+const starter = (): Starter | undefined => (quizMatch ? { f: quizMatch.f, i: quizMatch.i, label: FIELDS[quizMatch.f].m[quizMatch.i][1], line: '', intro: MX[quizMatch.f][quizMatch.i].brief } : FIRST_BRIEFS[firstPick]);
 const firstSteps = () => { const st = starter(); return st ? MX[st.f]?.[st.i]?.steps ?? [] : []; };
 const showFirst = (n: number) => {
   firstAt = n;
   FIRST_IDS.forEach((id, k) => { $(id).hidden = k !== n; });
   kFirst.classList.toggle('black', n === 0); // the welcome screen is the black one
   $('kFBack').hidden = n === 0 || n === 3; // nothing to go back to from the welcome, nor from the confirmation
-  setD($('kFNum'), fill(t2('{n} of 4', '{n} di 4'), { n: n + 1 }));
+  setD($('kFNum'), fill(t2('{n} of 4', '{n} di 4'), { n: FIRST_NO[n] }));
   kFirst.setAttribute('aria-labelledby', FIRST_HEADS[n]);
   kFirst.scrollTo({ top: 0 }); if (n === 1) fadeFirst();
   stopSpeaking();
@@ -1911,11 +1920,65 @@ const saveFirst = () => {
   makeF.sync(); // the first version with AI is offered when the idea is long enough
   if (!kept) say(UNSAVED);
 };
+const renderQuiz = () => {
+  const q = QUIZ[quizAt];
+  setD($('kFQL'), fill(t2('Question {n} of {all}', 'Domanda {n} di {all}'), { n: quizAt + 1, all: QUIZ.length }));
+  setD($('kFQH'), tr(q.q[0]));
+  kFQA.replaceChildren(...q.a.map((x, k) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'k-qa'; b.textContent = tr(x.t[0]); b.setAttribute('aria-pressed', String(quizPicks[quizAt] === k));
+    b.addEventListener('click', () => pickQuiz(k));
+    return b;
+  }));
+};
+const pickQuiz = (k: number) => {
+  if (quizBusy) return;
+  quizBusy = true; quizPicks[quizAt] = k;
+  kFQA.querySelectorAll('.k-qa').forEach((b, j) => b.setAttribute('aria-pressed', String(j === k)));
+  window.setTimeout(() => { // a beat to see the pick, then the next question
+    quizBusy = false;
+    if (quizAt < QUIZ.length - 1) { quizAt++; renderQuiz(); land($('kFQH')); } else finishQuiz();
+  }, still ? 0 : 220);
+};
+const renderResult = () => {
+  if (!quizMatch) return;
+  const r = QRESULT[quizMatch.type], [tint, strong] = QHUE[quizMatch.type], card = $('kFRC');
+  card.style.setProperty('--tint', tint); card.style.setProperty('--strong', strong); // the type's own colour, like the website card
+  $('kFRS').innerHTML = slash('happy');
+  setD($('kFRH'), tr(r.name[0])); setD($('kFRL'), tr(r.line[0])); setD($('kFRT'), tr(FIELDS[quizMatch.f].m[quizMatch.i][1]));
+  $('kFRM').hidden = !quizMatch.mix.length;
+  $('kFRMC').replaceChildren(...mixNames(quizMatch).map((n) => Object.assign(document.createElement('span'), { className: 'k-l k-cat', textContent: n })));
+};
+const mixNames = (m: QuizMatch) => m.mix.map((f) => { const t = typeOfField(f); return t ? tr(QRESULT[t].name[0]) : tr(f); }); // the other types picked, named as results
+const markQuizAge = () => { // the result's button waits for the 18+ box, like the starters' Continue
+  const noAge = !(S.adult || kQuizAge.checked), why = $('kFRWhy');
+  kFRGo.disabled = noAge; why.hidden = !noAge;
+  if (noAge) setT(why, 'Tick the 18+ box to continue.');
+  $('kFRAge').hidden = $('kQuizAgeWhy').hidden = S.adult;
+};
+const finishQuiz = () => {
+  quizMatch = scoreQuiz(quizPicks);
+  if (!quizMatch) { showFirst(1); land($('kF1H')); return; }
+  S.quiz = { a: quizPicks.slice(), at: Date.now() }; save(); // on this device only (never in the account copy)
+  renderResult(); markQuizAge(); showFirst(5); land($('kFRH'));
+};
+const startQuiz = () => { quizAt = 0; quizPicks = []; quizMatch = null; quizBusy = false; renderQuiz(); showFirst(4); land($('kFQH')); };
+const renderQuizAgain = () => { if (firstAt === 4) renderQuiz(); if (firstAt === 5) renderResult(); }; // a language switch while the quiz is on screen
 const openFirst = () => {
   firstPick = -1; kFirstAge.checked = false; renderFirstPick(); markFirst();
+  quizAt = 0; quizPicks = []; quizMatch = null; kQuizAge.checked = false;
   kFirst.classList.add('on'); showFirst(0); syncInert(); land($('kF0H'));
 };
-$('kF0Go').addEventListener('click', () => { showFirst(1); land($('kF1H')); });
+$('kF0Go').addEventListener('click', startQuiz);
+$('kFQSkip').addEventListener('click', () => { quizMatch = null; showFirst(1); land($('kF1H')); markFirst(); });
+kQuizAge.addEventListener('change', markQuizAge);
+kFRGo.addEventListener('click', () => {
+  if (!quizMatch || kFRGo.disabled) return;
+  S.adult = true; S.field = quizMatch.f; S.fields = [...new Set([...S.fields, quizMatch.f, ...quizMatch.mix])]; save(); // the winning field first, then the mix
+  startSteps();
+});
+$('kFRF').addEventListener('click', () => { if (kFRGo.disabled) { markQuizAge(); kQuizAge.focus(); } else kFRGo.click(); }); // the first project opens it (after the 18+ box)
+$('kFRShare').addEventListener('click', () => { void shareQuiz(); });
 kFirstAge.addEventListener('change', markFirst);
 kF1Go.addEventListener('click', () => {
   const st = starter(); if (!st || kF1Go.disabled) return;
@@ -1930,7 +1993,10 @@ $('kF2Next').addEventListener('click', once(() => {
   if (firstStep < firstSteps().length - 1) { firstStep++; renderStep(); } else saveFirst();
 }));
 $('kFBack').addEventListener('click', () => {
+  if (firstAt === 4) { if (quizAt > 0) { quizAt--; renderQuiz(); land($('kFQH')); } else { showFirst(0); land($('kF0H')); } return; }
+  if (firstAt === 5) { quizAt = QUIZ.length - 1; renderQuiz(); showFirst(4); land($('kFQH')); return; }
   if (firstAt === 2 && firstStep > 0) { firstAns[firstStep] = kF2Ta.value; firstStep--; renderStep(); return; }
+  if (firstAt === 2 && quizMatch) { renderResult(); markQuizAge(); showFirst(5); land($('kFRH')); return; } // back to the quiz result it came from
   showFirst(firstAt - 1); land($(FIRST_HEADS[firstAt]));
 });
 // The live assistant, behind a small link: it reads the brief and the draft and asks one question (never the answer). Offline it falls back to the scripted questions, as in the mission sheet.
@@ -2119,14 +2185,32 @@ const shareCardNow = async () => {
   const blob = await cardImage(), c = cardData();
   const text = c.me ? tr('My KernCard so far: {s}').replace('{s}', c.me) : tr('Testing {f} on slashkern.').replace('{f}', tr(S.field));
   if (!blob) return shareText('slashkern', text, `${location.origin}/`, 'Link copied.');
-  const file = new File([blob], 'my-kerncard.png', { type: 'image/png' });
+  await shareImage(blob, 'my-kerncard.png', text);
+};
+// An image: the share sheet with the file where the phone has one, otherwise a download.
+const shareImage = async (blob: Blob, name: string, text: string) => {
+  const file = new File([blob], name, { type: 'image/png' });
   if (navigator.canShare?.({ files: [file] })) {
     try { await navigator.share({ files: [file], title: 'slashkern', text }); return; }
     catch (e) { if ((e as DOMException).name === 'AbortError') return; }
   }
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'my-kerncard.png'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
   window.setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   say('Card saved as an image.');
+};
+// The quiz result as an image, with a link to the public quiz on the website (the app itself is private), so a friend can take it too.
+const QUIZ_SHARE = t2('On slashkern I am “{name}”. Which maker are you?', 'Su slashkern sono “{name}”. E tu che maker sei?');
+let quizShareBusy = false; // one tap, one share
+const shareQuiz = async () => {
+  if (!quizMatch || quizShareBusy) return;
+  quizShareBusy = true;
+  try {
+    const m = quizMatch, r = QRESULT[m.type], [tint, strong] = QHUE[m.type], name = tr(r.name[0]);
+    const url = `https://slashkern.com${S.lang === 'it' ? '/it' : ''}/quiz/?r=${m.type}`, text = tr(QUIZ_SHARE).replace('{name}', name);
+    const blob = await quizImage({ top: tr('Which kind of maker are you?'), you: tr('You are'), name, line: tr(r.line[0]), firstLabel: tr('Your first project'),
+      project: tr(FIELDS[m.f].m[m.i][1]), mix: mixNames(m), host: 'slashkern.com' }, tint, strong);
+    if (blob) await shareImage(blob, 'my-maker-type.png', `${text} ${url}`); else await shareText('slashkern', text, url, 'Link copied.');
+  } finally { window.setTimeout(() => { quizShareBusy = false; }, 900); }
 };
 kScr.querySelectorAll<HTMLElement>('[data-k-share]').forEach((b) => b.addEventListener('click', () => {
   track('share'); // counts the tap on Share (card or dare), not whether the person finished sending it
@@ -2183,7 +2267,7 @@ const keepCoops = () => { S.coops = S.coops.slice(-30); };
 let coopIn: Coop | null = null, coopNote = '', coopGo = false; // the friend's request waiting to be answered; a one-line notice (and whether to open slashkern) after a link was opened
 function receiveCoopReply(c: Coop) { // someone answered my co-op: keep both halves (coop.ts decides which row it belongs to, or that it is not for me)
   const res = settleReply(S.coops, c, Date.now()), who = c.m || tr(A_FRIEND);
-  if (res.status === 'stranger') { coopNote = tr(t2('This reply is not for one of your projects.', 'Questa risposta non è per un tuo progetto.')); return; }
+  if (res.status === 'stranger') { coopNote = tr(t2('This reply is not for one of your projects.', 'Questa risposta non riguarda nessuno dei tuoi progetti.')); return; }
   if (res.status === 'own') { coopNote = tr(t2('This is the reply you sent.', 'Questa è la risposta che hai mandato tu.')); return; }
   if (res.status !== 'same') { S.coops = res.coops; keepCoops(); save(); }
   coopNote = fill(t2('{n} replied. It is on your KernCard.', '{n} ha risposto. La trovi nella tua KernCard.'), { n: who }); coopGo = true;
@@ -2303,7 +2387,7 @@ const setLang = (l: Lang) => {
   document.querySelectorAll<HTMLElement>('[aria-label]').forEach((e) => { const en = (e.dataset.enLabel ??= e.getAttribute('aria-label') || ''); e.setAttribute('aria-label', tr(en)); });
   if (fb.dataset.src) fb.textContent = tr(fb.dataset.src);
   { const sel = kLangSel(); if (sel) sel.value = l; } setPic(); helpText();
-  setLvl(); renderProgress(); renderChat(); renderAcct(); renderFirstPick(); renderTrend(); markFirst(); refreshVoice(); makeD.relabel(); makeF.relabel();
+  setLvl(); renderProgress(); renderChat(); renderAcct(); renderFirstPick(); renderTrend(); markFirst(); renderQuizAgain(); refreshVoice(); makeD.relabel(); makeF.relabel();
 };
 // The app starts in the phone's language (firstLang); Settings has one menu to change it, so more languages never mean more buttons.
 const kLang = $('kLang') as HTMLSelectElement;

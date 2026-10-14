@@ -1637,3 +1637,35 @@ html:not(.has-vt) .k-pane.on { animation: kFade .16s both; }
 :root.light .k-scr .k-piece .k-sk { color: #fff; }
 :root.light .k-scr .k-piece :focus-visible { outline-color: #fff; }
 .k-wu { margin: 6px 2px -4px; } .k-wu[hidden] { display: none; }
+
+/* The maker quiz (first run): seven answers as full-width rows, one tap each; the result card matches the website's (yourkern-site Quiz.astro, .rcard):
+   the type's own tint (the website's Examples colours, set by app.ts as --tint and --strong), navy text, Slash top right with eyes in the strong colour. */
+.k-qas { display: grid; gap: 8px; margin-top: 4px; }
+.k-qa { display: block; width: 100%; min-height: 52px; padding: 13px 16px; border: 1.5px solid var(--line); border-radius: 16px; background: #fff; color: var(--fg); font: 600 1rem/1.35 var(--kd); text-align: left; cursor: pointer; transition: border-color .2s, background-color .2s, transform .45s var(--spring); }
+.k-qa:active { transform: scale(.98); }
+.k-qa[aria-pressed="true"] { border-color: var(--acc); background: color-mix(in srgb, var(--acc) 9%, #fff); }
+@media (prefers-reduced-motion: reduce) { .k-qa { transition: none; } .k-qa:active { transform: none; } }
+.k-rc { --tint: #DCE6FF; --strong: #2D4BFF; position: relative; isolation: isolate; display: flex; flex-direction: column; gap: 10px; margin-top: 8px; padding: 22px 20px; border-radius: 24px; background: var(--tint); color: #0E1B3D; }
+.k-rc .k-l { color: rgba(14, 27, 61, .72); }
+.k-rc .k-slash { --s: 58px; --slash-eye: var(--strong); --slash-body: #0E1B3D; --slash-key: #FFFFFF; position: absolute; z-index: -1; top: 14px; right: 16px; rotate: -7deg; }
+.k-rc-top { max-width: calc(100% - 76px); }
+.k-rc-you { margin: 26px 0 0; font: 600 1.375rem/1 var(--kd); letter-spacing: -.02em; }
+.k-scr .k-rc h4, :root.light .k-scr .k-rc h4 { margin: 0; color: #0E1B3D; font-size: 2.5rem; line-height: 1; letter-spacing: -.045em; text-wrap: balance; }
+.k-rc-line { margin: 0; font-size: 1.0625rem; font-weight: 500; line-height: 1.4; color: #0E1B3D; }
+.k-rc-first { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 12px; width: 100%; margin-top: 8px; padding: 14px 16px; border: 0; border-radius: 16px; background: #fff; color: #0E1B3D; text-align: left; cursor: pointer; box-shadow: 0 1px 0 rgba(14, 27, 61, .06); transition: transform .45s var(--spring); }
+.k-rc-first::after { content: '→'; content: '→' / ''; grid-row: 1 / 3; grid-column: 2; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #0E1B3D; color: #fff; font: 600 1rem/1 var(--kd); } /* navy: white on the light type colours would be too faint */
+.k-rc-first:active { transform: scale(.98); }
+.k-rc-first .k-l { color: rgba(14, 27, 61, .72); }
+.k-rc-t { margin: 0; font: 700 1.125rem/1.3 var(--kd); }
+.k-rc-mix { display: grid; gap: 6px; }
+.k-rc-mix[hidden] { display: none; }
+.k-rc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.k-rc-chips .k-cat { padding: 5px 11px; border-radius: 999px; background: rgba(14, 27, 61, .08); color: #0E1B3D; }
+.k-rc :focus-visible { outline: 3px solid #0E1B3D; outline-offset: 2px; }
+.k-rc-share { margin-top: 10px; }
+@media (prefers-reduced-motion: no-preference) {
+  .k-rc { animation: k-rc-in .6s var(--out) both; }
+  .k-rc .k-slash { animation: k-rc-slash .9s var(--spring) .15s both; }
+  @keyframes k-rc-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+  @keyframes k-rc-slash { from { opacity: 0; translate: 1.5rem -1rem; rotate: 12deg; } to { opacity: 1; translate: 0 0; rotate: -7deg; } }
+}
