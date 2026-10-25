@@ -1,13 +1,13 @@
-// Checks the Video piece, the storyboard for Rocco's sandwich van (src/scripts/piece-video.ts): the text of every frame reads on its colour, the clip adds up to 15 seconds, the page reads its words from
-// the run in the right order whatever the hook, the shots and the sound, every sketch is a well-formed path, and every text has its Italian, German, French, Dutch and Swedish. The generic checks of every
+// Checks the Video piece, the storyboard for SOL Coffee Bar's ad (src/scripts/piece-video.ts): the text of every frame reads on its colour, the clip adds up to 15 seconds, the page reads its words from
+// the run in the right order whatever the hook, the shots and the sound, every sketch is a well-formed path, and every text has its Italian, German, French, Dutch, Swedish and Spanish. The generic checks of every
 // piece are in scripts/check-pieces.mjs; the drawings (page and picture) are looked at in the browser. Run: npm test
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildSync } from 'esbuild';
 
-const entry = ['piece-video', 'piece-types', 'i18n', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
+const entry = ['piece-video', 'piece-types', 'i18n', 'i18n-de', 'i18n-fr', 'i18n-nl', 'i18n-sv', 'i18n-es'].map((f) => `export * from './src/scripts/${f}.ts';`).join('\n');
 const { text } = buildSync({ stdin: { contents: entry, resolveDir: process.cwd(), loader: 'ts' }, bundle: true, format: 'esm', platform: 'node', write: false, logLevel: 'silent' }).outputFiles[0];
-const { piece, view, FRAMES, SPANS, OVER, ROCCO, SK, SPEAKER, MUTED, L, contrast, wordsIn, PAPER, PIECE_AT, IT, DE, FR, NL, SV } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
+const { piece, view, FRAMES, SPANS, OVER, SOL, ACCENT, SK, SPEAKER, MUTED, L, contrast, wordsIn, PAPER, PIECE_AT, IT, DE, FR, NL, SV, ES } = await import(`data:text/javascript;base64,${Buffer.from(text).toString('base64')}`);
 const [hook, shots, words, sound, caption] = piece.steps;
 
 // The steps are what view() reads: the hook, three shots, the words on screen, the sound, the caption.
@@ -25,14 +25,14 @@ assert.equal(SPANS[SPANS.length - 1][1], 15);
 // Colours: small text needs 4.5:1, a sketch (decoration) and a shape that must stand out need 3:1.
 const SMALL = 4.5, SHAPE = 3, ok = (a, b, min, what) => assert.ok(contrast(a, b) >= min, `${what}: ${a} on ${b} is ${contrast(a, b).toFixed(2)}, wants ${min}`);
 FRAMES.forEach((f, k) => { ok(f.on, f.bg, SMALL, `frame ${k + 1} text`); ok(f.line, f.bg, SHAPE, `frame ${k + 1} sketch`); });
-assert.deepEqual(FRAMES.map((f) => f.bg).sort(), Object.values(ROCCO).sort(), 'the four frames are Rocco’s four colours, once each');
+assert.deepEqual(FRAMES.map((f) => f.bg).sort(), Object.values(SOL).sort(), 'the four frames are SOL’s four colours, once each');
 ok(OVER.on, OVER.bg, SMALL, 'the words on screen'); ok(OVER.bg, FRAMES[FRAMES.length - 1].bg, SHAPE, 'the bar on the last frame');
-ok(ROCCO.navy, PAPER, SMALL, 'the page text'); ok(PAPER, ROCCO.navy, SMALL, 'the sound chip text'); ok(OVER.bg, ROCCO.navy, SHAPE, 'the speaker on the chip'); ok(ROCCO.tomato, PAPER, SHAPE, 'the accent rule');
+ok(SOL.espresso, PAPER, SMALL, 'the page text'); ok(PAPER, SOL.espresso, SMALL, 'the sound chip text'); ok(OVER.bg, SOL.espresso, SHAPE, 'the speaker on the chip'); ok(ACCENT, PAPER, SHAPE, 'the accent rule'); ok(PAPER, ACCENT, SMALL, 'paper text on the accent');
 
 // The page reads its words from the run, in order, for every hook, every ordered triple of shots and every sound. The typed lines come through untouched, the labels go through the translator.
 const labelOf = (st, id) => st.opts.find((x) => x.id === id).label, idsOf = (st) => st.opts.map((x) => x.id);
 const run = (s) => ({ f: piece.f, i: PIECE_AT + piece.n, at: 1760000000000, s, done: 1760000600000 });
-const typed = ['Lunch, but make it loud', 'Rocco’s toastie, 15 seconds, zero patience.'], tr = (s) => `[${s}]`;
+const typed = ['Sun in a cup.', 'SOL Coffee Bar. Sunrise tonic, ready in 15 seconds.'], tr = (s) => `[${s}]`;
 let combos = 0;
 for (const h of idsOf(hook)) for (const a of idsOf(shots)) for (const b of idsOf(shots)) for (const c of idsOf(shots)) {
   if (a === b || b === c || a === c) continue;
@@ -65,7 +65,7 @@ for (const [id, g] of Object.entries({ ...SK, speaker: SPEAKER, muted: MUTED }))
 // Every text a person reads, in every language: it exists, keeps its {blanks}, has no exclamation mark, no emoji and no banned word; the examples fit the line they show for.
 const strings = (v) => (typeof v === 'string' ? [v] : Array.isArray(v) ? v.flatMap(strings) : v && typeof v === 'object' ? Object.values(v).flatMap(strings) : []);
 const texts = [...new Set(strings([piece.title, piece.blurb, piece.who, piece.brief, piece.client, piece.steps.map((st) => [st.q, st.hint, st.ph, st.opts?.map((x) => x.label)]), L]))];
-const blanks = (t) => [...t.matchAll(/\{\w+\}/g)].map((m) => m[0]).sort().join(' '), len = (t) => [...t].length, LANGS = { Italian: IT, German: DE, French: FR, Dutch: NL, Swedish: SV };
+const blanks = (t) => [...t.matchAll(/\{\w+\}/g)].map((m) => m[0]).sort().join(' '), len = (t) => [...t].length, LANGS = { Italian: IT, German: DE, French: FR, Dutch: NL, Swedish: SV, Spanish: ES };
 const BANNED = /lavor|\bmissions?\b|\bmissie|\bMission(?:en)?\b|uppdrag|no experience|\bearn|\bpaid\b|\bincome\b|[€$]/i;
 for (const s of texts) {
   assert.ok(!/!/.test(s) && !/\p{Extended_Pictographic}/u.test(s) && !BANNED.test(s), `English: a banned thing in "${s.slice(0, 50)}"`);
@@ -91,4 +91,4 @@ assert.ok(classes.length > 10 && classes.every((c) => c === 'k-pc' || c.startsWi
 const sizes = [...css.matchAll(/font(?:-size)?:\s*([^;}]*)/g)].map((m) => m[1]);
 assert.ok(sizes.every((v) => !/\d\s*px/.test(v)), 'piece-video.css: font sizes in rem, never px');
 assert.ok(sizes.every((v) => { const r = v.match(/(\d*\.?\d+)rem/); return !r || Number(r[1]) >= 0.75; }), 'piece-video.css: text is at least 0.75rem');
-console.log(`piece video: ok (${combos} hook, shot and sound combinations, ${Object.keys(SK).length} sketches, ${texts.length} texts in 5 languages)`);
+console.log(`piece video: ok (${combos} hook, shot and sound combinations, ${Object.keys(SK).length} sketches, ${texts.length} texts in 6 languages)`);
